@@ -443,3 +443,4 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,dotnetcore,angular
 /services/QuizVistaApi/.vs/*
+/services/QuizVistaApi/.vs/QuizVistaApi/v17/.suo
