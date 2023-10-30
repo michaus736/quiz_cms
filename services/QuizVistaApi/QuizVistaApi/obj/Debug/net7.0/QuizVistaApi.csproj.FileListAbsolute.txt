@@ -70,3 +70,10 @@ C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\ob
 C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\obj\Debug\net7.0\QuizVistaApi.pdb
 C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\obj\Debug\net7.0\QuizVistaApi.genruntimeconfig.cache
 C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\obj\Debug\net7.0\ref\QuizVistaApi.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Scrutor.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\karol\Documents\Quiz_cms\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
