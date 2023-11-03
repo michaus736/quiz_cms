@@ -16,6 +16,11 @@ namespace QuizVistaApiInfrastructureLayer.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<TEntity?> GetAsync(int id)
+        {
+            return await _dbContext.FindAsync<TEntity>(id);
+        }
+
         public IQueryable<TEntity> GetAll()
         {
             return _dbContext.GetDbSet<TEntity>();

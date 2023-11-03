@@ -16,7 +16,7 @@ namespace QuizVistaApiInfrastructureLayer.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             var entityTypes = typeof(RepositoryExtension).Assembly.GetTypes()
-            .Where(t => t.GetCustomAttribute<EntityAttribute>() != null)
+            .Where(t => t.GetCustomAttribute<EntityAttribute>() != null && !t.IsAbstract)
             .ToList();
 
 
