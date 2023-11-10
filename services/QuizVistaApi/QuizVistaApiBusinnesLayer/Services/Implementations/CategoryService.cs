@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace QuizVistaApiBusinnesLayer.Services.Implementations
 {
-    public class CatgoryService : ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly IRepository<Category> _categoryRepository;
 
-        public CatgoryService(IRepository<Category> categoryRepository)
+        public CategoryService(IRepository<Category> categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }

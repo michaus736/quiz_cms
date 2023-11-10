@@ -12,7 +12,7 @@ namespace QuizVistaApiInfrastructureLayer.DbContexts
 
         public QuizVistaDbContext()
         {
-                
+
         }
         public QuizVistaDbContext([NotNull] DbContextOptions<QuizVistaDbContext> options)
         : base(options)
@@ -33,6 +33,12 @@ namespace QuizVistaApiInfrastructureLayer.DbContexts
         public virtual DbSet<Quiz> Quizzes { get; set; }
 
         public virtual DbSet<Tag> Tags { get; set; }
+
+        public virtual DbSet<Role> Roles { get; set; }
+
+        public virtual DbSet<User> Users { get; set; }
+
+        public virtual DbSet<UserRole> UserRoles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -174,6 +180,29 @@ namespace QuizVistaApiInfrastructureLayer.DbContexts
                             j.IndexerProperty<int>("TagsId").HasColumnName("tags_id");
                             j.IndexerProperty<int>("QuizQuizId").HasColumnName("quiz_quiz_id");
                         });
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasKey(e => e.RoleId);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(e => e.UserId);
+            });
+
+            modelBuilder.Entity<UserRole>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.HasOne(d => d.User)
+                      .WithMany(p => p.UserRoles)
+                      .HasForeignKey(d => d.UserId);
+
+                entity.HasOne(d => d.Role)
+                      .WithMany(p => p.UserRoles)
+                      .HasForeignKey(d => d.RoleId);
             });
 
             //OnModelCreatingPartial(modelBuilder);
