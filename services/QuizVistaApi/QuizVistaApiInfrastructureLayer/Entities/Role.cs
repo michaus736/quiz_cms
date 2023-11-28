@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
 
-public partial class Tag
+public partial class Role
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

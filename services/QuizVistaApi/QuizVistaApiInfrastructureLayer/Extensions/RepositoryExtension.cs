@@ -19,12 +19,15 @@ namespace QuizVistaApiInfrastructureLayer.Extensions
             .Where(t => t.GetCustomAttribute<EntityAttribute>() != null && !t.IsAbstract)
             .ToList();
 
-
+            
             foreach (var entityType in entityTypes)
             {
                 var repositoryInterfaceType = typeof(IRepository<>).MakeGenericType(entityType);
                 var repositoryImplementationType = typeof(Repository<>).MakeGenericType(entityType);
 
+                /*
+                 TODO
+                 */
                 // Rejestrowanie repozytorium jako Singleton
                 services.AddSingleton(repositoryInterfaceType, provider =>
                 {
