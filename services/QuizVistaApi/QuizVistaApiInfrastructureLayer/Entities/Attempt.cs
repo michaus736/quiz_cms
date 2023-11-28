@@ -1,8 +1,11 @@
-﻿using System;
+﻿using QuizVistaApiInfrastructureLayer.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
 
+
+[Entity]
 public partial class Attempt
 {
     public int Id { get; set; }

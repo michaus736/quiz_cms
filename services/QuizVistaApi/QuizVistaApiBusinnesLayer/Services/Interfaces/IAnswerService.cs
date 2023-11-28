@@ -12,9 +12,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         #region REST
 
-        Task<ModelWithResult<IEnumerable<Answer>>> GetAnswers();
-        Task<ModelWithResult<IEnumerable<Answer>>> GetAnswersForQuestion(int questionId);
-        Task<ModelWithResult<Answer>> GetAnswer(int answerId);
+        Task<ResultWithModel<IEnumerable<Answer>>> GetAnswers();
+        Task<ResultWithModel<IEnumerable<Answer>>> GetAnswersForQuestion(int questionId);
+        Task<ResultWithModel<Answer>> GetAnswer(int answerId);
         
         Task CreateAnswerAsync(Answer answer);
         Task DeleteAnswerAsync(int answerId);

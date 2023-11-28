@@ -32,33 +32,33 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             
         }
 
-        public async Task<ModelWithResult<Answer>> GetAnswer(int answerId)
+        public async Task<ResultWithModel<Answer>> GetAnswer(int answerId)
         {
             var answer = await _answerRepository.GetAsync(answerId);
 
             if(answer is null)
-                throw new ArgumentNullException(nameof(answer));
+                throw new ArgumentNullException($"answer #{answer} not found");
 
-            return new ModelWithResult<Answer>(answer);
+            return ResultWithModel<Answer>.Ok(answer);
         }
 
-        public Task<ModelWithResult<IEnumerable<Answer>>> GetAnswers()
+        public Task<ResultWithModel<IEnumerable<Answer>>> GetAnswers()
         {
-            return Task.FromResult(new ModelWithResult<IEnumerable<Answer>>(_answerRepository.GetAll().ToArray()));
+            return Task.FromResult(ResultWithModel<IEnumerable<Answer>>.Ok(_answerRepository.GetAll().ToArray()));
         }
 
-        public async Task<ModelWithResult<IEnumerable<Answer>>> GetAnswersForQuestion(int questionId)
+        public async Task<ResultWithModel<IEnumerable<Answer>>> GetAnswersForQuestion(int questionId)
         {
             var answers =  _answerRepository
                 .GetAll()
-                .Where(x=>x.QuestionQuestionId == questionId)
-                .OrderBy(x=>x.AnswerId)
+                .Where(x=>x.QuestionId == questionId)
+                .OrderBy(x=>x.Id)
                 .ToList();
 
-            if(answers is null)
-                throw new ArgumentNullException(nameof(answers));
+            if (answers is null)
+                throw new ArgumentNullException($"answers for #{questionId} question not found");
 
-            return await Task.FromResult(new ModelWithResult<IEnumerable<Answer>>(answers));
+            return await Task.FromResult(ResultWithModel<IEnumerable<Answer>>.Ok(answers));
             
         }
 

@@ -30,17 +30,17 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             await _tagRepository.DeleteAsync(id);
         }
 
-        public async Task<ModelWithResult<Tag>> GetTag(int id)
+        public async Task<ResultWithModel<Tag>> GetTag(int id)
         {
             var tag = await _tagRepository.GetAsync(id);
 
             if(tag is null)
-                throw new ArgumentNullException(nameof(tag));
+                throw new ArgumentNullException($"tag #{id} not found");
 
-            return new ModelWithResult<Tag>(tag);
+            return ResultWithModel<Tag>.Ok(tag);
         }
 
-        public async Task<ModelWithResult<IEnumerable<Tag>>> GetTags()
+        public async Task<ResultWithModel<IEnumerable<Tag>>> GetTags()
         {
             var tags = await _tagRepository.GetAll()
                 .OrderBy(x => x.Id)
@@ -49,21 +49,21 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(tags is null)
                 throw new ArgumentNullException(nameof(tags));
 
-            return new ModelWithResult<IEnumerable<Tag>>(tags);
+            return ResultWithModel<IEnumerable<Tag>>.Ok(tags);
         }
 
-        public async Task<ModelWithResult<IEnumerable<Tag>>> GetTagsForQuiz(int quizId)
+        public async Task<ResultWithModel<IEnumerable<Tag>>> GetTagsForQuiz(int quizId)
         {
             var tags = await _tagRepository.GetAll()
-                .Include(x => x.QuizQuizzes)
+                .Include(x => x.Quizzes)
                 .Where(x => x.Id == quizId)
                 .OrderBy(x => x.Id)
                 .ToListAsync();
 
             if(tags is null)
-                throw new ArgumentNullException(nameof(tags));
+                throw new ArgumentNullException($"tags for quiz #{quizId} not found");
 
-            return new ModelWithResult<IEnumerable<Tag>>(tags);
+            return ResultWithModel<IEnumerable<Tag>>.Ok(tags);
         }
 
         public async Task UpdateTag(Tag tag)

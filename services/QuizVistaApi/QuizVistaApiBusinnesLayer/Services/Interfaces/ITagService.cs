@@ -12,9 +12,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         #region REST
 
-        Task<ModelWithResult<IEnumerable<Tag>>> GetTags();
-        Task<ModelWithResult<IEnumerable<Tag>>> GetTagsForQuiz(int quizId);
-        Task<ModelWithResult<Tag>> GetTag(int id);
+        Task<ResultWithModel<IEnumerable<Tag>>> GetTags();
+        Task<ResultWithModel<IEnumerable<Tag>>> GetTagsForQuiz(int quizId);
+        Task<ResultWithModel<Tag>> GetTag(int id);
         Task CreateTag(Tag tag);
         Task DeleteTag(int id);
         Task UpdateTag(Tag tag);

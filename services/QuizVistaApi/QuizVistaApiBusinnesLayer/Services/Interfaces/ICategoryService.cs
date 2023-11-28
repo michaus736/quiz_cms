@@ -12,8 +12,8 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         #region REST
 
-        Task<ModelWithResult<IEnumerable<Category>>> GetCategories();
-        Task<ModelWithResult<Category>> GetCategory(int categoryId);
+        Task<ResultWithModel<IEnumerable<Category>>> GetCategories();
+        Task<ResultWithModel<Category>> GetCategory(int categoryId);
 
         Task DeleteCategory(int id);
         Task CreateCategory(Category category);

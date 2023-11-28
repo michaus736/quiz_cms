@@ -30,40 +30,40 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             await _quizRepository.DeleteAsync(idToDelete);
         }
 
-        public async Task<ModelWithResult<Quiz>> GetQuizAsync(int id)
+        public async Task<ResultWithModel<Quiz>> GetQuizAsync(int id)
         {
             var quiz = await _quizRepository.GetAsync(id);
 
             if(quiz is null)
-                throw new ArgumentNullException(nameof(quiz));
+                throw new ArgumentNullException($"quiz #{id} not found");
 
-            return new ModelWithResult<Quiz>(quiz);
+            return ResultWithModel<Quiz>.Ok(quiz);
         }
 
-        public async Task<ModelWithResult<IEnumerable<Quiz>>> GetQuizesAsync()
+        public async Task<ResultWithModel<IEnumerable<Quiz>>> GetQuizesAsync()
         {
             var quizes = await _quizRepository
                 .GetAll()
-                .OrderBy(x=>x.QuizId)
+                .OrderBy(x=>x.Id)
                 .ToListAsync();
 
             if(quizes is null)
                 throw new ArgumentNullException(nameof(quizes));
 
-            return new ModelWithResult<IEnumerable<Quiz>>(quizes);
+            return ResultWithModel<IEnumerable<Quiz>>.Ok(quizes);
 
         }
 
-        public Task<ModelWithResult<Quiz>> GetQuizWithQuestionsAsync(int id)
+        public Task<ResultWithModel<Quiz>> GetQuizWithQuestionsAsync(int id)
         {
             var quiz = _quizRepository.GetAll()
                 .Include(x => x.Questions)
-                .FirstOrDefault( x=> x.QuizId == id);
+                .FirstOrDefault( x=> x.Id == id);
 
             if (quiz is null)
-                throw new ArgumentNullException(nameof(quiz));
+                throw new ArgumentNullException($"quiz #{id} not found");
 
-            return Task.FromResult(new ModelWithResult<Quiz>(quiz);
+            return Task.FromResult(ResultWithModel<Quiz>.Ok(quiz));
         }
 
         public async Task UpdateQuizAsync(Quiz quizToUpdate)

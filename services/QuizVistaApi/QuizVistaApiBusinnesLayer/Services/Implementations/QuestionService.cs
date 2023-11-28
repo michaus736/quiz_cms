@@ -30,49 +30,49 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             await _questionRepository.DeleteAsync(questionId);
         }
 
-        public async Task<ModelWithResult<Question>> GetQuestion(int questionId)
+        public async Task<ResultWithModel<Question>> GetQuestion(int questionId)
         {
             var question = await _questionRepository.GetAsync(questionId);
 
             if(question is null) 
-                throw new ArgumentNullException(nameof(question));
+                throw new ArgumentNullException($"question #{questionId} not found");
 
-            return new ModelWithResult<Question>(question);
+            return ResultWithModel<Question>.Ok(question);
         }
 
-        public async Task<ModelWithResult<IEnumerable<Question>>> GetQuestions()
+        public async Task<ResultWithModel<IEnumerable<Question>>> GetQuestions()
         {
             var questions = await _questionRepository.GetAll()
-                .OrderBy(x => x.QuestionId)
+                .OrderBy(x => x.Id)
                 .ToListAsync();
 
-            return new ModelWithResult<IEnumerable<Question>>(questions);
+            return ResultWithModel<IEnumerable<Question>>.Ok(questions);
         }
 
-        public async Task<ModelWithResult<IEnumerable<Question>>> GetQuestionsForQuiz(int quizId)
+        public async Task<ResultWithModel<IEnumerable<Question>>> GetQuestionsForQuiz(int quizId)
         {
             var questions = await _questionRepository.GetAll()
-                .Where(x=>x.QuizQuizId == quizId)
-                .OrderBy(x=> x.QuestionId)
+                .Where(x=>x.QuizId == quizId)
+                .OrderBy(x=> x.Id)
                 .ToListAsync();
 
             if(questions is null)
-                throw new ArgumentNullException(nameof(questions));
+                throw new ArgumentNullException($"questions for quiz #{quizId} not found");
 
-            return new ModelWithResult<IEnumerable<Question>>(questions);
+            return ResultWithModel<IEnumerable<Question>>.Ok(questions);
 
         }
 
-        public Task<ModelWithResult<Question>> GetQuestionWithAnswers(int questionId)
+        public Task<ResultWithModel<Question>> GetQuestionWithAnswers(int questionId)
         {
             var questionExtended = _questionRepository.GetAll()
                 .Include(x => x.Answers)
-                .FirstOrDefault(x => x.QuestionId == questionId);
+                .FirstOrDefault(x => x.Id == questionId);
 
             if(questionExtended is null)
-                throw new ArgumentNullException(nameof(questionExtended));
+                throw new ArgumentNullException($"question #{questionId} not found");
 
-            return Task.FromResult(new ModelWithResult<Question>(questionExtended));
+            return Task.FromResult(ResultWithModel<Question>.Ok(questionExtended));
 
         }
 

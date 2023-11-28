@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace QuizVistaApiBusinnesLayer.Services.Implementations
 {
-    public class CatgoryService : ICategoryService
+    public class CategoryService : ICategoryService
     {
         private readonly IRepository<Category> _categoryRepository;
 
-        public CatgoryService(IRepository<Category> categoryRepository)
+        public CategoryService(IRepository<Category> categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
@@ -30,27 +30,27 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             await _categoryRepository.DeleteAsync(id);
         }
 
-        public async Task<ModelWithResult<IEnumerable<Category>>> GetCategories()
+        public async Task<ResultWithModel<IEnumerable<Category>>> GetCategories()
         {
             var categories = await _categoryRepository
                 .GetAll()
-                .OrderBy(x=>x.CategoryId)
+                .OrderBy(x=>x.Id)
                 .ToListAsync();
 
             if(categories is null)
                 throw new ArgumentNullException(nameof(categories));
 
-            return new ModelWithResult<IEnumerable<Category>>(categories);
+            return ResultWithModel<IEnumerable<Category>>.Ok(categories);
         }
 
-        public async Task<ModelWithResult<Category>> GetCategory(int categoryId)
+        public async Task<ResultWithModel<Category>> GetCategory(int categoryId)
         {
             var category = await _categoryRepository.GetAsync(categoryId);
 
             if(category is null)
-                throw new ArgumentNullException(nameof(category));
+                throw new ArgumentNullException($"category #{categoryId} not found");
 
-            return new ModelWithResult<Category>(category);
+            return ResultWithModel<Category>.Ok(category);
         }
 
         public async Task UpdateCategory(Category category)

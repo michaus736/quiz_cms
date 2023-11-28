@@ -7,12 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlSanitizer" Version="8.0.795" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuizVistaApiInfrastructureLayer\QuizVistaApiInfrastructureLayer.csproj" />
+    <ProjectReference Include="..\QuizVistaApiBusinnesLayer\QuizVistaApiBusinnesLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using QuizVistaApiInfrastructureLayer.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
 
+[Entity]
 public partial class Quiz
 {
     public int Id { get; set; }
@@ -14,8 +16,6 @@ public partial class Quiz
     public DateTime CreationDate { get; set; }
 
     public DateTime? EditionDate { get; set; }
-
-    public string? Author { get; set; }
 
     public int CategoryId { get; set; }
 
