@@ -145,10 +145,6 @@ public partial class QuizVistaDbContext : DbContext
             entity.ToTable("QUIZ");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Author)
-                .HasMaxLength(1)
-                .IsUnicode(false)
-                .HasColumnName("author");
             entity.Property(e => e.CategoryId).HasColumnName("CATEGORY_id");
             entity.Property(e => e.CmsTitleStyle)
                 .HasMaxLength(100)

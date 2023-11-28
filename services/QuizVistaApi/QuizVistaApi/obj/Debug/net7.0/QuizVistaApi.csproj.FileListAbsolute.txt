@@ -71,3 +71,10 @@ C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVi
 C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\QuizVistaApiInfrastructureLayer.dll
 C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\QuizVistaApiInfrastructureLayer.pdb
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\AngleSharp.dll
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\AngleSharp.Css.dll
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\HtmlSanitizer.dll
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\System.Collections.Immutable.dll
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\QuizVistaApiBusinnesLayer.dll
+C:\Users\micha\Desktop\put\stopień 2\r1s1\szt\code\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\QuizVistaApiBusinnesLayer.pdb
