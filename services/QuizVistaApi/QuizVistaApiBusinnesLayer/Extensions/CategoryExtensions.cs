@@ -12,19 +12,19 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     {
 
 
-        public static CategoryResponse Convert(this Category category)
+        public static CategoryResponse ToResponse(this Category category)
         {
             return new CategoryResponse(
                 category.Id,
                 category.Name,
                 category.Description,
-                category.Quizzes.ConvertCollection().ToList()
+                category.Quizzes.ToCollectionResponse().ToList()
             );
         }
 
-        public static IEnumerable<CategoryResponse> ConvertCollection(this IEnumerable<Category> categories)
+        public static IEnumerable<CategoryResponse> ToCollectionResponse(this IEnumerable<Category> categories)
         {
-            return categories.Select(Convert) ?? new List<CategoryResponse>();
+            return categories.Select(ToResponse) ?? new List<CategoryResponse>();
         }
 
     }

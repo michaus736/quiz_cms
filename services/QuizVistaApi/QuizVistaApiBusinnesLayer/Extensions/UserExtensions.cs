@@ -10,7 +10,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
 {
     public static class UserExtensions
     {
-        public static UserResponse Convert(this User user)
+        public static UserResponse ToResponse(this User user)
         {
             return new UserResponse(
                 user.Id,
@@ -19,16 +19,16 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 user.FirstName,
                 user.LastName,
                 user.Email,
-                user.Attempts.ConvertCollection().ToList(),
-                user.QuizzesNavigation.ConvertCollection().ToList(),
-                user.Quizzes.ConvertCollection().ToList(),
-                user.Roles.ConvertCollection().ToList()
+                user.Attempts.ToCollectionResponse().ToList(),
+                user.QuizzesNavigation.ToCollectionResponse().ToList(),
+                user.Quizzes.ToCollectionResponse().ToList(),
+                user.Roles.ToCollectionResponse().ToList()
             );
         }
 
-        public static IEnumerable<UserResponse> ConvertCollection(this IEnumerable<User> users)
+        public static IEnumerable<UserResponse> ToCollectionResponse(this IEnumerable<User> users)
         {
-            return users.Select(Convert) ?? new List<UserResponse>();
+            return users.Select(ToResponse) ?? new List<UserResponse>();
         }
     }
 }

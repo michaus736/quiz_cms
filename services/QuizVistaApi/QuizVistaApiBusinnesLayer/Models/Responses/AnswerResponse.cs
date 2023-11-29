@@ -8,7 +8,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Responses;
 
 
 
-public class AnswerRequest
+public class AnswerResponse
 {
     public int Id { get; set; }
 
@@ -24,9 +24,9 @@ public class AnswerRequest
 
     public QuestionResponse? Question { get; set; }
 
-    private AnswerRequest() { }
+    private AnswerResponse() { }
 
-    public AnswerRequest(
+    public AnswerResponse(
         int id,
         string answerText,
         bool isCorrect,

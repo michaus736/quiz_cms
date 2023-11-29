@@ -43,7 +43,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(tag is null)
                 throw new ArgumentNullException($"tag #{id} not found");
 
-            return ResultWithModel<TagResponse>.Ok(tag.Convert());
+            return ResultWithModel<TagResponse>.Ok(tag.ToResponse());
         }
 
         public async Task<ResultWithModel<IEnumerable<TagResponse>>> GetTags()
@@ -55,7 +55,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(tags is null)
                 throw new ArgumentNullException(nameof(tags));
 
-            return ResultWithModel<IEnumerable<TagResponse>>.Ok(tags.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<TagResponse>>.Ok(tags.ToCollectionResponse().ToList());
         }
 
         public async Task<ResultWithModel<IEnumerable<TagResponse>>> GetTagsForQuiz(int quizId)
@@ -69,7 +69,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(tags is null)
                 throw new ArgumentNullException($"tags for quiz #{quizId} not found");
 
-            return ResultWithModel<IEnumerable<TagResponse>>.Ok(tags.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<TagResponse>>.Ok(tags.ToCollectionResponse().ToList());
         }
 
         public async Task<Result> UpdateTag(TagResponse tag)

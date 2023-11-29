@@ -22,7 +22,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _answerRepository = answerRepository;
         }
 
-        public async Task<Result> CreateAnswerAsync(AnswerRequest answer)
+        public async Task<Result> CreateAnswerAsync(AnswerResponse answer)
         {
             await _answerRepository.InsertAsync(answer);
 
@@ -36,22 +36,22 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<ResultWithModel<AnswerRequest>> GetAnswer(int answerId)
+        public async Task<ResultWithModel<AnswerResponse>> GetAnswer(int answerId)
         {
             var answer = await _answerRepository.GetAsync(answerId);
 
             if(answer is null)
                 throw new ArgumentNullException($"answer #{answer} not found");
 
-            return ResultWithModel<AnswerRequest>.Ok(answer.Convert());
+            return ResultWithModel<AnswerResponse>.Ok(answer.ToResponse());
         }
 
-        public Task<ResultWithModel<IEnumerable<AnswerRequest>>> GetAnswers()
+        public Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswers()
         {
-            return Task.FromResult(ResultWithModel<IEnumerable<AnswerRequest>>.Ok(_answerRepository.GetAll().ConvertCollection().ToList()));
+            return Task.FromResult(ResultWithModel<IEnumerable<AnswerResponse>>.Ok(_answerRepository.GetAll().ToCollectionResponse().ToList()));
         }
 
-        public async Task<ResultWithModel<IEnumerable<AnswerRequest>>> GetAnswersForQuestion(int questionId)
+        public async Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswersForQuestion(int questionId)
         {
             var answers = await  _answerRepository
                 .GetAll()
@@ -62,11 +62,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if (answers is null)
                 throw new ArgumentNullException($"answers for #{questionId} question not found");
 
-            return await Task.FromResult(ResultWithModel<IEnumerable<AnswerRequest>>.Ok(answers.ConvertCollection().ToList()));
+            return await Task.FromResult(ResultWithModel<IEnumerable<AnswerResponse>>.Ok(answers.ToCollectionResponse().ToList()));
             
         }
 
-        public async Task<Result> UpdateAnswerAsync(AnswerRequest answer)
+        public async Task<Result> UpdateAnswerAsync(AnswerResponse answer)
         {
             await _answerRepository.UpdateAsync(answer);
 

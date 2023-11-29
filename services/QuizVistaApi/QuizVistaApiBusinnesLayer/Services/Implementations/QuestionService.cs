@@ -41,7 +41,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(question is null) 
                 throw new ArgumentNullException($"question #{questionId} not found");
 
-            return ResultWithModel<QuestionResponse>.Ok(question.Convert());
+            return ResultWithModel<QuestionResponse>.Ok(question.ToResponse());
         }
 
         public async Task<ResultWithModel<IEnumerable<QuestionResponse>>> GetQuestions()
@@ -50,7 +50,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 .OrderBy(x => x.Id)
                 .ToListAsync();
 
-            return ResultWithModel<IEnumerable<QuestionResponse>>.Ok(questions.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<QuestionResponse>>.Ok(questions.ToCollectionResponse().ToList());
         }
 
         public async Task<ResultWithModel<IEnumerable<QuestionResponse>>> GetQuestionsForQuiz(int quizId)
@@ -63,7 +63,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(questions is null)
                 throw new ArgumentNullException($"questions for quiz #{quizId} not found");
 
-            return ResultWithModel<IEnumerable<QuestionResponse>>.Ok(questions.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<QuestionResponse>>.Ok(questions.ToCollectionResponse().ToList());
 
         }
 
@@ -76,7 +76,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(questionExtended is null)
                 throw new ArgumentNullException($"question #{questionId} not found");
 
-            return Task.FromResult(ResultWithModel<QuestionResponse>.Ok(questionExtended.Convert()));
+            return Task.FromResult(ResultWithModel<QuestionResponse>.Ok(questionExtended.ToResponse()));
 
         }
 

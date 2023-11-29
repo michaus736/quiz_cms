@@ -46,7 +46,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(categories is null)
                 throw new ArgumentNullException(nameof(categories));
 
-            return ResultWithModel<IEnumerable<CategoryResponse>>.Ok(categories.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<CategoryResponse>>.Ok(categories.ToCollectionResponse().ToList());
         }
 
         public async Task<ResultWithModel<CategoryResponse>> GetCategory(int categoryId)
@@ -56,7 +56,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(category is null)
                 throw new ArgumentNullException($"category #{categoryId} not found");
 
-            return ResultWithModel<CategoryResponse>.Ok(category.Convert());
+            return ResultWithModel<CategoryResponse>.Ok(category.ToResponse());
         }
 
         public async Task<Result> UpdateCategory(CategoryResponse category)

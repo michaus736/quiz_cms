@@ -11,7 +11,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     public static class QuizExtensions
     {
 
-        public static QuizResponse Convert(this Quiz quiz)
+        public static QuizResponse ToResponse(this Quiz quiz)
         {
             return new QuizResponse(
                 quiz.Id,
@@ -22,16 +22,16 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 quiz.CategoryId,
                 quiz.CmsTitleStyle,
                 quiz.UserId,
-                quiz.Category.Convert(),
-                quiz.Questions.ConvertCollection().ToList(),
-                quiz.User.Convert(),
-                quiz.Tags.ConvertCollection().ToList(),
-                quiz.Users.ConvertCollection().ToList()
+                quiz.Category.ToResponse(),
+                quiz.Questions.ToCollectionResponse().ToList(),
+                quiz.User.ToResponse(),
+                quiz.Tags.ToCollectionResponse().ToList(),
+                quiz.Users.ToCollectionResponse().ToList()
             );
         }
 
-        public static IEnumerable<QuizResponse> ConvertCollection(this IEnumerable<Quiz> quizes) {
-            return quizes.Select(Convert) ?? new List<QuizResponse>();
+        public static IEnumerable<QuizResponse> ToCollectionResponse(this IEnumerable<Quiz> quizes) {
+            return quizes.Select(ToResponse) ?? new List<QuizResponse>();
         }
 
 

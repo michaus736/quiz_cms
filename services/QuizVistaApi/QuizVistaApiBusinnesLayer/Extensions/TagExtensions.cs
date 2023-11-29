@@ -11,18 +11,18 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     public static class TagExtensions
     {
 
-        public static TagResponse Convert(this Tag tag)
+        public static TagResponse ToResponse(this Tag tag)
         {
             return new TagResponse(
                 tag.Id,
                 tag.Name,
-                tag.Quizzes.ConvertCollection().ToList()
+                tag.Quizzes.ToCollectionResponse().ToList()
             );
         }
 
-        public static IEnumerable<TagResponse> ConvertCollection(this IEnumerable<Tag> tags)
+        public static IEnumerable<TagResponse> ToCollectionResponse(this IEnumerable<Tag> tags)
         {
-            return tags.Select(Convert) ?? new List<TagResponse>();
+            return tags.Select(ToResponse) ?? new List<TagResponse>();
         }
 
     }

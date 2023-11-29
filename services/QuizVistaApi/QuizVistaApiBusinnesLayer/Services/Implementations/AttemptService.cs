@@ -29,7 +29,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if (attempt is null)
                 throw new ArgumentException($"attempt #{id} not found");
 
-            return ResultWithModel<AttemptResponse>.Ok(attempt.Convert());
+            return ResultWithModel<AttemptResponse>.Ok(attempt.ToResponse());
 
         }
 
@@ -42,7 +42,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if (attempts is null)
                 throw new ArgumentException($"attemps of user #{userId} not found");
 
-            return ResultWithModel<IEnumerable<AttemptResponse>>.Ok(attempts.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<AttemptResponse>>.Ok(attempts.ToCollectionResponse().ToList());
         }
 
         public async Task<ResultWithModel<AttemptResponse>> GetAttemptWithAnswers(int id)
@@ -54,7 +54,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if (attempt is null)
                 throw new ArgumentException($"attempt #{id} not found");
 
-            return ResultWithModel<AttemptResponse>.Ok(attempt.Convert());
+            return ResultWithModel<AttemptResponse>.Ok(attempt.ToResponse());
         }
 
         public async Task<Result> SaveAttempt(AttemptResponse attempt)

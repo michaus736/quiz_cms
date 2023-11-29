@@ -43,7 +43,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(quiz is null)
                 throw new ArgumentNullException($"quiz #{id} not found");
 
-            return ResultWithModel<QuizResponse>.Ok(quiz.Convert());
+            return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
         }
 
         public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizesAsync()
@@ -56,7 +56,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(quizes is null)
                 throw new ArgumentNullException(nameof(quizes));
 
-            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(quizes.ConvertCollection().ToList());
+            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(quizes.ToCollectionResponse().ToList());
 
         }
 
@@ -69,7 +69,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if (quiz is null)
                 throw new ArgumentNullException($"quiz #{id} not found");
 
-            return ResultWithModel<QuizResponse>.Ok(quiz.Convert());
+            return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
         }
 
         public async Task<Result> UpdateQuizAsync(QuizResponse quizToUpdate)

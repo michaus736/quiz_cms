@@ -11,7 +11,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     public static class AttemptExtensions
     {
 
-        public static AttemptResponse Convert(this Attempt attempt)
+        public static AttemptResponse ToResponse(this Attempt attempt)
         {
             return new AttemptResponse
             (
@@ -19,14 +19,14 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 attempt.CreateDate,
                 attempt.EditionDate,
                 attempt.UserId,
-                attempt.Answers.ConvertCollection().ToList(),
-                attempt.User.Convert()
+                attempt.Answers.ToCollectionResponse().ToList(),
+                attempt.User.ToResponse()
             );
         }
 
-        public static IEnumerable<AttemptResponse> ConvertCollection(this IEnumerable<Attempt> attempts)
+        public static IEnumerable<AttemptResponse> ToCollectionResponse(this IEnumerable<Attempt> attempts)
         {
-            return attempts.Select(Convert) ?? new List<AttemptResponse>();
+            return attempts.Select(ToResponse) ?? new List<AttemptResponse>();
         }
 
 

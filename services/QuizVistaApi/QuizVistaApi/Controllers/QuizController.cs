@@ -18,7 +18,7 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
-        public async Task<Task<ResultWithModel<IEnumerable<QuizResponse>>>> Get()
+        public async Task<ResultWithModel<IEnumerable<QuizResponse>>> Get()
         {
             return await _quizService.GetQuizesAsync();
         }

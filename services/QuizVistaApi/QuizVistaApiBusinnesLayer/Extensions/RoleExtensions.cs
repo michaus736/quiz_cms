@@ -11,18 +11,18 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     public static class RoleExtensions
     {
 
-        public static RoleResponse Convert(this Role role)
+        public static RoleResponse ToResponse(this Role role)
         {
             return new RoleResponse(
                 role.Id,
                 role.Name,
-                role.Users.ConvertCollection().ToList()
+                role.Users.ToCollectionResponse().ToList()
             );
         }
 
-        public static IEnumerable<RoleResponse> ConvertCollection(this IEnumerable<Role> roles)
+        public static IEnumerable<RoleResponse> ToCollectionResponse(this IEnumerable<Role> roles)
         {
-            return roles.Select(Convert) ?? new List<RoleResponse>();
+            return roles.Select(ToResponse) ?? new List<RoleResponse>();
         }
 
     }
