@@ -21,5 +21,11 @@ namespace QuizVistaApi.Controllers
         {
             return Result.Ok();
         }
+
+        [HttpGet("error")]
+        public Result ForceError(int id)
+        {
+            throw new Exception("test error occured");
+        }
     }
 }

@@ -5,11 +5,6 @@ namespace QuizVistaApi.Middlewares
 {
     public class AntiXssMiddleware : IMiddleware
     {
-        private readonly RequestDelegate _next;
-        public AntiXssMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             context.Request.EnableBuffering();
@@ -28,7 +23,7 @@ namespace QuizVistaApi.Middlewares
 
             context.Request.Body.Seek(0, SeekOrigin.Begin);
 
-            await _next.Invoke(context);
+            await next.Invoke(context);
 
 
         }
