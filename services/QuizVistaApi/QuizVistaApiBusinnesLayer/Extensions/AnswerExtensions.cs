@@ -1,4 +1,5 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Responses;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     public static class AnswerExtensions
     {
 
-        public static AnswerRequest Convert(this Answer answer)
+        public static AnswerResponse Convert(this Answer answer)
         {
             return new AnswerResponse
             (
@@ -25,9 +26,19 @@ namespace QuizVistaApiBusinnesLayer.Extensions
             );
         }
 
-        public static IEnumerable<AnswerRequest> ConvertCollection(this IEnumerable<Answer> answers)
+        public static IEnumerable<AnswerResponse> ConvertCollection(this IEnumerable<Answer> answers)
         {
-            return answers.Select(Convert) ?? new List<AnswerRequest>();
+            return answers.Select(Convert) ?? new List<AnswerResponse>();
+        }
+
+        public static Answer ToEntity(this AnswerRequest answerRequest) {
+            return new Answer
+            {
+                AnswerText = answerRequest.AnswerText,
+                Id = answerRequest.Id,
+                IsCorrect = answerRequest.IsCorrect,
+                QuestionId = answerRequest.QuestionId,
+            };
         }
 
     }

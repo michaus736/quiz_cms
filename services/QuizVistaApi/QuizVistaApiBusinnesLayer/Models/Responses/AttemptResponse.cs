@@ -17,12 +17,12 @@ public class AttemptResponse
 
     public int UserId { get; set; }
 
-    public List<AnswerRequest>? Answers { get; set; } = new List<AnswerRequest>();
+    public List<AnswerResponse>? Answers { get; set; } = new List<AnswerResponse>();
 
     public UserResponse? User { get; set; }
 
     private AttemptResponse() { }
-    public AttemptResponse(int id, DateTime createDate, DateTime? editionDate, int userId, List<AnswerRequest>? answers, UserResponse? user)
+    public AttemptResponse(int id, DateTime createDate, DateTime? editionDate, int userId, List<AnswerResponse>? answers, UserResponse? user)
     {
         Id = id;
         CreateDate = createDate;
