@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,13 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         #region REST
 
-        Task<ResultWithModel<IEnumerable<Answer>>> GetAnswers();
-        Task<ResultWithModel<IEnumerable<Answer>>> GetAnswersForQuestion(int questionId);
-        Task<ResultWithModel<Answer>> GetAnswer(int answerId);
+        Task<ResultWithModel<IEnumerable<AnswerRequest>>> GetAnswers();
+        Task<ResultWithModel<IEnumerable<AnswerRequest>>> GetAnswersForQuestion(int questionId);
+        Task<ResultWithModel<AnswerRequest>> GetAnswer(int answerId);
         
-        Task CreateAnswerAsync(Answer answer);
-        Task DeleteAnswerAsync(int answerId);
-        Task UpdateAnswerAsync(Answer answer);
+        Task<Result> CreateAnswerAsync(AnswerRequest answer);
+        Task<Result> DeleteAnswerAsync(int answerId);
+        Task<Result> UpdateAnswerAsync(AnswerRequest answer);
 
 
         #endregion

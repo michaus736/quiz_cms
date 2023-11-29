@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
@@ -20,17 +22,21 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _categoryRepository = categoryRepository;
         }
 
-        public async Task CreateCategory(Category category)
+        public async Task<Result> CreateCategory(CategoryResponse category)
         {
             await _categoryRepository.InsertAsync(category);
+
+            return Result.Ok();
         }
 
-        public async Task DeleteCategory(int id)
+        public async Task<Result> DeleteCategory(int id)
         {
             await _categoryRepository.DeleteAsync(id);
+
+            return Result.Ok();
         }
 
-        public async Task<ResultWithModel<IEnumerable<Category>>> GetCategories()
+        public async Task<ResultWithModel<IEnumerable<CategoryResponse>>> GetCategories()
         {
             var categories = await _categoryRepository
                 .GetAll()
@@ -40,22 +46,24 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(categories is null)
                 throw new ArgumentNullException(nameof(categories));
 
-            return ResultWithModel<IEnumerable<Category>>.Ok(categories);
+            return ResultWithModel<IEnumerable<CategoryResponse>>.Ok(categories.ConvertCollection().ToList());
         }
 
-        public async Task<ResultWithModel<Category>> GetCategory(int categoryId)
+        public async Task<ResultWithModel<CategoryResponse>> GetCategory(int categoryId)
         {
             var category = await _categoryRepository.GetAsync(categoryId);
 
             if(category is null)
                 throw new ArgumentNullException($"category #{categoryId} not found");
 
-            return ResultWithModel<Category>.Ok(category);
+            return ResultWithModel<CategoryResponse>.Ok(category.Convert());
         }
 
-        public async Task UpdateCategory(Category category)
+        public async Task<Result> UpdateCategory(CategoryResponse category)
         {
             await _categoryRepository.UpdateAsync(category);
+
+            return Result.Ok();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
     public static class AnswerExtensions
     {
 
-        public static AnswerResponse Convert(this Answer answer)
+        public static AnswerRequest Convert(this Answer answer)
         {
             return new AnswerResponse
             (
@@ -25,9 +25,9 @@ namespace QuizVistaApiBusinnesLayer.Extensions
             );
         }
 
-        public static IEnumerable<AnswerResponse> ConvertCollection(this IEnumerable<Answer> answers)
+        public static IEnumerable<AnswerRequest> ConvertCollection(this IEnumerable<Answer> answers)
         {
-            return answers.Select(Convert) ?? new List<AnswerResponse>();
+            return answers.Select(Convert) ?? new List<AnswerRequest>();
         }
 
     }

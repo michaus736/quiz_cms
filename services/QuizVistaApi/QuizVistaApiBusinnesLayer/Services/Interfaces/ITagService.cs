@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         #region REST
 
-        Task<ResultWithModel<IEnumerable<Tag>>> GetTags();
-        Task<ResultWithModel<IEnumerable<Tag>>> GetTagsForQuiz(int quizId);
-        Task<ResultWithModel<Tag>> GetTag(int id);
-        Task CreateTag(Tag tag);
-        Task DeleteTag(int id);
-        Task UpdateTag(Tag tag);
+        Task<ResultWithModel<IEnumerable<TagResponse>>> GetTags();
+        Task<ResultWithModel<IEnumerable<TagResponse>>> GetTagsForQuiz(int quizId);
+        Task<ResultWithModel<TagResponse>> GetTag(int id);
+        Task<Result> CreateTag(TagResponse tag);
+        Task<Result> DeleteTag(int id);
+        Task<Result> UpdateTag(TagResponse tag);
 
         #endregion
     }

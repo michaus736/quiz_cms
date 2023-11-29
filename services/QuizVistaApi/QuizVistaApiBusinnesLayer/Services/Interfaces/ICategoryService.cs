@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,12 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         #region REST
 
-        Task<ResultWithModel<IEnumerable<Category>>> GetCategories();
-        Task<ResultWithModel<Category>> GetCategory(int categoryId);
+        Task<ResultWithModel<IEnumerable<CategoryResponse>>> GetCategories();
+        Task<ResultWithModel<CategoryResponse>> GetCategory(int categoryId);
 
-        Task DeleteCategory(int id);
-        Task CreateCategory(Category category);
-        Task UpdateCategory(Category category);
+        Task<Result> DeleteCategory(int id);
+        Task<Result> CreateCategory(CategoryResponse category);
+        Task<Result> UpdateCategory(CategoryResponse category);
 
 
         #endregion

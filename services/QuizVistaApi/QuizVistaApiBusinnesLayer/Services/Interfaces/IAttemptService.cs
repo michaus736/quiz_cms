@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,12 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
 {
     public interface IAttemptService
     {
-        Task<ResultWithModel<Attempt>> GetAttempt(int id);
-        Task<ResultWithModel<Attempt>> GetAttemptWithAnswers(int id);
-        Task<ResultWithModel<IEnumerable<Attempt>>> GetAttemptsOfUser(int userId);
-        Result SaveAttempt(Attempt attempt);
-        Result DeleteAttempt(int id);
-        Result UpdateAttempt(Attempt attempt);
+        Task<ResultWithModel<AttemptResponse>> GetAttempt(int id);
+        Task<ResultWithModel<AttemptResponse>> GetAttemptWithAnswers(int id);
+        Task<ResultWithModel<IEnumerable<AttemptResponse>>> GetAttemptsOfUser(int userId);
+        Task<Result> SaveAttempt(AttemptResponse attempt);
+        Task<Result> DeleteAttempt(int id);
+        Task<Result> UpdateAttempt(AttemptResponse attempt);
 
     }
 }

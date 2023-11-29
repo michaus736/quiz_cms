@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
@@ -20,36 +22,38 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _questionRepository = questionRepository;
         }
 
-        public async Task CreateQuestionAsync(Question question)
+        public async Task<Result> CreateQuestionAsync(QuestionResponse question)
         {
             await _questionRepository.InsertAsync(question);
         }
 
-        public async Task DeleteQuestionAsync(int questionId)
+        public async Task<Result> DeleteQuestionAsync(int questionId)
         {
             await _questionRepository.DeleteAsync(questionId);
+
+            return Result.Ok();
         }
 
-        public async Task<ResultWithModel<Question>> GetQuestion(int questionId)
+        public async Task<ResultWithModel<QuestionResponse>> GetQuestion(int questionId)
         {
             var question = await _questionRepository.GetAsync(questionId);
 
             if(question is null) 
                 throw new ArgumentNullException($"question #{questionId} not found");
 
-            return ResultWithModel<Question>.Ok(question);
+            return ResultWithModel<QuestionResponse>.Ok(question.Convert());
         }
 
-        public async Task<ResultWithModel<IEnumerable<Question>>> GetQuestions()
+        public async Task<ResultWithModel<IEnumerable<QuestionResponse>>> GetQuestions()
         {
             var questions = await _questionRepository.GetAll()
                 .OrderBy(x => x.Id)
                 .ToListAsync();
 
-            return ResultWithModel<IEnumerable<Question>>.Ok(questions);
+            return ResultWithModel<IEnumerable<QuestionResponse>>.Ok(questions.ConvertCollection().ToList());
         }
 
-        public async Task<ResultWithModel<IEnumerable<Question>>> GetQuestionsForQuiz(int quizId)
+        public async Task<ResultWithModel<IEnumerable<QuestionResponse>>> GetQuestionsForQuiz(int quizId)
         {
             var questions = await _questionRepository.GetAll()
                 .Where(x=>x.QuizId == quizId)
@@ -59,11 +63,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(questions is null)
                 throw new ArgumentNullException($"questions for quiz #{quizId} not found");
 
-            return ResultWithModel<IEnumerable<Question>>.Ok(questions);
+            return ResultWithModel<IEnumerable<QuestionResponse>>.Ok(questions.ConvertCollection().ToList());
 
         }
 
-        public Task<ResultWithModel<Question>> GetQuestionWithAnswers(int questionId)
+        public Task<ResultWithModel<QuestionResponse>> GetQuestionWithAnswers(int questionId)
         {
             var questionExtended = _questionRepository.GetAll()
                 .Include(x => x.Answers)
@@ -72,13 +76,15 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(questionExtended is null)
                 throw new ArgumentNullException($"question #{questionId} not found");
 
-            return Task.FromResult(ResultWithModel<Question>.Ok(questionExtended));
+            return Task.FromResult(ResultWithModel<QuestionResponse>.Ok(questionExtended.Convert()));
 
         }
 
-        public async Task UpdateQuestionAsync(Question question)
+        public async Task<Result> UpdateQuestionAsync(QuestionResponse question)
         {
             await _questionRepository.UpdateAsync(question);
+
+            return Result.Ok();
         }
     }
 }

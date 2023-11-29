@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
@@ -20,51 +22,55 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _answerRepository = answerRepository;
         }
 
-        public async Task CreateAnswerAsync(Answer answer)
+        public async Task<Result> CreateAnswerAsync(AnswerRequest answer)
         {
             await _answerRepository.InsertAsync(answer);
-            
+
+            return Result.Ok();
         }
 
-        public async Task DeleteAnswerAsync(int answerId)
+        public async Task<Result> DeleteAnswerAsync(int answerId)
         {
             await _answerRepository.DeleteAsync(answerId);
-            
+
+            return Result.Ok();
         }
 
-        public async Task<ResultWithModel<Answer>> GetAnswer(int answerId)
+        public async Task<ResultWithModel<AnswerRequest>> GetAnswer(int answerId)
         {
             var answer = await _answerRepository.GetAsync(answerId);
 
             if(answer is null)
                 throw new ArgumentNullException($"answer #{answer} not found");
 
-            return ResultWithModel<Answer>.Ok(answer);
+            return ResultWithModel<AnswerRequest>.Ok(answer.Convert());
         }
 
-        public Task<ResultWithModel<IEnumerable<Answer>>> GetAnswers()
+        public Task<ResultWithModel<IEnumerable<AnswerRequest>>> GetAnswers()
         {
-            return Task.FromResult(ResultWithModel<IEnumerable<Answer>>.Ok(_answerRepository.GetAll().ToArray()));
+            return Task.FromResult(ResultWithModel<IEnumerable<AnswerRequest>>.Ok(_answerRepository.GetAll().ConvertCollection().ToList()));
         }
 
-        public async Task<ResultWithModel<IEnumerable<Answer>>> GetAnswersForQuestion(int questionId)
+        public async Task<ResultWithModel<IEnumerable<AnswerRequest>>> GetAnswersForQuestion(int questionId)
         {
-            var answers =  _answerRepository
+            var answers = await  _answerRepository
                 .GetAll()
                 .Where(x=>x.QuestionId == questionId)
                 .OrderBy(x=>x.Id)
-                .ToList();
+                .ToListAsync();
 
             if (answers is null)
                 throw new ArgumentNullException($"answers for #{questionId} question not found");
 
-            return await Task.FromResult(ResultWithModel<IEnumerable<Answer>>.Ok(answers));
+            return await Task.FromResult(ResultWithModel<IEnumerable<AnswerRequest>>.Ok(answers.ConvertCollection().ToList()));
             
         }
 
-        public async Task UpdateAnswerAsync(Answer answer)
+        public async Task<Result> UpdateAnswerAsync(AnswerRequest answer)
         {
             await _answerRepository.UpdateAsync(answer);
+
+            return Result.Ok();
         }
     }
 }

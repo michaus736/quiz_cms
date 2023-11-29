@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
@@ -20,27 +22,31 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _quizRepository = quizRepository;
         }
 
-        public async Task CreateQuizAsync(Quiz quizToCreate)
+        public async Task<Result> CreateQuizAsync(QuizResponse quizToCreate)
         {
             await _quizRepository.InsertAsync(quizToCreate);
+
+            return Result.Ok();
         }
 
-        public async Task DeleteQuizAsync(int idToDelete)
+        public async Task<Result> DeleteQuizAsync(int idToDelete)
         {
             await _quizRepository.DeleteAsync(idToDelete);
+
+            return Result.Ok();
         }
 
-        public async Task<ResultWithModel<Quiz>> GetQuizAsync(int id)
+        public async Task<ResultWithModel<QuizResponse>> GetQuizAsync(int id)
         {
             var quiz = await _quizRepository.GetAsync(id);
 
             if(quiz is null)
                 throw new ArgumentNullException($"quiz #{id} not found");
 
-            return ResultWithModel<Quiz>.Ok(quiz);
+            return ResultWithModel<QuizResponse>.Ok(quiz.Convert());
         }
 
-        public async Task<ResultWithModel<IEnumerable<Quiz>>> GetQuizesAsync()
+        public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizesAsync()
         {
             var quizes = await _quizRepository
                 .GetAll()
@@ -50,25 +56,27 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             if(quizes is null)
                 throw new ArgumentNullException(nameof(quizes));
 
-            return ResultWithModel<IEnumerable<Quiz>>.Ok(quizes);
+            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(quizes.ConvertCollection().ToList());
 
         }
 
-        public Task<ResultWithModel<Quiz>> GetQuizWithQuestionsAsync(int id)
+        public async Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id)
         {
-            var quiz = _quizRepository.GetAll()
+            var quiz = await _quizRepository.GetAll()
                 .Include(x => x.Questions)
-                .FirstOrDefault( x=> x.Id == id);
+                .FirstOrDefaultAsync( x=> x.Id == id);
 
             if (quiz is null)
                 throw new ArgumentNullException($"quiz #{id} not found");
 
-            return Task.FromResult(ResultWithModel<Quiz>.Ok(quiz));
+            return ResultWithModel<QuizResponse>.Ok(quiz.Convert());
         }
 
-        public async Task UpdateQuizAsync(Quiz quizToUpdate)
+        public async Task<Result> UpdateQuizAsync(QuizResponse quizToUpdate)
         {
             await _quizRepository.UpdateAsync(quizToUpdate);
+
+            return Result.Ok();
         }
     }
 }
