@@ -21,10 +21,10 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 quiz.EditionDate,
                 quiz.CategoryId,
                 quiz.CmsTitleStyle,
-                quiz.UserId,
+                quiz.Author,
+                quiz.AuthorNavigation.ToResponse(),
                 quiz.Category.ToResponse(),
                 quiz.Questions.ToCollectionResponse().ToList(),
-                quiz.User.ToResponse(),
                 quiz.Tags.ToCollectionResponse().ToList(),
                 quiz.Users.ToCollectionResponse().ToList()
             );

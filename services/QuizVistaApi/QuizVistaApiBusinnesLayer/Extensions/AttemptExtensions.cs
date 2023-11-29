@@ -18,9 +18,10 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 attempt.Id,
                 attempt.CreateDate,
                 attempt.EditionDate,
-                attempt.UserId,
+                attempt.UsersId,
                 attempt.Answers.ToCollectionResponse().ToList(),
-                attempt.User.ToResponse()
+                attempt.IdNavigation.ToResponse(),
+                attempt.AnswersNavigation.ToCollectionResponse().ToList()
             );
         }
 

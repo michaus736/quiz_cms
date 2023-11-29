@@ -24,6 +24,9 @@ public class AnswerResponse
 
     public QuestionResponse? Question { get; set; }
 
+    public virtual List<AttemptResponse> Attempts { get; set; } = new List<AttemptResponse>();
+
+
     private AnswerResponse() { }
 
     public AnswerResponse(
@@ -33,7 +36,8 @@ public class AnswerResponse
         int questionId,
         int attemptId,
         AttemptResponse attempt,
-        QuestionResponse question
+        QuestionResponse question,
+        List<AttemptResponse> attempts
         )
     {
         Id = id;
@@ -43,6 +47,7 @@ public class AnswerResponse
         AttemptId = attemptId;
         Attempt = attempt;
         Question = question;
+        Attempts = attempts;
     }
     
 }

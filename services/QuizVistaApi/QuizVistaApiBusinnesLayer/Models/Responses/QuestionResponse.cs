@@ -25,9 +25,9 @@ public class QuestionResponse
 
     public string? CmsQuestionsStyle { get; set; }
 
-    public virtual List<AnswerResponse>? Answers { get; set; } = new List<AnswerResponse>();
+    public List<AnswerResponse>? Answers { get; set; } = new List<AnswerResponse>();
 
-    public virtual QuizResponse? Quiz { get; set; }
+    public QuizResponse? Quiz { get; set; }
 
     private QuestionResponse() { }
     public QuestionResponse(int id, string type, string text, int additionalValue, int? substractionalValue, int quizId, string? cmsTitleStyle, string? cmsQuestionsStyle, List<AnswerResponse>? answers, QuizResponse? quiz)

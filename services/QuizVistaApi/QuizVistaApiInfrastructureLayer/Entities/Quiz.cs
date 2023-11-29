@@ -21,13 +21,13 @@ public partial class Quiz
 
     public string? CmsTitleStyle { get; set; }
 
-    public int UserId { get; set; }
+    public int Author { get; set; }
+
+    public virtual User AuthorNavigation { get; set; } = null!;
 
     public virtual Category Category { get; set; } = null!;
 
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
-
-    public virtual User User { get; set; } = null!;
 
     public virtual ICollection<Tag> Tags { get; set; } = new List<Tag>();
 

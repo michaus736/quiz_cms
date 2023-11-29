@@ -18,7 +18,9 @@ public class TagResponse
 
     private TagResponse() { }
 
-    public TagResponse(int id, string name, List<QuizResponse> quizzes)
+    public TagResponse(int id,
+        string name, 
+        List<QuizResponse> quizzes)
     {
         Id = id;
         Name = name;

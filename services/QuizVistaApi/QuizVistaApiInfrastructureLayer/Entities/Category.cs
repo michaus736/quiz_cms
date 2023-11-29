@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
 
-
 [Entity]
 public partial class Category
 {

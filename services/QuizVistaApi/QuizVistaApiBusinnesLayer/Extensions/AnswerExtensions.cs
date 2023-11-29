@@ -21,7 +21,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 answer.QuestionId,
                 answer.AttemptId,
                 answer.Attempt.ToResponse(),
-                answer.Question.ToResponse()
+                answer.Question.ToResponse(),
+                answer.Attempts.ToCollectionResponse().ToList()
             );
         }
 

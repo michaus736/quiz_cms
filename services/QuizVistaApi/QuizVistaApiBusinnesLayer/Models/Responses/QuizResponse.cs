@@ -22,13 +22,14 @@ public class QuizResponse
 
     public string? CmsTitleStyle { get; set; }
 
-    public int UserId { get; set; }
+    public int Author { get; set; }
+
+    public UserResponse? AuthorNavigation { get; set; }
 
     public CategoryResponse? Category { get; set; }
 
     public List<QuestionResponse> Questions { get; set; } = new List<QuestionResponse>();
 
-    public UserResponse? User { get; set; }
 
     public List<TagResponse> Tags { get; set; } = new List<TagResponse>();
 
@@ -36,7 +37,19 @@ public class QuizResponse
 
     private QuizResponse() { }
 
-    public QuizResponse(int id, string name, string? description, DateTime creationDate, DateTime? editionDate, int categoryId, string? cmsTitleStyle, int userId, CategoryResponse? category, List<QuestionResponse> questions, UserResponse? user, List<TagResponse> tags, List<UserResponse> users)
+    public QuizResponse(int id,
+        string name,
+        string? description,
+        DateTime creationDate, 
+        DateTime? editionDate,
+        int categoryId, 
+        string? cmsTitleStyle,
+        int authorId, 
+        UserResponse? authorNavigation,
+        CategoryResponse? category,
+        List<QuestionResponse> questions,
+        List<TagResponse> tags,
+        List<UserResponse> users)
     {
         Id = id;
         Name = name;
@@ -45,10 +58,10 @@ public class QuizResponse
         EditionDate = editionDate;
         CategoryId = categoryId;
         CmsTitleStyle = cmsTitleStyle;
-        UserId = userId;
+        Author = authorId;
+        AuthorNavigation = authorNavigation;
         Category = category;
         Questions = questions;
-        User = user;
         Tags = tags;
         Users = users;
     }

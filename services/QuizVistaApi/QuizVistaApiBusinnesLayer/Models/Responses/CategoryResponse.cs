@@ -19,7 +19,10 @@ public class CategoryResponse
 
     private CategoryResponse() { }
 
-    public CategoryResponse(int id, string name, string? description, List<QuizResponse> quizzes)
+    public CategoryResponse(int id,
+        string name,
+        string? description,
+        List<QuizResponse> quizzes)
     {
         Id = id;
         Name = name; 

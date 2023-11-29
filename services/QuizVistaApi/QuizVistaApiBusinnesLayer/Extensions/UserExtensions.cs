@@ -19,7 +19,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 user.FirstName,
                 user.LastName,
                 user.Email,
-                user.Attempts.ToCollectionResponse().ToList(),
+                user.Attempt.ToResponse(),
                 user.QuizzesNavigation.ToCollectionResponse().ToList(),
                 user.Quizzes.ToCollectionResponse().ToList(),
                 user.Roles.ToCollectionResponse().ToList()

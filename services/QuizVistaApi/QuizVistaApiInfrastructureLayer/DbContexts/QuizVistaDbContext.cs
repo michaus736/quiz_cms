@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using QuizVistaApiInfrastructureLayer.Entities;
 
@@ -12,15 +11,15 @@ public partial class QuizVistaDbContext : DbContext
     {
     }
 
-    public QuizVistaDbContext([NotNull]DbContextOptions<QuizVistaDbContext> options)
+    public QuizVistaDbContext(DbContextOptions<QuizVistaDbContext> options)
         : base(options)
     {
     }
 
-        public DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
-        {
-            return Set<TEntity>();
-        }
+    public DbSet<TEntity> GetDbSet<TEntity>() where TEntity : class
+    {
+        return Set<TEntity>();
+    }
 
     public virtual DbSet<Answer> Answers { get; set; }
 
@@ -38,7 +37,6 @@ public partial class QuizVistaDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Answer>(entity =>
@@ -54,7 +52,7 @@ public partial class QuizVistaDbContext : DbContext
                 .HasColumnName("answer_text");
             entity.Property(e => e.AttemptId).HasColumnName("attempt_id");
             entity.Property(e => e.IsCorrect).HasColumnName("is_correct");
-            entity.Property(e => e.QuestionId).HasColumnName("question_id");
+            entity.Property(e => e.QuestionId).HasColumnName("QUESTION_id");
 
             entity.HasOne(d => d.Attempt).WithMany(p => p.Answers)
                 .HasForeignKey(d => d.AttemptId)
@@ -72,19 +70,40 @@ public partial class QuizVistaDbContext : DbContext
 
             entity.ToTable("ATTEMPT");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
             entity.Property(e => e.CreateDate)
                 .HasColumnType("datetime")
                 .HasColumnName("create_date");
             entity.Property(e => e.EditionDate)
                 .HasColumnType("datetime")
                 .HasColumnName("edition_date");
-            entity.Property(e => e.UserId).HasColumnName("USER_id");
+            entity.Property(e => e.UsersId).HasColumnName("USERS_id");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Attempts)
-                .HasForeignKey(d => d.UserId)
+            entity.HasOne(d => d.IdNavigation).WithOne(p => p.Attempt)
+                .HasForeignKey<Attempt>(d => d.Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("ATTEMPT_USER_FK");
+                .HasConstraintName("ATTEMPT_USERS_FK");
+
+            entity.HasMany(d => d.AnswersNavigation).WithMany(p => p.Attempts)
+                .UsingEntity<Dictionary<string, object>>(
+                    "SavedAnswer",
+                    r => r.HasOne<Answer>().WithMany()
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("SAVED_ANSWERS_ANSWER_FK"),
+                    l => l.HasOne<Attempt>().WithMany()
+                        .HasForeignKey("AttemptId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("SAVED_ANSWERS_ATTEMPT_FK"),
+                    j =>
+                    {
+                        j.HasKey("AttemptId", "AnswerId").HasName("SAVED_ANSWERS_PK");
+                        j.ToTable("SAVED_ANSWERS");
+                        j.IndexerProperty<int>("AttemptId").HasColumnName("attempt_id");
+                        j.IndexerProperty<int>("AnswerId").HasColumnName("answer_id");
+                    });
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -145,6 +164,7 @@ public partial class QuizVistaDbContext : DbContext
             entity.ToTable("QUIZ");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Author).HasColumnName("author");
             entity.Property(e => e.CategoryId).HasColumnName("CATEGORY_id");
             entity.Property(e => e.CmsTitleStyle)
                 .HasMaxLength(100)
@@ -164,17 +184,16 @@ public partial class QuizVistaDbContext : DbContext
                 .HasMaxLength(40)
                 .IsUnicode(false)
                 .HasColumnName("name");
-            entity.Property(e => e.UserId).HasColumnName("USER_id");
+
+            entity.HasOne(d => d.AuthorNavigation).WithMany(p => p.QuizzesNavigation)
+                .HasForeignKey(d => d.Author)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("QUIZ_USERS_FK");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Quizzes)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("QUIZ_CATEGORY_FK");
-
-            entity.HasOne(d => d.User).WithMany(p => p.QuizzesNavigation)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("QUIZ_USER_FK");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -240,11 +259,11 @@ public partial class QuizVistaDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("email");
             entity.Property(e => e.FirstName)
-                .HasMaxLength(1)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("first_name");
             entity.Property(e => e.LastName)
-                .HasMaxLength(1)
+                .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("last_name");
             entity.Property(e => e.PasswordHash)
