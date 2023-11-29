@@ -44,19 +44,5 @@ public class QuestionResponse
         Quiz = quiz;
     }
 
-    public static QuestionResponse Convert(this Question question)
-    {
-        return new QuestionResponse(
-            question.Id,
-            question.Type,
-            question.Text,
-            question.AdditionalValue,
-            question.SubstractionalValue,
-            question.QuizId,
-            question.CmsTitleStyle,
-            question.CmsQuestionsStyle,
-            question.Answers,
-            question.Quiz
-        );
-    }
+    
 }

@@ -44,17 +44,5 @@ public class AnswerResponse
         Attempt = attempt;
         Question = question;
     }
-    public static AnswerResponse Convert(this Answer answer)
-    {
-        return new AnswerResponse
-        (
-            answer.Id,
-            answer.AnswerText,
-            answer.IsCorrect,
-            answer.QuestionId,
-            answer.AttemptId,
-            answer.Attempt,
-            answer.Question
-        );
-    }
+    
 }

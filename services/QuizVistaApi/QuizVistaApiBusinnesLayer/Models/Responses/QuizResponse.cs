@@ -53,21 +53,5 @@ public class QuizResponse
         Users = users;
     }
 
-    public static QuizResponse Convert(this Quiz quiz)
-    {
-        return new QuizResponse(
-            quiz.Id,
-            quiz.Name,
-            quiz.Description,
-            quiz.CreationDate,
-            quiz.EditionDate,
-            quiz.CategoryId,
-            quiz.CmsTitleStyle,
-            quiz.UserId,
-            quiz.Category,
-            quiz.Questions,
-            quiz.User,
-            quiz.Tags
-        );
-    }
+    
 }

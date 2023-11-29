@@ -22,10 +22,12 @@ namespace QuizVistaApiInfrastructureLayer.Extensions
             
             foreach (var entityType in entityTypes)
             {
+
+
                 var repositoryInterfaceType = typeof(IRepository<>).MakeGenericType(entityType);
                 var repositoryImplementationType = typeof(Repository<>).MakeGenericType(entityType);
 
-                services.AddSingleton(repositoryInterfaceType, repositoryImplementationType);
+                services.AddScoped(repositoryInterfaceType, repositoryImplementationType);
             }
 
         }

@@ -22,12 +22,4 @@ public class RoleResponse
         Users = users;
     }
 
-    public static RoleResponse Convert(this Role role)
-    {
-        return new RoleResponse(
-            role.Id,
-            role.Name,
-            role.Users
-        );
-    }
 }

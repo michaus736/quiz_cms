@@ -2,6 +2,8 @@
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace QuizVistaApiBusinnesLayer.Models.Responses;
 
@@ -23,12 +25,4 @@ public class TagResponse
         Quizzes = quizzes;
     }
 
-    public static TagResponse Convert(this Tag tag)
-    {
-        return new TagResponse(
-            tag.Id,
-            tag.Name,
-            tag.Quizzes
-        );
-    }
 }

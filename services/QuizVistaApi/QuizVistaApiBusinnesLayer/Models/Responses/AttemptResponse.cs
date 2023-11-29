@@ -32,16 +32,4 @@ public class AttemptResponse
         User = user;
     }
 
-    public static AttemptResponse Convert(this Attempt attempt)
-    {
-        return new AttemptResponse
-        (
-            attempt.Id,
-            attempt.CreateDate,
-            attempt.EditionDate,
-            attempt.UserId,
-            attempt.Answers,
-            attempt.User
-        );
-    }
 }

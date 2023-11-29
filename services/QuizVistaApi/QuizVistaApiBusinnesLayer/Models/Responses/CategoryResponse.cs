@@ -27,13 +27,4 @@ public class CategoryResponse
         Quizzes = quizzes;
     }
 
-    public static CategoryResponse Convert(this Category category)
-    {
-        return new CategoryResponse(
-            category.Id,
-            category.Name,
-            category.Description,
-            category.Quizzes
-        );
-    }
 }
