@@ -1,4 +1,5 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Responses;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,15 @@ namespace QuizVistaApiBusinnesLayer.Extensions
         public static IEnumerable<CategoryResponse> ConvertCollection(this IEnumerable<Category> categories)
         {
             return categories.Select(Convert) ?? new List<CategoryResponse>();
+        }
+
+        public static Category ToEntity(this CategoryRequest categoryRequest)
+        {
+            return new Category
+            {
+                Name = categoryRequest.Name,
+                Description = categoryRequest.Description,
+            };
         }
 
     }

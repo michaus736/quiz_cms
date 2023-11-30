@@ -69,8 +69,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             
         }
         
-        public async Task<Result> UpdateAnswerAsync(AnswerResponse answer)
+        public async Task<Result> UpdateAnswerAsync(AnswerRequest answerRequest)
         {
+            Answer answer = answerRequest.ToEntity();
             await _answerRepository.UpdateAsync(answer);
 
             return Result.Ok();

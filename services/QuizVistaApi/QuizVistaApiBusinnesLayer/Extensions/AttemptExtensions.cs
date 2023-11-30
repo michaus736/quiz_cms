@@ -1,4 +1,5 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Responses;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,20 @@ namespace QuizVistaApiBusinnesLayer.Extensions
             return attempts.Select(Convert) ?? new List<AttemptResponse>();
         }
 
+        public static Attempt ToEntity(this AttemptRequest request)
+        {
+            var attempt = new Attempt
+            {
+                UserId = request.UserId,
+                Answers = request.Answers.ConvertCollection().ToList()
+            };
 
+            return attempt;
+        }
+
+        public static List<Answer> ConvertCollection(this List<AnswerRequest> answerRequests)
+        {
+            return answerRequests.Select(a => a.ToEntity()).ToList();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Responses;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,18 @@ namespace QuizVistaApiBusinnesLayer.Extensions
         public static IEnumerable<UserResponse> ConvertCollection(this IEnumerable<User> users)
         {
             return users.Select(Convert) ?? new List<UserResponse>();
+        }
+
+        public static User ToEntity(this UserRequest userRequest)
+        {
+            return new User
+            {
+                UserName= userRequest.UserName,
+                PasswordHash = userRequest.Password,  //DODAĆ HASHOWANIE
+                FirstName = userRequest.FirstName,
+                LastName = userRequest.LastName,
+                Email = userRequest.Email,
+            };
         }
     }
 }
