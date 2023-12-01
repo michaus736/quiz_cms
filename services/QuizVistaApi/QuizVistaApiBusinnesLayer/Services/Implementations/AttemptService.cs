@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
+using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -36,7 +38,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         public async Task<ResultWithModel<IEnumerable<AttemptResponse>>> GetAttemptsOfUser(int userId)
         {
             var attempts = await _attemptRepository.GetAll()
-                .Where(x=>x.UserId == userId)
+                .Where(x=>x.UsersId == userId)
                 .ToListAsync();
 
             if (attempts is null)
@@ -57,16 +59,16 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<AttemptResponse>.Ok(attempt.ToResponse());
         }
 
-        public async Task<Result> SaveAttempt(AttemptResponse attempt)
+        public async Task<Result> SaveAttempt(AttemptRequest attempt)
         {
-            await _attemptRepository.InsertAsync(attempt);
+            await _attemptRepository.InsertAsync(attempt.ToEntity());
             
             return Result.Ok();
         }
 
-        public async Task<Result> UpdateAttempt(AttemptResponse attempt)
+        public async Task<Result> UpdateAttempt(AttemptRequest attempt)
         {
-            await _attemptRepository.UpdateAsync(attempt);
+            await _attemptRepository.UpdateAsync(attempt.ToEntity());
             
             return Result.Ok();
         }

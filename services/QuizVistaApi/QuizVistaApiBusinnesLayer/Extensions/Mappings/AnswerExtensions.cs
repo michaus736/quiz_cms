@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Extensions
+namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 {
     public static class AnswerExtensions
     {
@@ -30,12 +30,10 @@ namespace QuizVistaApiBusinnesLayer.Extensions
         public static IEnumerable<AnswerResponse> ToCollectionResponse(this IEnumerable<Answer> answers)
         {
             return answers.Select(ToResponse) ?? new List<AnswerResponse>();
-        public static IEnumerable<AnswerResponse> ConvertCollection(this IEnumerable<Answer> answers)
-        {
-            return answers.Select(Convert) ?? new List<AnswerResponse>();
         }
 
-        public static Answer ToEntity(this AnswerRequest answerRequest) {
+        public static Answer ToEntity(this AnswerRequest answerRequest)
+        {
             return new Answer
             {
                 AnswerText = answerRequest.AnswerText,

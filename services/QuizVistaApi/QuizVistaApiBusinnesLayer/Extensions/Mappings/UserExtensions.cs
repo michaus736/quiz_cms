@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Extensions
+namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 {
     public static class UserExtensions
     {
@@ -20,7 +20,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 user.FirstName,
                 user.LastName,
                 user.Email,
-                user.Attempt.ToResponse(),
+                user.Attempt?.ToResponse(),
                 user.QuizzesNavigation.ToCollectionResponse().ToList(),
                 user.Quizzes.ToCollectionResponse().ToList(),
                 user.Roles.ToCollectionResponse().ToList()
@@ -36,7 +36,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
         {
             return new User
             {
-                UserName= userRequest.UserName,
+                UserName = userRequest.UserName,
                 PasswordHash = userRequest.Password,  //DODAĆ HASHOWANIE
                 FirstName = userRequest.FirstName,
                 LastName = userRequest.LastName,

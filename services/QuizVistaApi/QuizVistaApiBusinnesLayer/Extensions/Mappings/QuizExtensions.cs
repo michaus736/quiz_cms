@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Extensions
+namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 {
     public static class QuizExtensions
     {
@@ -32,7 +32,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions
             );
         }
 
-        public static IEnumerable<QuizResponse> ToCollectionResponse(this IEnumerable<Quiz> quizes) {
+        public static IEnumerable<QuizResponse> ToCollectionResponse(this IEnumerable<Quiz> quizes)
+        {
             return quizes.Select(ToResponse) ?? new List<QuizResponse>();
         }
 
@@ -44,7 +45,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
                 Description = quizRequest.Description,
                 CategoryId = quizRequest.CategoryId,
                 CmsTitleStyle = quizRequest.CmsTitleStyle,
-                UserId = quizRequest.UserId,
+                Author = quizRequest.UserId,
                 Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()
             };
         }

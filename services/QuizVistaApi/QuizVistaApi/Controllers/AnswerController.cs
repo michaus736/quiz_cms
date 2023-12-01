@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 
@@ -14,9 +15,9 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAnswer([FromBody] AnswerResponse answerResponse)
+        public async Task<IActionResult> CreateAnswer([FromBody] AnswerRequest answerRequest)
         {
-            var result = await _answerService.CreateAnswerAsync(answerResponse);
+            var result = await _answerService.CreateAnswerAsync(answerRequest);
             return Ok(result);
         }
     }

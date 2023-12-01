@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
+using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -22,9 +24,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _quizRepository = quizRepository;
         }
 
-        public async Task<Result> CreateQuizAsync(QuizResponse quizToCreate)
+        public async Task<Result> CreateQuizAsync(QuizRequest quizToCreate)
         {
-            await _quizRepository.InsertAsync(quizToCreate);
+            var entity = quizToCreate.ToEntity();
+
+            await _quizRepository.InsertAsync(entity);
 
             return Result.Ok();
         }
@@ -72,9 +76,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
         }
 
-        public async Task<Result> UpdateQuizAsync(QuizResponse quizToUpdate)
+        public async Task<Result> UpdateQuizAsync(QuizRequest quizToUpdate)
         {
-            await _quizRepository.UpdateAsync(quizToUpdate);
+            await _quizRepository.UpdateAsync(quizToUpdate.ToEntity());
 
             return Result.Ok();
         }

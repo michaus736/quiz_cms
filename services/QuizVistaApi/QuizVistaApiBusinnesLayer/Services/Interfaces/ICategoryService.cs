@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
@@ -17,8 +18,8 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<CategoryResponse>> GetCategory(int categoryId);
 
         Task<Result> DeleteCategory(int id);
-        Task<Result> CreateCategory(CategoryResponse category);
-        Task<Result> UpdateCategory(CategoryResponse category);
+        Task<Result> CreateCategory(CategoryRequest category);
+        Task<Result> UpdateCategory(CategoryRequest category);
 
 
         #endregion

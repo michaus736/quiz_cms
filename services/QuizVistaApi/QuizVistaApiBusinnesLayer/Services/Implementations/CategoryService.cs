@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
+using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -22,9 +24,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<Result> CreateCategory(CategoryResponse category)
+        public async Task<Result> CreateCategory(CategoryRequest category)
         {
-            await _categoryRepository.InsertAsync(category);
+            await _categoryRepository.InsertAsync(category.ToEntity());
 
             return Result.Ok();
         }
@@ -59,9 +61,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<CategoryResponse>.Ok(category.ToResponse());
         }
 
-        public async Task<Result> UpdateCategory(CategoryResponse category)
+        public async Task<Result> UpdateCategory(CategoryRequest category)
         {
-            await _categoryRepository.UpdateAsync(category);
+            await _categoryRepository.UpdateAsync(category.ToEntity());
 
             return Result.Ok();
         }

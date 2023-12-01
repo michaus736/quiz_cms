@@ -1,6 +1,6 @@
 using QuizVistaApi.Middlewares;
 using QuizVistaApiInfrastructureLayer.Extensions;
-
+using QuizVistaApiBusinnesLayer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +11,8 @@ var configuration = new ConfigurationBuilder()
 
 builder.Services.ConfigureDatabaseConnection(configuration);
 builder.Services.AddRepositories();
+
+builder.Services.AddServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

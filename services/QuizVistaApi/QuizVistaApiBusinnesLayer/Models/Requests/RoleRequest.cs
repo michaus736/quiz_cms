@@ -8,7 +8,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 {
     public class RoleRequest
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public RoleRequest() { }
 

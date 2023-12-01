@@ -5,6 +5,7 @@ using QuizVistaApiInfrastructureLayer.Entities;
 using System.Text;
 using System.Threading.Tasks;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 
 namespace QuizVistaApiBusinnesLayer.Services.Interfaces
 {
@@ -14,9 +15,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
 
         Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizesAsync();
         Task<ResultWithModel<QuizResponse>> GetQuizAsync(int id);
-        Task<Result>  CreateQuizAsync(QuizResponse quizToCreate);
+        Task<Result>  CreateQuizAsync(QuizRequest quizToCreate);
         Task<Result> DeleteQuizAsync(int idToDelete);
-        Task<Result> UpdateQuizAsync(QuizResponse quizToUpdate);
+        Task<Result> UpdateQuizAsync(QuizRequest quizToUpdate);
 
         #endregion
         Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id);

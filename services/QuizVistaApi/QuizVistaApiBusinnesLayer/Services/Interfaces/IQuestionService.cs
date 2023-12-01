@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
@@ -17,9 +18,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<IEnumerable<QuestionResponse>>> GetQuestionsForQuiz(int quizId);
         Task<ResultWithModel<QuestionResponse>> GetQuestion(int questionId);
         Task<ResultWithModel<QuestionResponse>> GetQuestionWithAnswers(int questionId);
-        Task<Result> CreateQuestionAsync(QuestionResponse question);
+        Task<Result> CreateQuestionAsync(QuestionRequest question);
         Task<Result> DeleteQuestionAsync(int questionId);
-        Task<Result> UpdateQuestionAsync(QuestionResponse question);
+        Task<Result> UpdateQuestionAsync(QuestionRequest question);
         
         
 

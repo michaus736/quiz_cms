@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Extensions
+namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 {
     public static class QuestionExtensions
     {
@@ -29,7 +29,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions
         }
 
 
-        public static IEnumerable<QuestionResponse> ToCollectionResponse(this IEnumerable<Question> questions) {
+        public static IEnumerable<QuestionResponse> ToCollectionResponse(this IEnumerable<Question> questions)
+        {
             return questions.Select(ToResponse) ?? new List<QuestionResponse>();
         }
 

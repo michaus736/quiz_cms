@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Extensions
+namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 {
     public static class AttemptExtensions
     {
@@ -35,7 +35,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions
         {
             var attempt = new Attempt
             {
-                UserId = request.UserId,
+                UsersId = request.UserId,
                 Answers = request.Answers.ConvertCollection().ToList()
             };
 

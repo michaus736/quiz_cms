@@ -1,4 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
@@ -16,9 +17,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<IEnumerable<TagResponse>>> GetTags();
         Task<ResultWithModel<IEnumerable<TagResponse>>> GetTagsForQuiz(int quizId);
         Task<ResultWithModel<TagResponse>> GetTag(int id);
-        Task<Result> CreateTag(TagResponse tag);
+        Task<Result> CreateTag(TagRequest tag);
         Task<Result> DeleteTag(int id);
-        Task<Result> UpdateTag(TagResponse tag);
+        Task<Result> UpdateTag(TagRequest tag);
 
         #endregion
     }

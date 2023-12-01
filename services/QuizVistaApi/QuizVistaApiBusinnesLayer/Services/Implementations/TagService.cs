@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
+using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -22,9 +24,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _tagRepository = tagRepository;
         }
 
-        public async Task<Result> CreateTag(TagResponse tag)
+        public async Task<Result> CreateTag(TagRequest tag)
         {
-            await _tagRepository.InsertAsync(tag);
+            await _tagRepository.InsertAsync(tag.ToEntity());
 
             return Result.Ok();
         }
@@ -72,9 +74,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<IEnumerable<TagResponse>>.Ok(tags.ToCollectionResponse().ToList());
         }
 
-        public async Task<Result> UpdateTag(TagResponse tag)
+        public async Task<Result> UpdateTag(TagRequest tag)
         {
-            await _tagRepository.UpdateAsync(tag);
+            await _tagRepository.UpdateAsync(tag.ToEntity());
 
             return Result.Ok();
         }
