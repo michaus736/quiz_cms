@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
+
 [Entity]
 public partial class Tag
 {
@@ -10,5 +11,5 @@ public partial class Tag
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Quiz> QuizQuizzes { get; set; } = new List<Quiz>();
+    public virtual ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
 }

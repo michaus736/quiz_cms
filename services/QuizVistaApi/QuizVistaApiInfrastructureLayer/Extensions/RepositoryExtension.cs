@@ -16,21 +16,18 @@ namespace QuizVistaApiInfrastructureLayer.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             var entityTypes = typeof(RepositoryExtension).Assembly.GetTypes()
-            .Where(t => t.GetCustomAttribute<EntityAttribute>() != null)
+            .Where(t => t.GetCustomAttribute<EntityAttribute>() != null && !t.IsAbstract)
             .ToList();
 
-
+            
             foreach (var entityType in entityTypes)
             {
+
+
                 var repositoryInterfaceType = typeof(IRepository<>).MakeGenericType(entityType);
                 var repositoryImplementationType = typeof(Repository<>).MakeGenericType(entityType);
 
-                // Rejestrowanie repozytorium jako Singleton
-                services.AddSingleton(repositoryInterfaceType, provider =>
-                {
-                    var dbContext = provider.GetRequiredService<DbContext>();
-                    return Activator.CreateInstance(repositoryImplementationType, dbContext);
-                });
+                services.AddScoped(repositoryInterfaceType, repositoryImplementationType);
             }
 
         }

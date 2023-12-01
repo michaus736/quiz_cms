@@ -7,7 +7,7 @@ namespace QuizVistaApiInfrastructureLayer.Entities;
 [Entity]
 public partial class Question
 {
-    public int QuestionId { get; set; }
+    public int Id { get; set; }
 
     /// <summary>
     /// 1 - one good question
@@ -22,7 +22,7 @@ public partial class Question
 
     public int? SubstractionalValue { get; set; }
 
-    public int QuizQuizId { get; set; }
+    public int QuizId { get; set; }
 
     public string? CmsTitleStyle { get; set; }
 
@@ -30,5 +30,5 @@ public partial class Question
 
     public virtual ICollection<Answer> Answers { get; set; } = new List<Answer>();
 
-    public virtual Quiz QuizQuiz { get; set; } = null!;
+    public virtual Quiz Quiz { get; set; } = null!;
 }

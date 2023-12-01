@@ -10,5 +10,7 @@ namespace QuizVistaApiInfrastructureLayer.Repositories
     public interface IReadOnlyRepository<TEntity>
     {
         IQueryable<TEntity> GetAll();
+
+        Task<TEntity?> GetAsync(int id);
     }
 }
