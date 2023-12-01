@@ -1,4 +1,6 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Responses;
+﻿using Azure.Core;
+using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,6 +34,19 @@ namespace QuizVistaApiBusinnesLayer.Extensions
 
         public static IEnumerable<QuizResponse> ToCollectionResponse(this IEnumerable<Quiz> quizes) {
             return quizes.Select(ToResponse) ?? new List<QuizResponse>();
+        }
+
+        public static Quiz ToEntity(this QuizRequest quizRequest)
+        {
+            return new Quiz
+            {
+                Name = quizRequest.Name,
+                Description = quizRequest.Description,
+                CategoryId = quizRequest.CategoryId,
+                CmsTitleStyle = quizRequest.CmsTitleStyle,
+                UserId = quizRequest.UserId,
+                Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()
+            };
         }
 
 

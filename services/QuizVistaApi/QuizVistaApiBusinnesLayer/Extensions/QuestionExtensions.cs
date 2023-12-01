@@ -1,4 +1,5 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Responses;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,21 @@ namespace QuizVistaApiBusinnesLayer.Extensions
 
         public static IEnumerable<QuestionResponse> ToCollectionResponse(this IEnumerable<Question> questions) {
             return questions.Select(ToResponse) ?? new List<QuestionResponse>();
+        }
+
+        public static Question ToEntity(this QuestionRequest request)
+        {
+            return new Question
+            {
+                Type = request.Type,
+                Text = request.Text,
+                AdditionalValue = request.AdditionalValue,
+                SubstractionalValue = request.SubstractionalValue,
+                QuizId = request.QuizId,
+                CmsTitleStyle = request.CmsTitleStyle,
+                CmsQuestionsStyle = request.CmsQuestionsStyle,
+                Answers = request.Answers.ConvertCollection().ToList()
+            };
         }
 
     }

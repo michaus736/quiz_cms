@@ -14,7 +14,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         #region REST
 
         Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswers();
-        Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswersForQuestion(int questionId);
+        Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswersForQuestion(AnswerResponse answerResponse);
         Task<ResultWithModel<AnswerResponse>> GetAnswer(int answerId);
         
         Task<Result> CreateAnswerAsync(AnswerResponse answer);

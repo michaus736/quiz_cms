@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -22,8 +23,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _answerRepository = answerRepository;
         }
 
-        public async Task<Result> CreateAnswerAsync(AnswerResponse answer)
+        public async Task<Result> CreateAnswerAsync(AnswerRequest answerRequest)
         {
+            Answer answer = answerRequest.ToEntity();
+
             await _answerRepository.InsertAsync(answer);
 
             return Result.Ok();
@@ -36,9 +39,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<ResultWithModel<AnswerResponse>> GetAnswer(int answerId)
+        public async Task<ResultWithModel<AnswerResponse>> GetAnswer(AnswerRequest answerRequest)
         {
-            var answer = await _answerRepository.GetAsync(answerId);
+            var answer = await _answerRepository.GetAsync(answerRequest.QuestionId);
 
             if(answer is null)
                 throw new ArgumentNullException($"answer #{answer} not found");
@@ -65,12 +68,15 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return await Task.FromResult(ResultWithModel<IEnumerable<AnswerResponse>>.Ok(answers.ToCollectionResponse().ToList()));
             
         }
-
-        public async Task<Result> UpdateAnswerAsync(AnswerResponse answer)
+        
+        public async Task<Result> UpdateAnswerAsync(AnswerRequest answerRequest)
         {
+            Answer answer = answerRequest.ToEntity();
             await _answerRepository.UpdateAsync(answer);
 
             return Result.Ok();
         }
+
+
     }
 }
