@@ -21,9 +21,9 @@ public partial class Quiz
 
     public string? CmsTitleStyle { get; set; }
 
-    public int Author { get; set; }
+    public int AuthorId { get; set; }
 
-    public virtual User AuthorNavigation { get; set; } = null!;
+    public virtual User Author { get; set; } = null!;
 
     public virtual Category Category { get; set; } = null!;
 

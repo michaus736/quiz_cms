@@ -22,22 +22,23 @@ public class QuizResponse
 
     public string? CmsTitleStyle { get; set; }
 
-    public int Author { get; set; }
+    public int AuthorId { get; set; }
 
-    public UserResponse? AuthorNavigation { get; set; }
+    public UserResponse? Author { get; set; }
 
     public CategoryResponse? Category { get; set; }
 
-    public List<QuestionResponse> Questions { get; set; } = new List<QuestionResponse>();
+    public List<QuestionResponse?>? Questions { get; set; } = new List<QuestionResponse?>();
 
 
-    public List<TagResponse> Tags { get; set; } = new List<TagResponse>();
+    public List<TagResponse?>? Tags { get; set; } = new List<TagResponse?>();
 
-    public List<UserResponse> Users { get; set; } = new List<UserResponse>();
+    public List<UserResponse?>? Users { get; set; } = new List<UserResponse?>();
 
     private QuizResponse() { }
 
-    public QuizResponse(int id,
+    public QuizResponse(
+        int id,
         string name,
         string? description,
         DateTime creationDate, 
@@ -45,11 +46,11 @@ public class QuizResponse
         int categoryId, 
         string? cmsTitleStyle,
         int authorId, 
-        UserResponse? authorNavigation,
+        UserResponse? author,
         CategoryResponse? category,
-        List<QuestionResponse> questions,
-        List<TagResponse> tags,
-        List<UserResponse> users)
+        List<QuestionResponse?>? questions,
+        List<TagResponse?>? tags,
+        List<UserResponse?>? users)
     {
         Id = id;
         Name = name;
@@ -58,8 +59,8 @@ public class QuizResponse
         EditionDate = editionDate;
         CategoryId = categoryId;
         CmsTitleStyle = cmsTitleStyle;
-        Author = authorId;
-        AuthorNavigation = authorNavigation;
+        AuthorId = authorId;
+        Author = author;
         Category = category;
         Questions = questions;
         Tags = tags;

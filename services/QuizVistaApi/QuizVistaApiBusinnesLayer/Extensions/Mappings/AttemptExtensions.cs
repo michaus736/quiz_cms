@@ -19,11 +19,10 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 attempt.Id,
                 attempt.CreateDate,
                 attempt.EditionDate,
-                attempt.UsersId,
+                attempt.UserId,
                 attempt.Answers.ToCollectionResponse().ToList(),
-                attempt.IdNavigation.ToResponse(),
-                attempt.AnswersNavigation.ToCollectionResponse().ToList()
-            );
+                attempt.User.ToResponse()
+                );
         }
 
         public static IEnumerable<AttemptResponse> ToCollectionResponse(this IEnumerable<Attempt> attempts)
@@ -35,7 +34,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
         {
             var attempt = new Attempt
             {
-                UsersId = request.UserId,
+                UserId = request.UserId,
                 Answers = request.Answers.ConvertCollection().ToList()
             };
 

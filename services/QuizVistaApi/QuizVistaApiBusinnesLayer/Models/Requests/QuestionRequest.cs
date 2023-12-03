@@ -8,6 +8,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 {
     public class QuestionRequest
     {
+        public int Id { get; set; }
         public string Type { get; set; } = null!;
         public string Text { get; set; } = null!;
         public int AdditionalValue { get; set; }
@@ -19,8 +20,9 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 
         public QuestionRequest() { }
 
-        public QuestionRequest(string type, string text, int additionalValue, int? substractionalValue, int quizId, string? cmsTitleStyle, string? cmsQuestionsStyle, List<AnswerRequest>? answers)
+        public QuestionRequest(int id, string type, string text, int additionalValue, int? substractionalValue, int quizId, string? cmsTitleStyle, string? cmsQuestionsStyle, List<AnswerRequest>? answers)
         {
+            Id = id;
             Type = type;
             Text = text;
             AdditionalValue = additionalValue;

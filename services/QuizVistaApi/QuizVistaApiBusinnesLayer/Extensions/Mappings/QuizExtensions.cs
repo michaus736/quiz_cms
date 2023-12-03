@@ -23,18 +23,18 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 quiz.EditionDate,
                 quiz.CategoryId,
                 quiz.CmsTitleStyle,
-                quiz.Author,
-                quiz.AuthorNavigation.ToResponse(),
-                quiz.Category.ToResponse(),
-                quiz.Questions.ToCollectionResponse().ToList(),
-                quiz.Tags.ToCollectionResponse().ToList(),
-                quiz.Users.ToCollectionResponse().ToList()
+                quiz.AuthorId,
+                quiz?.Author?.ToResponse(),
+                quiz?.Category?.ToResponse(),
+                quiz?.Questions?.ToCollectionResponse()?.ToList(),
+                quiz?.Tags?.ToCollectionResponse()?.ToList(),
+                quiz?.Users?.ToCollectionResponse()?.ToList()
             );
         }
 
         public static IEnumerable<QuizResponse> ToCollectionResponse(this IEnumerable<Quiz> quizes)
         {
-            return quizes.Select(ToResponse) ?? new List<QuizResponse>();
+            return quizes.Select(ToResponse) ?? Enumerable.Empty<QuizResponse>();
         }
 
         public static Quiz ToEntity(this QuizRequest quizRequest)
@@ -45,7 +45,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 Description = quizRequest.Description,
                 CategoryId = quizRequest.CategoryId,
                 CmsTitleStyle = quizRequest.CmsTitleStyle,
-                Author = quizRequest.UserId,
+                AuthorId = quizRequest.AuthorId,
                 Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()
             };
         }

@@ -20,8 +20,6 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 answer.AnswerText,
                 answer.IsCorrect,
                 answer.QuestionId,
-                answer.AttemptId,
-                answer.Attempt.ToResponse(),
                 answer.Question.ToResponse(),
                 answer.Attempts.ToCollectionResponse().ToList()
             );

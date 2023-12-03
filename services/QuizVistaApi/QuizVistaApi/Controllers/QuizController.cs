@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 
@@ -18,9 +19,33 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ResultWithModel<IEnumerable<QuizResponse>>> Get()
+        public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizez()
         {
             return await _quizService.GetQuizesAsync();
         }
+
+        [HttpPost("create")]
+        public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
+        {
+            return await _quizService.CreateQuizAsync(quizRequest);
+        }
+
+        [HttpPut("edit")]
+        public async Task<Result> EditQuiz([FromBody] QuizRequest quizRequest)
+        {
+            return await _quizService.UpdateQuizAsync(quizRequest);
+        }
+
+        [HttpDelete("delete")]
+        public async Task<Result> DeleteQuiz([FromBody] QuizRequest quizRequest)
+        {
+            return await _quizService.DeleteQuizAsync(quizRequest.Id);
+        }
+
+
+
+
+
+
     }
 }

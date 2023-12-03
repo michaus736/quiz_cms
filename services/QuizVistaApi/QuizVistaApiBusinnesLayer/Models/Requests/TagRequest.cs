@@ -9,17 +9,16 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 {
     public class TagRequest
     {
-
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-
-        public virtual List<QuizResponse> Quizzes { get; set; } = new List<QuizResponse>();
 
         private TagRequest() { }
 
-        public TagRequest(string name, List<QuizResponse> quizzes)
+        public TagRequest(int id,
+            string name)
         {
+            Id = id;
             Name = name;
-            Quizzes = quizzes;
         }
 
 
