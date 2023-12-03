@@ -31,9 +31,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
         {
             return new Tag
             {
-                Name = tagRequest.Name,
-                Quizzes = tagRequest.Quizzes.Select(q => new Quiz { Id = q.Id }).ToList()
-
+                Id = tagRequest.Id,
+                Name = tagRequest.Name
             };
         }
 

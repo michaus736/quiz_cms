@@ -8,12 +8,13 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 {
     public class CategoryRequest
     {
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; } = string.Empty;
 
         public CategoryRequest() { }
 
-        public CategoryRequest(string name, string? description) {  Name = name; Description = description; }
+        public CategoryRequest(int id,string name, string? description) { Id = id;  Name = name; Description = description; }
 
     }
 }

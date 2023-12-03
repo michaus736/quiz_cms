@@ -28,6 +28,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         {
             var entity = quizToCreate.ToEntity();
 
+            entity.CreationDate = DateTime.Now;
+            entity.EditionDate = DateTime.Now;
+
+
             await _quizRepository.InsertAsync(entity);
 
             return Result.Ok();
@@ -54,13 +58,16 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         {
             var quizes = await _quizRepository
                 .GetAll()
+                //.Include(x=>x.Author)
                 .OrderBy(x=>x.Id)
                 .ToListAsync();
 
             if(quizes is null)
                 throw new ArgumentNullException(nameof(quizes));
 
-            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(quizes.ToCollectionResponse().ToList());
+            var quizesResponses = quizes.ToCollectionResponse().ToList();
+
+            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(quizesResponses);
 
         }
 

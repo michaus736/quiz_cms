@@ -8,6 +8,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 {
     public class AttemptRequest
     {
+        public int Id { get; set; }
         public int UserId { get; set; }
         public List<AnswerRequest> Answers { get; set; }
 
@@ -16,8 +17,9 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
             Answers = new List<AnswerRequest>();
         }
 
-        public AttemptRequest(int userId, List<AnswerRequest> answers)
+        public AttemptRequest(int id, int userId, List<AnswerRequest> answers)
         {
+            Id = id;
             UserId = userId;
             Answers = answers ?? new List<AnswerRequest>();
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
 
+
 [Entity]
 public partial class User
 {
@@ -19,7 +20,7 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public virtual Attempt? Attempt { get; set; }
+    public virtual ICollection<Attempt> Attempts { get; set; } = new List<Attempt>();
 
     public virtual ICollection<Quiz> QuizzesNavigation { get; set; } = new List<Quiz>();
 

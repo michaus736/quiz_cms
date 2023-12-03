@@ -38,7 +38,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         public async Task<ResultWithModel<IEnumerable<AttemptResponse>>> GetAttemptsOfUser(int userId)
         {
             var attempts = await _attemptRepository.GetAll()
-                .Where(x=>x.UsersId == userId)
+                .Where(x=>x.UserId == userId)
                 .ToListAsync();
 
             if (attempts is null)

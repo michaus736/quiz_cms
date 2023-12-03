@@ -21,7 +21,8 @@ namespace QuizVistaApiInfrastructureLayer.Extensions
         {
             builder
                 .UseSqlServer(configuration.GetSection("connectionStrings")["QUIZ_VISTA"])
-                .LogTo(message => Debug.WriteLine(message));
+                .LogTo(message => Debug.WriteLine(message))
+                .EnableDetailedErrors();
 
         }
     }

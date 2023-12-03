@@ -20,7 +20,7 @@ public class UserResponse
 
     public string Email { get; set; } = string.Empty;
 
-    public AttemptResponse? Attempt { get; set; }
+    public List<AttemptResponse?>? Attempts { get; set; }
 
     public List<QuizResponse> QuizzesNavigation { get; set; } = new List<QuizResponse>();
 
@@ -30,13 +30,14 @@ public class UserResponse
 
     private UserResponse() { }
 
-    public UserResponse(int id, 
+    public UserResponse(
+        int id, 
         string userName,
         string passwordHash,
         string firstName, 
         string lastName, 
         string email,
-        AttemptResponse attempt, 
+        List<AttemptResponse?> attempts, 
         List<QuizResponse> quizzesNavigation, 
         List<QuizResponse> quizzes,
         List<RoleResponse> roles)
@@ -47,7 +48,7 @@ public class UserResponse
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        Attempt = attempt;
+        Attempts = attempts;
         QuizzesNavigation = quizzesNavigation;
         Quizzes = quizzes;
         Roles = roles;

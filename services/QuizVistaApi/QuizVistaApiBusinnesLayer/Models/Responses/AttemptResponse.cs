@@ -21,16 +21,13 @@ public class AttemptResponse
 
     public UserResponse? User { get; set; }
 
-    public List<AnswerResponse> AnswersNavigation { get; set; } = new List<AnswerResponse>();
-
     private AttemptResponse() { }
     public AttemptResponse(int id,
         DateTime createDate,
         DateTime? editionDate,
         int userId, 
         List<AnswerResponse>? answers,
-        UserResponse? user,
-        List<AnswerResponse> answersNawigation)
+        UserResponse? user)
     {
         Id = id;
         CreateDate = createDate;
@@ -38,7 +35,6 @@ public class AttemptResponse
         UserId = userId;
         Answers = answers;
         User = user;
-        AnswersNavigation = answersNawigation;
     }
 
 }

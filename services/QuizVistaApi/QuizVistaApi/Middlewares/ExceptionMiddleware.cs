@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using QuizVistaApiBusinnesLayer.Models;
+using System.Text;
 
 namespace QuizVistaApi.Middlewares
 {
@@ -17,11 +18,19 @@ namespace QuizVistaApi.Middlewares
             }
         }
 
-        private static async Task GenerateErrorResponse(HttpContext context, Exception ex)
+        private static async Task GenerateErrorResponse(HttpContext context, Exception? ex)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = 401;
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(Result.Failed(ex.Message)));
+            var errorMessage = new StringBuilder();
+
+            while (ex != null)
+            {
+                errorMessage.Append(ex.Message + "\n");
+                ex = ex.InnerException;
+            }
+
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(Result.Failed(errorMessage.ToString())));
         }
     }
 }
