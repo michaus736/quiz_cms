@@ -29,6 +29,12 @@ namespace QuizVistaApi.Controllers
             return await _userService.RegisterUser(userRequest);
         }
 
+        [HttpPost("login")]
+        public async Task<Result> Login([FromBody] UserRequest userRequest)
+        {
+            return await _userService.LoginUser(userRequest);
+        }
+
 
     }
 }

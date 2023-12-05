@@ -11,5 +11,6 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     public interface IUserService
     {
         Task<Result> RegisterUser(UserRequest request);
+        Task<Result> LoginUser(UserRequest request);
     }
 }

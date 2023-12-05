@@ -17,6 +17,11 @@ namespace QuizVistaApiBusinnesLayer.Models
             return new Result();
         }
 
+        public static Result Ok(string token)
+        {
+            return new Result(token);
+        }
+
         public static Result Failed(string errorMessage) {
             return new Result(errorMessage);
         }

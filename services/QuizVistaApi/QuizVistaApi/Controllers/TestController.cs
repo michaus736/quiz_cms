@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 
@@ -16,7 +17,7 @@ namespace QuizVistaApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet]
+        [HttpGet, Authorize(Roles = "User")]
         public Result Get()
         {
             return Result.Ok();
