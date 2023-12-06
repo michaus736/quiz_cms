@@ -16,7 +16,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
             return new UserResponse(
                 user.Id,
                 user.UserName,
-                user.PasswordHash,
+                //user.PasswordHash,
                 user.FirstName,
                 user.LastName,
                 user.Email,

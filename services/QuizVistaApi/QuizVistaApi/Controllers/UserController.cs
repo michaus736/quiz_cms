@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Services.Implementations;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 
 namespace QuizVistaApi.Controllers
@@ -34,6 +37,13 @@ namespace QuizVistaApi.Controllers
         {
             return await _userService.LoginUser(userRequest);
         }
+
+        [HttpGet("showusers"), Authorize(Roles = "User")]
+        public async Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers()
+        {
+            return await _userService.GetUsers();
+        }
+
 
 
     }

@@ -15,9 +15,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
 
         Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizesAsync();
         Task<ResultWithModel<QuizResponse>> GetQuizAsync(int id);
-        Task<Result>  CreateQuizAsync(QuizRequest quizToCreate);
+        Task<Result>  CreateQuizAsync(string userId,QuizRequest quizToCreate);
         Task<Result> DeleteQuizAsync(int idToDelete);
         Task<Result> UpdateQuizAsync(QuizRequest quizToUpdate);
+        //Task<Result> AssignUser(QuizRequest quizToUpdate);
 
         #endregion
         Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id);

@@ -45,7 +45,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 Description = quizRequest.Description,
                 CategoryId = quizRequest.CategoryId,
                 CmsTitleStyle = quizRequest.CmsTitleStyle,
-                AuthorId = quizRequest.AuthorId,
+                //AuthorId = quizRequest.AuthorId,
                 Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()
             };
         }

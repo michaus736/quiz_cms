@@ -1,5 +1,6 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         Task<Result> RegisterUser(UserRequest request);
         Task<Result> LoginUser(UserRequest request);
+        Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers();
     }
 }

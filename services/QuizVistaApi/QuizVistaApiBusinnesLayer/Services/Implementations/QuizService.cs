@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
@@ -18,15 +19,26 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
     public class QuizService : IQuizService
     {
         private readonly IRepository<Quiz> _quizRepository;
+        private readonly IRepository<User> _userRepository;
 
-        public QuizService(IRepository<Quiz> quizRepository)
+        public QuizService(IRepository<Quiz> quizRepository, IRepository<User> userRepository)
         {
             _quizRepository = quizRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<Result> CreateQuizAsync(QuizRequest quizToCreate)
+        public async Task<Result> CreateQuizAsync(string userId,QuizRequest quizToCreate)
         {
             var entity = quizToCreate.ToEntity();
+
+            var user = await _userRepository.GetAll().Where(x=>x.UserName == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return Result.Failed("User ID is missing.");
+            }
+
+            entity.AuthorId = user.Id;
 
             entity.CreationDate = DateTime.Now;
             entity.EditionDate = DateTime.Now;

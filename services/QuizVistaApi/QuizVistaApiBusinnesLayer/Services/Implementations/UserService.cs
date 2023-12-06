@@ -33,6 +33,14 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _configuration = configuration;
         }
 
+        public async Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers()
+        {
+
+            var users = await _userRepository.GetAll().OrderBy(x=>x.Id).ToListAsync();
+
+            return ResultWithModel<IEnumerable<UserResponse>>.Ok(users.ToCollectionResponse().ToList());
+        }
+
         public async Task<Result> RegisterUser(UserRequest request)
         {
             var users = _userRepository.GetAll();

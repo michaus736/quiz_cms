@@ -65,6 +65,19 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         {
             await _categoryRepository.UpdateAsync(category.ToEntity());
 
+
+            /*var categoryToUpdate = await _categoryRepository.GetAsync(category.Id);
+
+            if(categoryToUpdate is null)
+            {
+                throw new ArgumentNullException($"category #{category.Id} not found");
+            }
+
+            categoryToUpdate.Name = category.Name;
+            categoryToUpdate.Description = category.Description;
+
+            await _categoryRepository.UpdateAsync(categoryToUpdate);
+            */
             return Result.Ok();
         }
     }

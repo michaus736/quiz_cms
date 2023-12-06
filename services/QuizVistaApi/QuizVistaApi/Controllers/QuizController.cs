@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
+using System.Security.Claims;
 
 namespace QuizVistaApi.Controllers
 {
@@ -24,10 +26,12 @@ namespace QuizVistaApi.Controllers
             return await _quizService.GetQuizesAsync();
         }
 
-        [HttpPost("create")]
+        [HttpPost("create"), Authorize(Roles = "User")]
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
         {
-            return await _quizService.CreateQuizAsync(quizRequest);
+            var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            return await _quizService.CreateQuizAsync(userId, quizRequest);
         }
 
         [HttpPut("edit")]
