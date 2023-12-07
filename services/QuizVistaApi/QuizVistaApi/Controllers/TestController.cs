@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
+using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Services.Interfaces;
 
 namespace QuizVistaApi.Controllers
 {
@@ -11,10 +13,12 @@ namespace QuizVistaApi.Controllers
         
 
         private readonly ILogger<TestController> _logger;
+        private readonly IMailService _mailService;
 
-        public TestController(ILogger<TestController> logger)
+        public TestController(ILogger<TestController> logger,IMailService mailService)
         {
             _logger = logger;
+            _mailService = mailService;
         }
 
         [HttpGet, Authorize(Roles = "User")]
@@ -27,6 +31,17 @@ namespace QuizVistaApi.Controllers
         public Result ForceError(int id)
         {
             throw new Exception("test error occured");
+        }
+
+        [HttpGet("mail-test")]
+        public async Task<Result> TestMail()
+        {
+            MailRequest x = new MailRequest();
+            x.Subject = "Test";
+            x.ToEmail = "abraham.mraz@ethereal.email";
+            x.Body = "Test";
+            await _mailService.SendEmailAsync(x);
+            return Result.Ok();
         }
     }
 }

@@ -25,12 +25,14 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Role> _roleRepository;
         private readonly IConfiguration _configuration;
+        private readonly IMailService _mailService;
 
-        public UserService(IRepository<User> userRepository,IRepository<Role> roleRepository, IConfiguration configuration)
+        public UserService(IRepository<User> userRepository,IRepository<Role> roleRepository, IConfiguration configuration, IMailService mailService)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
             _configuration = configuration;
+            _mailService = mailService;
         }
 
         public async Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers()
@@ -98,6 +100,17 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             user.ResetPasswordToken = resetToken;
             await _userRepository.UpdateAsync(user);
+
+            var resetLink = $"[ResetPasswordLink]/?token={resetToken}"; //link do resetu hasła
+
+            var mailRequest = new MailRequest
+            {
+                ToEmail = user.Email,
+                Subject = "Reset Password",
+                Body = $"Please click on the link to reset your password: {resetLink}"
+            };
+
+            await _mailService.SendEmailAsync(mailRequest);
 
             return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
         }

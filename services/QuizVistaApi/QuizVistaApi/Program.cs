@@ -5,6 +5,10 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using QuizVistaApiBusinnesLayer.Services.Interfaces;
+using AngleSharp;
+using QuizVistaApiBusinnesLayer.Models.Settings;
+using QuizVistaApiBusinnesLayer.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +50,8 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddTransient<AntiXssMiddleware>();
 
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("AppSettings:MailSettings"));
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
 

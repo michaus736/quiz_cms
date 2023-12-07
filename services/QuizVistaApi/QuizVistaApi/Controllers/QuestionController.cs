@@ -7,7 +7,9 @@ using QuizVistaApiBusinnesLayer.Models.Requests;
 
 namespace QuizVistaApi.Controllers
 {
-    public class QuestionController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class QuestionController : ControllerBase
     {
         private readonly IQuestionService _questionService;
 
@@ -21,19 +23,19 @@ namespace QuizVistaApi.Controllers
         {
             return await _questionService.GetQuestions();
         }
-
-        [HttpPost("create")]
+        
+       [HttpPost("create")]
         public async Task<Result> CreateQuestion([FromBody] QuestionRequest questionRequest)
         {
             return await _questionService.CreateQuestionAsync(questionRequest);
         }
-
+        
         [HttpPut("edit")]
         public async Task<Result> EditQuestion([FromBody] QuestionRequest questionRequest)
         {
             return await _questionService.UpdateQuestionAsync(questionRequest);
         }
-
+      
         [HttpDelete("delete")]
         public async Task<Result> DeleteQuestion([FromBody] QuestionRequest questionRequest)
         {
