@@ -45,6 +45,12 @@ namespace QuizVistaApi.Controllers
             return await _userService.GetUsers();
         }
 
+        [HttpPut("edit")]
+        public async Task<Result> Edit([FromBody] UserRequest userRequest)
+        {
+            return await _userService.UpdateUser(userRequest);
+        }
+
         [HttpPost("changepassword"), Authorize(Roles = "User")]
         public async Task<Result> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
         {

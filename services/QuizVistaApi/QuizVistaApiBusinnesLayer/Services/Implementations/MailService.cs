@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using Org.BouncyCastle.Asn1.Pkcs;
 using QuizVistaApiBusinnesLayer.Models.Requests;
-using QuizVistaApiBusinnesLayer.Models.Settings;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -18,13 +17,6 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 {
     public class MailService : IMailService
     {
-
-        /*private readonly MailSettings _mailSettings;
-        public MailService(IOptions<MailSettings> mailSettings)
-        {
-            _mailSettings = mailSettings;
-        }*/
-
         private readonly IConfiguration _configuration;
 
         public MailService(IConfiguration configuration)

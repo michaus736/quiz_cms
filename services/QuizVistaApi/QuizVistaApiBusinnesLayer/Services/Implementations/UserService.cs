@@ -68,9 +68,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> LoginUser(UserRequest request)
         {
-
             request.Password = HashPassword(request.Password);
-
 
             var user = await _userRepository.GetAll().Include(x=>x.Roles).Where(x=>x.UserName.ToLower() == request.UserName.ToLower()).FirstOrDefaultAsync();
 
@@ -114,6 +112,24 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
         }
+
+        public async Task<Result> UpdateUser(UserRequest userRequest)
+        {
+            var user = await _userRepository.GetAll().Where(u=>u.UserName==userRequest.UserName).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                throw new ArgumentException("Username not found");
+            }
+
+            user.FirstName= userRequest.FirstName;
+            user.LastName= userRequest.LastName;
+            user.Email= userRequest.Email;
+
+            await _userRepository.UpdateAsync(user);
+            return Result.Ok();
+        }
+
 
         public async Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest)
         {
