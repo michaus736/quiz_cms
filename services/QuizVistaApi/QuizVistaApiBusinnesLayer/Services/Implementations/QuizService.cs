@@ -101,5 +101,57 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             return Result.Ok();
         }
+
+        public async Task<Result> AssignUser(AssignUserRequest assignUserRequest)
+        {
+            var quiz = await _quizRepository.GetAll().Include(x=>x.Users).Where(x=>x.Id==assignUserRequest.QuizId).FirstOrDefaultAsync();
+            if (quiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
+
+
+            var user = await _userRepository.GetAll().Where(x => x.UserName.ToLower() == assignUserRequest.UserName.ToLower()).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Result.Failed("User not found.");
+            }
+
+            //var x = quiz.Users.Where(x=>x.Id==user.Id).FirstOrDefault();
+
+            if (quiz.Users.Any(x=>x.Id==user.Id))
+            {
+                return Result.Failed("User is already assigned to this quiz.");
+            }
+
+            quiz.Users.Add(user);
+            await _quizRepository.UpdateAsync(quiz);
+
+            return Result.Ok();
+        }
+
+        public async Task<Result> UnAssignUser(AssignUserRequest assignUserRequest)
+        {
+            var quiz = await _quizRepository.GetAll().Include(x => x.Users).Where(x => x.Id == assignUserRequest.QuizId).FirstOrDefaultAsync();
+            if (quiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
+            var user = await _userRepository.GetAll().Where(x => x.UserName.ToLower() == assignUserRequest.UserName.ToLower()).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Result.Failed("User not found.");
+            }
+
+            if (!quiz.Users.Any(x => x.Id == user.Id))
+            {
+                return Result.Failed("User is not assigned to this quiz.");
+            }
+
+            quiz.Users.Remove(user);
+            await _quizRepository.UpdateAsync(quiz);
+
+            return Result.Ok();
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 user.FirstName,
                 user.LastName,
                 user.Email,
+                user.ResetPasswordToken,
                 user.Attempts?.ToCollectionResponse().ToList(),
                 user.QuizzesNavigation.ToCollectionResponse().ToList(),
                 user.Quizzes.ToCollectionResponse().ToList(),

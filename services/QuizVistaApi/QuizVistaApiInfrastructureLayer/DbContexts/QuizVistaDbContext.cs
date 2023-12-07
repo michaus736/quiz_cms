@@ -265,7 +265,10 @@ public partial class QuizVistaDbContext : DbContext
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("user_name");
-
+            entity.Property(e => e.ResetPasswordToken)
+                .HasMaxLength(80)
+                .IsUnicode(false)
+                .HasColumnName("reset_password_token");
             entity.HasMany(d => d.Quizzes).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "AccessQuiz",

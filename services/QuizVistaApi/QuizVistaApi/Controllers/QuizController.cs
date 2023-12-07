@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Services.Implementations;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using System.Security.Claims;
 
@@ -30,6 +31,7 @@ namespace QuizVistaApi.Controllers
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            //quizRequest.userID = User.FindFirst(ClaimTypes.Name)?.Value;
 
             return await _quizService.CreateQuizAsync(userId, quizRequest);
         }
@@ -46,8 +48,17 @@ namespace QuizVistaApi.Controllers
             return await _quizService.DeleteQuizAsync(quizRequest.Id);
         }
 
+        [HttpPost("assignuser")]
+        public async Task<Result> AssignUser([FromBody] AssignUserRequest assignUserRequest)
+        {
+            return await _quizService.AssignUser(assignUserRequest);
+        }
 
-
+        [HttpPost("unassignuser")]
+        public async Task<Result> UnAssignUser([FromBody] AssignUserRequest assignUserRequest)
+        {
+            return await _quizService.UnAssignUser(assignUserRequest);
+        }
 
 
 

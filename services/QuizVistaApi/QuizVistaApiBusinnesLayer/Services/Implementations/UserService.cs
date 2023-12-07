@@ -85,6 +85,74 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok(token);
         }
 
+        public async Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest request)
+        {
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user == null)
+            {
+                throw new ArgumentException("User not found.");
+            }
+
+            var resetToken = GenerateResetToken();
+
+            user.ResetPasswordToken = resetToken;
+            await _userRepository.UpdateAsync(user);
+
+            return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
+        }
+
+        public async Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        {
+            resetPasswordRequest.Password = HashPassword(resetPasswordRequest.Password);
+            resetPasswordRequest.ConfirmPassword = HashPassword(resetPasswordRequest.ConfirmPassword);
+
+            if (string.Compare(resetPasswordRequest.Password, resetPasswordRequest.ConfirmPassword) != 0)
+            {
+                throw new ArgumentException("The new password and confirm password does not match.");
+            }
+
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.ResetPasswordToken == resetPasswordRequest.Token);
+
+            if (user == null)
+            {
+                throw new ArgumentException("Invalid or expired reset token.");
+            }
+
+            user.PasswordHash = resetPasswordRequest.Password;
+            await _userRepository.UpdateAsync(user);
+
+            return Result.Ok();
+        }
+
+        public async Task<Result> ChangePassword(ChangePasswordRequest changePasswordRequest)
+        {
+            changePasswordRequest.CurrentPassword = HashPassword(changePasswordRequest.CurrentPassword);
+            changePasswordRequest.NewPassword = HashPassword(changePasswordRequest.NewPassword);
+            changePasswordRequest.ConfirmNewPassword = HashPassword(changePasswordRequest.ConfirmNewPassword);
+
+            if (string.Compare(changePasswordRequest.NewPassword, changePasswordRequest.ConfirmNewPassword) != 0)
+            {
+                throw new ArgumentException("The new password and confirm password does not match.");
+            }
+
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName.ToLower() == changePasswordRequest.UserName.ToLower());
+
+            if (user is null)
+                throw new ArgumentNullException($"Error");
+
+            if (user.UserName != changePasswordRequest.ValidateUserName) throw new ArgumentException("Forbidden.");
+
+            if (user.PasswordHash != changePasswordRequest.CurrentPassword)
+            {
+                throw new ArgumentException("Invalid password");
+            }
+
+            user.PasswordHash = changePasswordRequest.NewPassword;
+            await _userRepository.UpdateAsync(user);
+            return Result.Ok();
+        }
+
         static string HashPassword(string password)
         {
             using SHA256 sha256Hash = SHA256.Create();
@@ -102,12 +170,12 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
-     {
-         new Claim(ClaimTypes.Name,user.UserName),
-     };
+             {
+                 new Claim(ClaimTypes.Name,user.UserName),
+             };
 
 
-            if (user.Roles != null) // Sprawdź, czy user.UserRoles nie jest null
+            if (user.Roles != null)
             {
                 foreach (var role in user.Roles)
                 {
@@ -122,11 +190,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: creds
                 );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
+        }
+        private string GenerateResetToken()
+        {
+            using var rng = new RNGCryptoServiceProvider();
+            var tokenData = new byte[32];
+            rng.GetBytes(tokenData);
+            return Convert.ToBase64String(tokenData);
         }
     }
 }

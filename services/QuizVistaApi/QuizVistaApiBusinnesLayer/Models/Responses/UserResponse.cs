@@ -20,6 +20,8 @@ public class UserResponse
 
     public string Email { get; set; } = string.Empty;
 
+    public string ResetPasswordToken { get; set; } = string.Empty;
+
     public List<AttemptResponse?>? Attempts { get; set; }
 
     public List<QuizResponse> QuizzesNavigation { get; set; } = new List<QuizResponse>();
@@ -37,6 +39,7 @@ public class UserResponse
         string firstName, 
         string lastName, 
         string email,
+        string resetPasswordToken,
         List<AttemptResponse?> attempts, 
         List<QuizResponse> quizzesNavigation, 
         List<QuizResponse> quizzes,
@@ -48,6 +51,7 @@ public class UserResponse
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+        ResetPasswordToken = resetPasswordToken;
         Attempts = attempts;
         QuizzesNavigation = quizzesNavigation;
         Quizzes = quizzes;

@@ -13,6 +13,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
     {
         Task<Result> RegisterUser(UserRequest request);
         Task<Result> LoginUser(UserRequest request);
+        Task<Result> ChangePassword(ChangePasswordRequest changePasswordRequest);
+        Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest resetPasswordInitialRequest);
+        Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest);
         Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers();
     }
 }
