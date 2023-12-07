@@ -30,8 +30,9 @@ namespace QuizVistaApi.Controllers
         [HttpPost("create"), Authorize(Roles = "User")]
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
         {
-            var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
             //quizRequest.userID = User.FindFirst(ClaimTypes.Name)?.Value;
+
 
             return await _quizService.CreateQuizAsync(userId, quizRequest);
         }
