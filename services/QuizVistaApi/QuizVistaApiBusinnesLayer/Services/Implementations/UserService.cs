@@ -66,7 +66,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<Result> LoginUser(UserRequest request)
+        public async Task<ResultWithModel<LoginResponse>> LoginUser(UserRequest request)
         {
             request.Password = HashPassword(request.Password);
 
@@ -81,8 +81,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
            string token = CreateToken(user);
 
+            LoginResponse loginResponse = new LoginResponse(token);
             //return Result.Ok(new { token });
-            return Result.Ok(token);
+            return ResultWithModel<LoginResponse>.Ok(loginResponse);
         }
 
         public async Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest request)
