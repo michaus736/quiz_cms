@@ -270,7 +270,7 @@ public partial class QuizVistaDbContext : DbContext
             entity.Property(e => e.ResetPasswordToken)
                 .HasMaxLength(80)
                 .IsUnicode(false)
-                .HasColumnName("password_reset_token");
+                .HasColumnName("reset_password_token");
             entity.Property(e => e.UserName)
                 .HasMaxLength(30)
                 .IsUnicode(false)
