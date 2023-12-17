@@ -18,11 +18,17 @@ public class QuizResponse
 
     public DateTime? EditionDate { get; set; }
 
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
 
     public string? CmsTitleStyle { get; set; }
 
-    public int AuthorId { get; set; }
+    public int? AuthorId { get; set; }
+
+    public bool IsActive { get; set; }
+
+    public int AttemptCount { get; set; }
+
+    public bool? PublicAccess { get; set; }
 
     public UserResponse? Author { get; set; }
 
@@ -43,9 +49,12 @@ public class QuizResponse
         string? description,
         DateTime creationDate, 
         DateTime? editionDate,
-        int categoryId, 
+        int? categoryId, 
         string? cmsTitleStyle,
-        int authorId, 
+        int? authorId, 
+        bool isActive,
+        int attemptCount,
+        bool? publicAccess,
         UserResponse? author,
         CategoryResponse? category,
         List<QuestionResponse?>? questions,
@@ -60,6 +69,9 @@ public class QuizResponse
         CategoryId = categoryId;
         CmsTitleStyle = cmsTitleStyle;
         AuthorId = authorId;
+        IsActive = isActive;
+        AttemptCount = attemptCount;
+        PublicAccess = publicAccess;
         Author = author;
         Category = category;
         Questions = questions;

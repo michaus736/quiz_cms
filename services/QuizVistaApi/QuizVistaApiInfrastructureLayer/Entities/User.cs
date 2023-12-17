@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace QuizVistaApiInfrastructureLayer.Entities;
 
-
 [Entity]
 public partial class User
 {
@@ -20,7 +19,9 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public string ResetPasswordToken { get; set; } = "";
+    public string? ResetPasswordToken { get; set; }
+
+    public DateTime? PasswordResetExpire { get; set; }
 
     public virtual ICollection<Attempt> Attempts { get; set; } = new List<Attempt>();
 

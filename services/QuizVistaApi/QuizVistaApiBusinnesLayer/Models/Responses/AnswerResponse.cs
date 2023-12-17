@@ -16,7 +16,7 @@ public class AnswerResponse
 
     public bool IsCorrect { get; set; }
 
-    public int QuestionId { get; set; }
+    public int? QuestionId { get; set; }
 
     public QuestionResponse? Question { get; set; }
 
@@ -29,7 +29,7 @@ public class AnswerResponse
         int id,
         string answerText,
         bool isCorrect,
-        int questionId,
+        int? questionId,
         QuestionResponse? question,
         List<AttemptResponse?>? attempts
         )
