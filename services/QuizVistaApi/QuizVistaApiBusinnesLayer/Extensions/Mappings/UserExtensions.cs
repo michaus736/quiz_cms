@@ -16,10 +16,11 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
             return new UserResponse(
                 user.Id,
                 user.UserName,
-                user.PasswordHash,
+                //user.PasswordHash,
                 user.FirstName,
                 user.LastName,
                 user.Email,
+                user.ResetPasswordToken,
                 user.Attempts?.ToCollectionResponse().ToList(),
                 user.QuizzesNavigation.ToCollectionResponse().ToList(),
                 user.Quizzes.ToCollectionResponse().ToList(),

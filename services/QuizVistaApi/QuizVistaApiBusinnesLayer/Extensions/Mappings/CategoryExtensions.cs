@@ -32,6 +32,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
         {
             return new Category
             {
+                Id = categoryRequest.Id,
                 Name = categoryRequest.Name,
                 Description = categoryRequest.Description,
             };

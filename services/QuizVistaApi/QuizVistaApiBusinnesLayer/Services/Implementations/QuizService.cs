@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
@@ -18,15 +19,26 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
     public class QuizService : IQuizService
     {
         private readonly IRepository<Quiz> _quizRepository;
+        private readonly IRepository<User> _userRepository;
 
-        public QuizService(IRepository<Quiz> quizRepository)
+        public QuizService(IRepository<Quiz> quizRepository, IRepository<User> userRepository)
         {
             _quizRepository = quizRepository;
+            _userRepository = userRepository;
         }
 
-        public async Task<Result> CreateQuizAsync(QuizRequest quizToCreate)
+        public async Task<Result> CreateQuizAsync(string userId,QuizRequest quizToCreate)
         {
             var entity = quizToCreate.ToEntity();
+
+            var user = await _userRepository.GetAll().Where(x=>x.UserName == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return Result.Failed("User ID is missing.");
+            }
+
+            entity.AuthorId = user.Id;
 
             entity.CreationDate = DateTime.Now;
             entity.EditionDate = DateTime.Now;
@@ -86,6 +98,58 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         public async Task<Result> UpdateQuizAsync(QuizRequest quizToUpdate)
         {
             await _quizRepository.UpdateAsync(quizToUpdate.ToEntity());
+
+            return Result.Ok();
+        }
+
+        public async Task<Result> AssignUser(AssignUserRequest assignUserRequest)
+        {
+            var quiz = await _quizRepository.GetAll().Include(x=>x.Users).Where(x=>x.Id==assignUserRequest.QuizId).FirstOrDefaultAsync();
+            if (quiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
+
+
+            var user = await _userRepository.GetAll().Where(x => x.UserName.ToLower() == assignUserRequest.UserName.ToLower()).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Result.Failed("User not found.");
+            }
+
+            //var x = quiz.Users.Where(x=>x.Id==user.Id).FirstOrDefault();
+
+            if (quiz.Users.Any(x=>x.Id==user.Id))
+            {
+                return Result.Failed("User is already assigned to this quiz.");
+            }
+
+            quiz.Users.Add(user);
+            await _quizRepository.UpdateAsync(quiz);
+
+            return Result.Ok();
+        }
+
+        public async Task<Result> UnAssignUser(AssignUserRequest assignUserRequest)
+        {
+            var quiz = await _quizRepository.GetAll().Include(x => x.Users).Where(x => x.Id == assignUserRequest.QuizId).FirstOrDefaultAsync();
+            if (quiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
+            var user = await _userRepository.GetAll().Where(x => x.UserName.ToLower() == assignUserRequest.UserName.ToLower()).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Result.Failed("User not found.");
+            }
+
+            if (!quiz.Users.Any(x => x.Id == user.Id))
+            {
+                return Result.Failed("User is not assigned to this quiz.");
+            }
+
+            quiz.Users.Remove(user);
+            await _quizRepository.UpdateAsync(quiz);
 
             return Result.Ok();
         }
