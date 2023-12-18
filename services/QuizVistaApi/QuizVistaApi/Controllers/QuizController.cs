@@ -27,7 +27,7 @@ namespace QuizVistaApi.Controllers
             return await _quizService.GetQuizesAsync();
         }
 
-        [HttpPost("create"), Authorize(Roles = "User")]
+        [HttpPost("create"), Authorize(Roles = "Moderator,Admin")]
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";

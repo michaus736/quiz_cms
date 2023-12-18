@@ -19,7 +19,7 @@ public class QuestionResponse
 
     public int? SubstractionalValue { get; set; }
 
-    public int QuizId { get; set; }
+    public int? QuizId { get; set; }
 
     public string? CmsTitleStyle { get; set; }
 
@@ -30,7 +30,17 @@ public class QuestionResponse
     public QuizResponse? Quiz { get; set; }
 
     private QuestionResponse() { }
-    public QuestionResponse(int id, string type, string text, int additionalValue, int? substractionalValue, int quizId, string? cmsTitleStyle, string? cmsQuestionsStyle, List<AnswerResponse>? answers, QuizResponse? quiz)
+    public QuestionResponse(
+        int id,
+        string type,
+        string text,
+        int additionalValue,
+        int? substractionalValue,
+        int? quizId, 
+        string? cmsTitleStyle,
+        string? cmsQuestionsStyle, 
+        List<AnswerResponse>? answers,
+        QuizResponse? quiz)
     {
         Id = id;
         Type = type;

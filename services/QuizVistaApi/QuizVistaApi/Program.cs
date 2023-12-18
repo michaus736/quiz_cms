@@ -20,6 +20,7 @@ builder.Services.ConfigureDatabaseConnection(configuration);
 builder.Services.AddRepositories();
 
 builder.Services.AddServices();
+builder.Services.AddHealthChecks();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -34,6 +35,17 @@ builder.Services.AddSwaggerGen(options =>
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+builder.Services.AddCors(config =>
+{
+    config.AddPolicy(name: "ui-cors", policy =>
+    {
+        policy.AllowAnyOrigin();
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
+    });
+});
+
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -62,6 +74,8 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseMiddleware<AntiXssMiddleware>();
 
+app.UseCors("ui-cors");
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -69,5 +83,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health-check");
 
 app.Run();
