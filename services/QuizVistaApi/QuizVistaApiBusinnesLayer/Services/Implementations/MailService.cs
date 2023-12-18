@@ -35,7 +35,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             builder.HtmlBody = mailRequest.Body;
             email.Body = builder.ToMessageBody();
             using var smtp = new SmtpClient();
-            smtp.Connect(_configuration.GetSection("MailSettings:Host").Value!, 587, SecureSocketOptions.StartTls);
+            smtp.Connect(_configuration.GetSection("MailSettings:Host").Value!, 587, SecureSocketOptions.Auto);
             smtp.Authenticate(_configuration.GetSection("MailSettings:Mail").Value!, _configuration.GetSection("MailSettings:Password").Value!);
             await smtp.SendAsync(email);
             smtp.Disconnect(true);

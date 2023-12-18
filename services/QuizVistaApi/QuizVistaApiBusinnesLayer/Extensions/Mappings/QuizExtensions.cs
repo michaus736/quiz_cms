@@ -48,6 +48,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 Description = quizRequest.Description,
                 CategoryId = quizRequest.CategoryId,
                 CmsTitleStyle = quizRequest.CmsTitleStyle,
+                IsActive = quizRequest.IsActive,
+                PublicAccess= quizRequest.PublicAccess,
                 //AuthorId = quizRequest.AuthorId,
                 Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()
             };

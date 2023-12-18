@@ -25,7 +25,7 @@ public partial class Quiz
 
     public bool IsActive { get; set; }
 
-    public int AttemptCount { get; set; }
+    public int AttemptCount { get; set; } = 0;
 
     public bool? PublicAccess { get; set; }
 

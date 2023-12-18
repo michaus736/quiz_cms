@@ -49,8 +49,22 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<Result> DeleteQuizAsync(int idToDelete)
+        public async Task<Result> DeleteQuizAsync(string userId, int idToDelete)
         {
+            var quiz = await _quizRepository.GetAsync(idToDelete);
+
+            var user = await _userRepository.GetAll().Where(x => x.UserName == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return Result.Failed("User not found.");
+            }
+
+            if (user.Id != quiz.AuthorId)
+            {
+                return Result.Failed("Unauthorized user.");
+            }
+
             await _quizRepository.DeleteAsync(idToDelete);
 
             return Result.Ok();
@@ -95,9 +109,39 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
         }
 
-        public async Task<Result> UpdateQuizAsync(QuizRequest quizToUpdate)
+        public async Task<Result> UpdateQuizAsync(string userId,QuizRequest quizToUpdate)
         {
-            await _quizRepository.UpdateAsync(quizToUpdate.ToEntity());
+            var existingQuiz = await _quizRepository.GetAll().FirstOrDefaultAsync(q => q.Id == quizToUpdate.Id);
+
+            if (existingQuiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
+
+            var user = await _userRepository.GetAll().Where(x => x.UserName == userId).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                return Result.Failed("User not found.");
+            }
+
+            if (existingQuiz.AuthorId != user.Id)
+            {
+                return Result.Failed("Unauthorized user.");
+            }
+
+            var updatedEntity = quizToUpdate.ToEntity();
+
+            existingQuiz.Name = updatedEntity.Name;
+            existingQuiz.Description = updatedEntity.Description;
+            existingQuiz.CategoryId = updatedEntity.CategoryId;
+            existingQuiz.CmsTitleStyle = updatedEntity.CmsTitleStyle;
+            existingQuiz.IsActive = updatedEntity.IsActive;
+            existingQuiz.PublicAccess= updatedEntity.PublicAccess;
+            existingQuiz.Tags = updatedEntity.Tags;
+            existingQuiz.EditionDate = DateTime.Now;
+
+            await _quizRepository.UpdateAsync(existingQuiz);
 
             return Result.Ok();
         }

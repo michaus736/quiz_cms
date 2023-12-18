@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.UserRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -86,7 +87,8 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<LoginResponse>.Ok(loginResponse);
         }
 
-        public async Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest request)
+        public async Task<Result> ResetPasswordInit(ResetPasswordInitialRequest request)
+        //public async Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest request)
         {
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.Email);
 
@@ -98,6 +100,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             var resetToken = GenerateResetToken();
 
             user.ResetPasswordToken = resetToken;
+            user.PasswordResetExpire = DateTime.Now;
             await _userRepository.UpdateAsync(user);
 
             var resetLink = $"[ResetPasswordLink]/?token={resetToken}"; //link do resetu hasła
@@ -110,8 +113,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             };
 
             await _mailService.SendEmailAsync(mailRequest);
-
-            return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
+            
+            return Result.Ok();
+            //return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
         }
 
         public async Task<Result> UpdateUser(UserRequest userRequest)
@@ -144,12 +148,15 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.ResetPasswordToken == resetPasswordRequest.Token);
 
-            if (user == null)
+            if (user == null || user.PasswordResetExpire < DateTime.Now.AddDays(-1))
             {
                 throw new ArgumentException("Invalid or expired reset token.");
             }
 
+
             user.PasswordHash = resetPasswordRequest.Password;
+            user.ResetPasswordToken = null;
+            user.PasswordResetExpire = null;
             await _userRepository.UpdateAsync(user);
 
             return Result.Ok();
@@ -183,6 +190,32 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
+        public async Task<Result> ToggleRole(ToggleRoleRequest toggleRoleRequest)
+        {
+            var user = await _userRepository.GetAll().Include(x=>x.Roles).FirstOrDefaultAsync(x=>x.UserName== toggleRoleRequest.UserName);
+            if(user == null)
+            {
+                throw new ArgumentException("User not found");
+            }
+
+            var role = await _roleRepository.GetAll().FirstOrDefaultAsync(x=>x.Name== toggleRoleRequest.RoleName);
+
+            var userRole = user.Roles.FirstOrDefault(r => r.Name == toggleRoleRequest.RoleName);
+
+            if (userRole != null)
+            {
+                user.Roles.Remove(userRole);
+            }
+            else
+            {
+
+                user.Roles.Add(role);
+            }
+
+            await _userRepository.UpdateAsync(user);
+
+            return Result.Ok();
+        }
         static string HashPassword(string password)
         {
             using SHA256 sha256Hash = SHA256.Create();

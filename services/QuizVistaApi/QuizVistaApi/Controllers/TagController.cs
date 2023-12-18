@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
@@ -19,37 +20,39 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles="User")]
         public async Task<ResultWithModel<IEnumerable<TagResponse>>> GetAll()
         {
             return await _tagService.GetTags();
         }
 
         [HttpGet("tag/{id}")]
+        [Authorize(Roles = "User")]
         public async Task<ResultWithModel<TagResponse>> GetTag(int tagId)
         {
             return await _tagService.GetTag(tagId);
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> CreateTag([FromBody] TagRequest tagRequest)
         {
             return await _tagService.CreateTag(tagRequest);
         }
 
-        [HttpPut("eidt")]
+        [HttpPut("edit")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> EditTag([FromBody] TagRequest tagRequest)
         {
             return await _tagService.UpdateTag(tagRequest);
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> DeleteTag([FromBody] TagRequest tagRequest)
         {
             return await _tagService.DeleteTag(tagRequest.Id);
         }
-
-
-
 
     }
 }
