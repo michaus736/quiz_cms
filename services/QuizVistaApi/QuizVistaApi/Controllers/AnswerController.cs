@@ -7,6 +7,8 @@ using System.Collections.Generic;
 
 namespace QuizVistaApi.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AnswerController : Controller
     {
         private readonly IAnswerService _answerService;
