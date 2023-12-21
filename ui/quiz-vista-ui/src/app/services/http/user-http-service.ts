@@ -29,7 +29,7 @@ export class UserHttpService {
       "password": password,
       "firstName": "string",
       "lastName": "string",
-      "email": "string"
+      "email": "user@example.com"
     })
   }
 

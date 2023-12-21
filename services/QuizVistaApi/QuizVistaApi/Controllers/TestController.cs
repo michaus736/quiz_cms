@@ -21,7 +21,7 @@ namespace QuizVistaApi.Controllers
             _mailService = mailService;
         }
 
-        [HttpGet, Authorize(Roles = "User")]
+        [HttpGet]
         public Result Get()
         {
             return Result.Ok();

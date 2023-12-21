@@ -22,6 +22,7 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizez()
         {
             return await _quizService.GetQuizesAsync();

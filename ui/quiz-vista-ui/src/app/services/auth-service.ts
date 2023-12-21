@@ -13,6 +13,7 @@ export class AuthService{
         return !!localStorage.getItem('jwtToken');
     }
 
+
     login(token: string): void {
         localStorage.setItem('jwtToken', token);
     }
@@ -20,6 +21,10 @@ export class AuthService{
     logout(): void {
         localStorage.removeItem('jwtToken')
         this.router.navigate(['/home'])
+    }
+
+    getJWTToken(): string{
+        return localStorage.getItem('jwtToken')??'';
     }
 
 }
