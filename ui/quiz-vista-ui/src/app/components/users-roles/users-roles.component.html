@@ -1,0 +1,36 @@
+<div class="d-flex flex-row">
+    <app-admin-side-nav></app-admin-side-nav>
+    <div class="flex-grow-1">
+      <div class="user-list-container">
+        <h2 class="text-center">Role użytkowników</h2>
+
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa Użytkownika</th>
+                <th scope="col">User</th>
+                <th scope="col">Moderator</th>
+                <th scope="col">Admin</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users; index as i">
+                    <td>{{i+1}}</td>
+                    <td>{{user.userName}}</td>
+                    <td (click)="toggleRole(user.userName, 'User')">{{hasRole(user.roles, 'User')}}</td>
+                    <td (click)="toggleRole(user.userName, 'Moderator')">{{hasRole(user.roles, 'Moderator')}}</td>
+                    <td (click)="toggleRole(user.userName, 'Admin')">{{hasRole(user.roles, 'Admin')}}</td>
+
+                </tr>
+            </tbody>
+            </table>
+
+            
+            <p class="text-center mt-3">
+                Aby dokonane zmiany w pełni zaczęły obowiązywać, zalecane jest ponowne zalogowanie się użytkownika.
+            </p>
+      </div>
+    </div>
+  </div>
+  

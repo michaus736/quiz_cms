@@ -266,7 +266,7 @@ public partial class QuizVistaDbContext : DbContext
                 .HasColumnName("password_hash");
             entity.Property(e => e.PasswordResetExpire)
                 .HasColumnType("datetime2")
-                .HasColumnName("password_reset_expire");
+                .HasColumnName("reset_password_expire");
             entity.Property(e => e.ResetPasswordToken)
                 .HasMaxLength(80)
                 .IsUnicode(false)

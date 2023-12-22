@@ -39,7 +39,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         public async Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers()
         {
 
-            var users = await _userRepository.GetAll().OrderBy(x=>x.Id).ToListAsync();
+            var users = await _userRepository.GetAll().OrderBy(x => x.Id).ToListAsync();
+            //var users = await _userRepository.GetAll().Include(x=>x.Roles).OrderBy(x => x.Id).ToListAsync();  DLACZEGO TO NIE DZIAŁA??!?!
+
+
+            foreach (var user in users)
+            {
+                var roles = await _userRepository.GetAll().Where(x=>x.Id== user.Id).SelectMany(x=>x.Roles).ToListAsync();
+                user.Roles = roles; 
+            }
+
+
+
 
             return ResultWithModel<IEnumerable<UserResponse>>.Ok(users.ToCollectionResponse().ToList());
         }

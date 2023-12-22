@@ -35,7 +35,6 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet("showusers"), Authorize(Roles = "User")]
-        [Authorize(Roles = "Admin")]
         public async Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers()
         {
             return await _userService.GetUsers();

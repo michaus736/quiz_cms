@@ -14,6 +14,6 @@ export class AppComponent {
   constructor(private authService: AuthService){}
 
   IsUserLogged() {
-    return this.authService.isUserLoggedIn(); // załóżmy, że isUserLoggedIn() to metoda z AuthService
+    return this.authService.isUserLoggedIn(); 
   }
 }

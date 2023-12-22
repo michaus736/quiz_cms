@@ -1,4 +1,8 @@
-<p>logged user works!</p>
+<div class="d-flex flex-row">
+<app-side-nav *ngIf="IsUserLogged()"></app-side-nav>
+
+<div class="flex-grow-1">
+
 <div *ngIf="quizzes && quizzes.length; else noDataTemplate">
     <h2>Available Quizzes</h2>
     <ul>
@@ -15,3 +19,8 @@
   <ng-template #noDataTemplate>
     <p>No quizzes available at the moment.</p>
   </ng-template>
+
+
+</div>
+
+</div>

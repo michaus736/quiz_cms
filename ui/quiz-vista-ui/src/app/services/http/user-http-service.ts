@@ -33,6 +33,11 @@ export class UserHttpService {
     })
   }
 
-
+  toggleRole(userName: string, roleName: string): Observable<any> {
+    return this.http.post(`${this.url}/toggle-role`,{
+        userName: userName,
+        roleName: roleName
+    })
+  }
 
 }

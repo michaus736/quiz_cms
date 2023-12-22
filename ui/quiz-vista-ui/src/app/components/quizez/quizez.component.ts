@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth-service';
 import { QuizService } from 'src/app/services/http/quiz-http-service';
 
 @Component({
@@ -8,7 +9,7 @@ import { QuizService } from 'src/app/services/http/quiz-http-service';
 })
 export class QuizezComponent implements OnInit{
   quizzes: any[] = [];
-  constructor(private quizService:QuizService){}
+  constructor(private quizService:QuizService, private authService:AuthService){}
 
   ngOnInit(): void {
     this.quizService.getQuiz().subscribe(
@@ -20,5 +21,9 @@ export class QuizezComponent implements OnInit{
         console.error("Błąd!!",error);
       }
     )
+  }
+
+  IsUserLogged() {
+    return this.authService.isUserLoggedIn(); 
   }
 }

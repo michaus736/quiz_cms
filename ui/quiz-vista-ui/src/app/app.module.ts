@@ -14,6 +14,9 @@ import { GuestComponent } from './components/guest/guest.component';
 import { QuizezComponent } from './components/quizez/quizez.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { AdminSideNavComponent } from './components/admin-side-nav/admin-side-nav.component';
+import { UsersComponent } from './components/users/users.component';
+import { UsersRolesComponent } from './components/users-roles/users-roles.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
     RegisterComponent,
     GuestComponent,
     QuizezComponent,
-    SideNavComponent
+    SideNavComponent,
+    AdminSideNavComponent,
+    UsersComponent,
+    UsersRolesComponent,
   ],
   imports: [
     BrowserModule,
