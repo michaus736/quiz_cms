@@ -40,9 +40,15 @@ namespace QuizVistaApi.Controllers
             return await _userService.GetUsers();
         }
 
+        [HttpGet("showuser/{userId}")]
+        public async Task<ResultWithModel<UserResponse>> GetUser(int userId)
+        {
+            return await _userService.GetUser(userId);
+        }
+
         [HttpPut("edit")]
         [Authorize(Roles="Admin")]
-        public async Task<Result> Edit([FromBody] UserRequest userRequest)
+        public async Task<Result> Edit([FromBody] UserUpdateRequest userRequest)
         {
             return await _userService.UpdateUser(userRequest);
         }
