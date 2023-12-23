@@ -52,10 +52,11 @@ public partial class QuizVistaDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("answer_text");
             entity.Property(e => e.IsCorrect).HasColumnName("is_correct");
-            entity.Property(e => e.QuestionId).HasColumnName("question_id");
+            entity.Property(e => e.QuestionId).HasColumnName("QUESTION_id");
 
             entity.HasOne(d => d.Question).WithMany(p => p.Answers)
                 .HasForeignKey(d => d.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("ANSWER_QUESTION_FK");
         });
 
@@ -132,7 +133,7 @@ public partial class QuizVistaDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("cms_title_style");
-            entity.Property(e => e.QuizId).HasColumnName("quiz_id");
+            entity.Property(e => e.QuizId).HasColumnName("QUIZ_id");
             entity.Property(e => e.SubstractionalValue).HasColumnName("substractional_value");
             entity.Property(e => e.Text)
                 .HasMaxLength(100)
@@ -147,6 +148,7 @@ public partial class QuizVistaDbContext : DbContext
 
             entity.HasOne(d => d.Quiz).WithMany(p => p.Questions)
                 .HasForeignKey(d => d.QuizId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("QUESTION_QUIZ_FK");
         });
 
@@ -157,8 +159,9 @@ public partial class QuizVistaDbContext : DbContext
             entity.ToTable("QUIZ");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.AttemptCount).HasColumnName("attempt_count");
             entity.Property(e => e.AuthorId).HasColumnName("author_id");
-            entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.CategoryId).HasColumnName("CATEGORY_id");
             entity.Property(e => e.CmsTitleStyle)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -173,19 +176,19 @@ public partial class QuizVistaDbContext : DbContext
             entity.Property(e => e.EditionDate)
                 .HasColumnType("datetime")
                 .HasColumnName("edition_date");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
             entity.Property(e => e.Name)
                 .HasMaxLength(40)
                 .IsUnicode(false)
                 .HasColumnName("name");
+            entity.Property(e => e.PublicAccess).HasColumnName("public_access");
 
             entity.HasOne(d => d.Author).WithMany(p => p.QuizzesNavigation)
                 .HasForeignKey(d => d.AuthorId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("QUIZ_USERS_FK");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Quizzes)
                 .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("QUIZ_CATEGORY_FK");
         });
 
@@ -261,14 +264,18 @@ public partial class QuizVistaDbContext : DbContext
                 .HasMaxLength(256)
                 .IsUnicode(false)
                 .HasColumnName("password_hash");
-            entity.Property(e => e.UserName)
-                .HasMaxLength(30)
-                .IsUnicode(false)
-                .HasColumnName("user_name");
+            entity.Property(e => e.PasswordResetExpire)
+                .HasColumnType("datetime2")
+                .HasColumnName("reset_password_expire");
             entity.Property(e => e.ResetPasswordToken)
                 .HasMaxLength(80)
                 .IsUnicode(false)
                 .HasColumnName("reset_password_token");
+            entity.Property(e => e.UserName)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("user_name");
+
             entity.HasMany(d => d.Quizzes).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "AccessQuiz",

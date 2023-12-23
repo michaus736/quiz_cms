@@ -24,6 +24,9 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 quiz.CategoryId,
                 quiz.CmsTitleStyle,
                 quiz.AuthorId,
+                quiz.IsActive,
+                quiz.AttemptCount,
+                quiz.PublicAccess,
                 quiz?.Author?.ToResponse(),
                 quiz?.Category?.ToResponse(),
                 quiz?.Questions?.ToCollectionResponse()?.ToList(),
@@ -45,6 +48,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 Description = quizRequest.Description,
                 CategoryId = quizRequest.CategoryId,
                 CmsTitleStyle = quizRequest.CmsTitleStyle,
+                IsActive = quizRequest.IsActive,
+                PublicAccess= quizRequest.PublicAccess,
                 //AuthorId = quizRequest.AuthorId,
                 Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()
             };

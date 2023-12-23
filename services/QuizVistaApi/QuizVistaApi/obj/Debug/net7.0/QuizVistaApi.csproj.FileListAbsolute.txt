@@ -168,3 +168,9 @@ C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\n
 C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\MimeKit.dll
 C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
 C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Humanizer.dll
+C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Microsoft.Extensions.Primitives.dll
+C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\Users\karol\Documents\quiz_cms\services\QuizVistaApi\QuizVistaApi\bin\Debug\net7.0\System.CodeDom.dll

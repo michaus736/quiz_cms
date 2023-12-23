@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 
 namespace QuizVistaApi.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AnswerController : Controller
     {
         private readonly IAnswerService _answerService;
@@ -17,24 +20,28 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswers()
         {
             return await _answerService.GetAnswers();
         }
 
         [HttpGet("answer")]
+        [Authorize(Roles = "Moderator")]
         public async Task<ResultWithModel<AnswerResponse>> GetAnswer([FromBody] AnswerRequest answerRequest)
         {
             return await _answerService.GetAnswer(answerRequest);
         }
 
         [HttpGet("answerForQuestion")]
+        [Authorize(Roles = "User")]
         public async Task<ResultWithModel<IEnumerable<AnswerResponse>>> GetAnswersForQuestion([FromBody] QuestionRequest questionRequest)
         {
             return await _answerService.GetAnswersForQuestion(questionRequest.Id);
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = "Moderator")]
         public async Task<IActionResult> CreateAnswer([FromBody] AnswerRequest answerRequest)
         {
             var result = await _answerService.CreateAnswerAsync(answerRequest);
@@ -42,12 +49,14 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpPut("edit")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> EditAnswer([FromBody] AnswerRequest answerRequest)
         {
             return await _answerService.UpdateAnswerAsync(answerRequest);
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> DeleteAnswer([FromBody] AnswerRequest answerRequest)
         {
             return await _answerService.DeleteAnswerAsync(answerRequest.Id);

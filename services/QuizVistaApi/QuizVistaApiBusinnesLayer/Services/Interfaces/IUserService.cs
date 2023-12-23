@@ -1,5 +1,6 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.UserRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<LoginResponse>> LoginUser(UserRequest request);
         Task<Result> ChangePassword(ChangePasswordRequest changePasswordRequest);
         Task<Result> UpdateUser(UserRequest userRequest);
-        Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest resetPasswordInitialRequest);
+        Task<Result> ResetPasswordInit(ResetPasswordInitialRequest resetPasswordInitialRequest);
         Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest);
+        Task<Result> ToggleRole(ToggleRoleRequest toggleRoleRequest);
         Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers();
     }
 }

@@ -17,15 +17,21 @@ public partial class Quiz
 
     public DateTime? EditionDate { get; set; }
 
-    public int CategoryId { get; set; }
+    public int? CategoryId { get; set; }
 
     public string? CmsTitleStyle { get; set; }
 
-    public int AuthorId { get; set; }
+    public int? AuthorId { get; set; }
 
-    public virtual User Author { get; set; } = null!;
+    public bool IsActive { get; set; }
 
-    public virtual Category Category { get; set; } = null!;
+    public int AttemptCount { get; set; } = 0;
+
+    public bool? PublicAccess { get; set; }
+
+    public virtual User? Author { get; set; }
+
+    public virtual Category? Category { get; set; }
 
     public virtual ICollection<Question> Questions { get; set; } = new List<Question>();
 

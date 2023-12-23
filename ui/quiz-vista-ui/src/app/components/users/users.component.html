@@ -1,0 +1,30 @@
+<div class="d-flex flex-row">
+    <app-admin-side-nav></app-admin-side-nav>
+    <div class="flex-grow-1">
+      <div class="user-list-container">
+        <h2 class="text-center">Lista Użytkowników</h2>
+
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa Użytkownika</th>
+                <th scope="col">Imię</th>
+                <th scope="col">Nazwisko</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users; index as i">
+                    <td>{{i+1}}</td>
+                    <td>{{user.userName}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.email}}</td>
+                </tr>
+            </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+  

@@ -21,7 +21,7 @@ namespace QuizVistaApi.Controllers
             _mailService = mailService;
         }
 
-        [HttpGet, Authorize(Roles = "User")]
+        [HttpGet]
         public Result Get()
         {
             return Result.Ok();
@@ -38,7 +38,7 @@ namespace QuizVistaApi.Controllers
         {
             MailRequest x = new MailRequest();
             x.Subject = "Test";
-            x.ToEmail = "abraham.mraz@ethereal.email";
+            x.ToEmail = "hilton.goldner31@ethereal.email";
             x.Body = "Test";
             await _mailService.SendEmailAsync(x);
             return Result.Ok();

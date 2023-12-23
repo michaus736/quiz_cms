@@ -1,0 +1,26 @@
+<div class="d-flex flex-row">
+<app-side-nav *ngIf="IsUserLogged()"></app-side-nav>
+
+<div class="flex-grow-1">
+
+<div *ngIf="quizzes && quizzes.length; else noDataTemplate">
+    <h2>Available Quizzes</h2>
+    <ul>
+      <li *ngFor="let quiz of quizzes">
+        <h3>{{ quiz.name }}</h3>
+        <p>Description: {{ quiz.description || 'No description provided.' }}</p>
+        <p>Creation Date: {{ quiz.creationDate | date }}</p>
+        <p>Number of Attempts: {{ quiz.attemptCount }}</p>
+        <p>Status: {{ quiz.isActive ? 'Active' : 'Inactive' }}</p>
+        <p>Public Access: {{ quiz.publicAccess ? 'Yes' : 'No' }}</p>
+      </li>
+    </ul>
+  </div>
+  <ng-template #noDataTemplate>
+    <p>No quizzes available at the moment.</p>
+  </ng-template>
+
+
+</div>
+
+</div>

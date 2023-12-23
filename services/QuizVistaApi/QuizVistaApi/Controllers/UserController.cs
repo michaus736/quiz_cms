@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.UserRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Implementations;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
@@ -19,12 +20,6 @@ namespace QuizVistaApi.Controllers
         public UserController(IUserService userService)
         {
             _userService = userService;
-        }
-
-        [HttpGet("test")]
-        public Result Test()
-        {
-            return Result.Ok();
         }
 
         [HttpPost("register")]
@@ -46,6 +41,7 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpPut("edit")]
+        [Authorize(Roles="Admin")]
         public async Task<Result> Edit([FromBody] UserRequest userRequest)
         {
             return await _userService.UpdateUser(userRequest);
@@ -59,7 +55,7 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpPost("reset-password-init")]
-        public async Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit([FromBody] ResetPasswordInitialRequest resetPasswordInitialRequest)
+        public async Task<Result> ResetPasswordInit([FromBody] ResetPasswordInitialRequest resetPasswordInitialRequest)
         {
             return await _userService.ResetPasswordInit(resetPasswordInitialRequest);
         }
@@ -68,6 +64,13 @@ namespace QuizVistaApi.Controllers
         public async Task<Result> ResetPassword([FromBody] ResetPasswordRequest resetPassRequest)
         {
             return await _userService.ResetPassword(resetPassRequest);
+        }
+
+        [HttpPost("toggle-role")]
+        [Authorize(Roles = "Admin")]
+        public async Task<Result> ToggleRole([FromBody] ToggleRoleRequest toggleRoleRequest)
+        {
+            return await _userService.ToggleRole(toggleRoleRequest);
         }
     }
 }

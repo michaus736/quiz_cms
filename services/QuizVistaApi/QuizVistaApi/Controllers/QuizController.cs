@@ -22,12 +22,13 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizez()
         {
             return await _quizService.GetQuizesAsync();
         }
 
-        [HttpPost("create"), Authorize(Roles = "User")]
+        [HttpPost("create"), Authorize(Roles = "Moderator")]
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
@@ -38,24 +39,30 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpPut("edit")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> EditQuiz([FromBody] QuizRequest quizRequest)
         {
-            return await _quizService.UpdateQuizAsync(quizRequest);
+            var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.UpdateQuizAsync(userId,quizRequest);
         }
 
         [HttpDelete("delete")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> DeleteQuiz([FromBody] QuizRequest quizRequest)
         {
-            return await _quizService.DeleteQuizAsync(quizRequest.Id);
+            var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.DeleteQuizAsync(userId,quizRequest.Id);
         }
 
         [HttpPost("assignuser")]
+        [Authorize(Roles="Moderator")]
         public async Task<Result> AssignUser([FromBody] AssignUserRequest assignUserRequest)
         {
             return await _quizService.AssignUser(assignUserRequest);
         }
 
         [HttpPost("unassignuser")]
+        [Authorize(Roles = "Moderator")]
         public async Task<Result> UnAssignUser([FromBody] AssignUserRequest assignUserRequest)
         {
             return await _quizService.UnAssignUser(assignUserRequest);
