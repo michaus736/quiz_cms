@@ -36,9 +36,14 @@ export class UserHttpService {
   }
 
   update(user: User): Observable<any> {
-    // Zakładamy, że endpoint "/edit" nie wymaga ID w URL, jeśli wymaga, dostosuj URL
     return this.http.put(`${this.url}/edit`, user);
   }
   
+  showUsers():Observable<any>{
+    return this.http.get(`${this.url}/showusers`);
+  }
+  showUser(userId: string): Observable<any> {
+    return this.http.get(`${this.url}/showuser/${userId}`);
+  }
 
 }

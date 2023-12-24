@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { UserHttpService } from 'src/app/services/http/user-http-service';
-import { UsersHttpService } from 'src/app/services/http/users-http.service';
 
 
 @Component({
@@ -13,15 +12,16 @@ export class EditUserComponent implements OnInit {
   user!: User;
   userId: string = '1';
   updateSuccess = false;
+  errors: string[] = [];
 
-  constructor(private usersHttpService: UsersHttpService, private userHttpService: UserHttpService) {}
+  constructor(private userHttpService: UserHttpService) {}
 
   ngOnInit(): void {
     this.getUserData();
   }
 
   getUserData(): void {
-    this.usersHttpService.showUser(this.userId).subscribe(
+    this.userHttpService.showUser(this.userId).subscribe(
       (userData: any) => {
         console.log(userData);
         this.user = userData.model;
@@ -37,10 +37,16 @@ export class EditUserComponent implements OnInit {
       response => {
         console.log('User updated successfully', response);
         this.updateSuccess = true;
+        this.errors = [];
         setTimeout(() => this.updateSuccess = false, 5000);
       },
       error => {
-        console.error('Error updating user', error);
+        this.updateSuccess = false;
+        if (error.error && error.error.errors) {
+          this.errors = Object.keys(error.error.errors).flatMap(k => error.error.errors[k]);
+        } else {
+          this.errors = ['Wystąpił błąd podczas aktualizacji danych użytkownika.'];
+        }
       }
     );
   }

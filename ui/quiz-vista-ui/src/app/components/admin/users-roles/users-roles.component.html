@@ -3,6 +3,12 @@
     <div class="flex-grow-1">
       <div class="user-list-container">
         <h2 class="text-center">Role użytkowników</h2>
+        <div class="col-md-5">
+        <input type="text" class="form-control mb-3" placeholder="Wyszukaj użytkownika" [(ngModel)]="searchTerm" (ngModelChange)="filterUsers()">
+        </div>
+        <div *ngIf="updateSuccess" class="alert alert-success" role="alert">
+          Zmiana roli zapisana.
+        </div>
 
         <table class="table table-striped">
             <thead>
@@ -15,7 +21,7 @@
               </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of users; index as i">
+                <tr *ngFor="let user of filteredUsers; index as i">
                     <td>{{i+1}}</td>
                     <td>{{user.userName}}</td>
                     <td (click)="toggleRole(user.userName, 'User')">{{hasRole(user.roles, 'User')}}</td>

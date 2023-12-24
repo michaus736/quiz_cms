@@ -3,7 +3,9 @@
     <div class="flex-grow-1">
       <div class="user-list-container">
         <h2 class="text-center">Lista Użytkowników</h2>
-
+        <div class="col-md-5">
+          <input type="text" class="form-control mb-3" placeholder="Wyszukaj użytkownika" [(ngModel)]="searchTerm" (ngModelChange)="filterUsers()">
+          </div>
         <table class="table table-striped">
             <thead>
               <tr>
@@ -15,7 +17,7 @@
               </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let user of users; index as i">
+                <tr *ngFor="let user of filteredUsers; index as i">
                     <td>{{i+1}}</td>
                     <td>
                       <a [routerLink]="['/edit-user', user.id]">{{ user.userName }}</a>
