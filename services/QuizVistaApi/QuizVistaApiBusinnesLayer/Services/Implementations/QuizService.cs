@@ -27,7 +27,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             _userRepository = userRepository;
         }
 
-        public async Task<Result> CreateQuizAsync(string userId,QuizRequest quizToCreate)
+        public async Task<Result> CreateQuizAsync(string userId, QuizRequest quizToCreate)
         {
             var entity = quizToCreate.ToEntity();
 
@@ -109,7 +109,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
         }
 
-        public async Task<Result> UpdateQuizAsync(string userId,QuizRequest quizToUpdate)
+        public async Task<Result> UpdateQuizAsync(string userId, QuizRequest quizToUpdate)
         {
             var existingQuiz = await _quizRepository.GetAll().FirstOrDefaultAsync(q => q.Id == quizToUpdate.Id);
 
@@ -196,6 +196,22 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             await _quizRepository.UpdateAsync(quiz);
 
             return Result.Ok();
+        }
+
+        public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizListForUser(string userName)
+        {
+            User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (loggedUser is null) throw new Exception($"user {userName} cannot find");
+
+            List<QuizResponse> res = new List<QuizResponse>();
+
+            List<Quiz> quizes = await _quizRepository.GetAll().Include(x=>x.Users).ToListAsync();
+
+            //add public quizes
+            res.AddRange(quizes.Where(x => (x.PublicAccess is not null && x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id)).ToCollectionResponse());
+
+            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(res);
         }
     }
 }

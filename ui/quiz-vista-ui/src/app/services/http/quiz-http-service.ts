@@ -7,7 +7,7 @@ import { ApiConfig } from '../../config/api-config';
   providedIn: 'root'
 })
 
-export class QuizService {
+export class QuizHttpService {
 
   url: string =  `${ApiConfig.url}/Quiz`;
 

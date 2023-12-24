@@ -14,6 +14,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static AnswerResponse ToResponse(this Answer answer)
         {
+            if (answer is null) return null;
+
             return new AnswerResponse
             (
                 answer.Id,

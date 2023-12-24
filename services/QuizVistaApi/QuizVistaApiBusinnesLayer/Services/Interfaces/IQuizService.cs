@@ -25,5 +25,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         #endregion
         Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id);
 
+        Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizListForUser(string userName);
+
     }
 }

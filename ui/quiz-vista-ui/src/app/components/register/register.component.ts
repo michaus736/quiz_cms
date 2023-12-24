@@ -18,7 +18,15 @@ export class RegisterComponent {
   constructor(private userHttpService: UserHttpService) { }
 
   onSubmit(): void {
-    this.userHttpService.login(this.registerData.userName, this.registerData.password).subscribe(
+
+    console.log(this.registerData)
+
+    this.userHttpService.register(
+      this.registerData.userName, 
+      this.registerData.password,
+      this.registerData.firstName,
+      this.registerData.lastName,
+      this.registerData.email).subscribe(
       response => {
         console.log('Register successful', response);
       },
