@@ -17,7 +17,9 @@
             <tbody>
                 <tr *ngFor="let user of users; index as i">
                     <td>{{i+1}}</td>
-                    <td>{{user.userName}}</td>
+                    <td>
+                      <a [routerLink]="['/edit-user', user.id]">{{ user.userName }}</a>
+                    </td>
                     <td>{{user.firstName}}</td>
                     <td>{{user.lastName}}</td>
                     <td>{{user.email}}</td>
