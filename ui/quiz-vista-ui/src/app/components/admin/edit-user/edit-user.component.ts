@@ -26,7 +26,7 @@ export class EditUserComponent implements OnInit {
         console.log(userData);
         this.user = userData.model;
       },
-      (error) => {
+      error => {
         console.error('Error fetching user:', error);
       }
     );

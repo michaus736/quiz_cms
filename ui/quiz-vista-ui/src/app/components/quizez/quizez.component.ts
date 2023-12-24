@@ -9,7 +9,7 @@ import { QuizHttpService } from 'src/app/services/http/quiz-http-service';
 })
 export class QuizezComponent implements OnInit{
   quizzes: any[] = [];
-  constructor(private quizService:QuizHttpService, private authService:AuthService){}
+  constructor(private quizService: QuizHttpService, private authService: AuthService){}
 
   ngOnInit(): void {
     this.quizService.getQuiz().subscribe(
