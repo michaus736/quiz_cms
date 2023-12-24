@@ -1,4 +1,5 @@
-﻿using QuizVistaApiInfrastructureLayer.Attributes;
+﻿using QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
+using QuizVistaApiInfrastructureLayer.Attributes;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ public class TagResponse
 
     public virtual List<QuizResponse> Quizzes { get; set; } = new List<QuizResponse>();
 
-    private TagResponse() { }
+    public TagResponse() { }
 
     public TagResponse(int id,
         string name, 

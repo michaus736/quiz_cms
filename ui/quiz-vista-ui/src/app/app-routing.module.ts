@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'quizez', component: QuizezComponent},
   { path: 'users', component: UsersComponent},
   { path: 'users-roles', component: UsersRolesComponent},
-  {path: 'edit-user/:id', component:EditUserComponent},
+  { path: 'edit-user/:id', component:EditUserComponent},
 
 
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Domyślna ścieżka

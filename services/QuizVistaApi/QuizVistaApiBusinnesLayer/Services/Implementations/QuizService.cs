@@ -5,11 +5,13 @@ using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +22,13 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
     {
         private readonly IRepository<Quiz> _quizRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Tag> _tagRepository;
 
-        public QuizService(IRepository<Quiz> quizRepository, IRepository<User> userRepository)
+        public QuizService(IRepository<Quiz> quizRepository, IRepository<User> userRepository, IRepository<Tag> tagRepository)
         {
             _quizRepository = quizRepository;
             _userRepository = userRepository;
+            _tagRepository = tagRepository;
         }
 
         public async Task<Result> CreateQuizAsync(string userId, QuizRequest quizToCreate)
@@ -42,6 +46,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             entity.CreationDate = DateTime.Now;
             entity.EditionDate = DateTime.Now;
+
+            entity.Tags = new List<Tag>();
+
+            var existingTags = await _tagRepository.GetAll()
+                .Where(tag => quizToCreate.TagIds.Contains(tag.Id))
+                .ToListAsync();
+
+            foreach (var tag in existingTags)
+            {
+                entity.Tags.Add(tag);
+            }
+
 
 
             await _quizRepository.InsertAsync(entity);
@@ -198,20 +214,39 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<ResultWithModel<IEnumerable<QuizResponse>>> GetQuizListForUser(string userName)
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForUser(string userName)
         {
             User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
 
             if (loggedUser is null) throw new Exception($"user {userName} cannot find");
 
-            List<QuizResponse> res = new List<QuizResponse>();
-
-            List<Quiz> quizes = await _quizRepository.GetAll().Include(x=>x.Users).ToListAsync();
+            List<Quiz> quizes = await _quizRepository.GetAll()
+                .Include(x=>x.Users)
+                .Include(x=>x.Category)
+                .Include(x=>x.Tags)
+                .ToListAsync();
 
             //add public quizes
-            res.AddRange(quizes.Where(x => (x.PublicAccess is not null && x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id)).ToCollectionResponse());
+            IEnumerable<Quiz> quizesAssignedToUser = quizes
+                .Where(x => (x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id))
+                .Where(x => x.IsActive)
+                .ToList();
 
-            return ResultWithModel<IEnumerable<QuizResponse>>.Ok(res);
+            IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse
+            {
+                Name = x.Name,
+                Description = x.Description ?? "",
+                AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
+                CategoryName = x.Category.Name,
+                Tags = x.Tags.Select(y=>new TagResponse
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList()
+            }).ToList();
+
+            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
         }
     }
 }

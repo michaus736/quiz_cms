@@ -26,7 +26,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> CreateTag(TagRequest tag)
         {
-            await _tagRepository.InsertAsync(tag.ToEntity());
+            Tag entity = tag.ToEntity();
+            entity.Id = default;
+
+            await _tagRepository.InsertAsync(entity);
 
             return Result.Ok();
         }

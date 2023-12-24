@@ -13,6 +13,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
     {
         public static UserResponse ToResponse(this User user)
         {
+            if (user is null) return null;
+
             return new UserResponse(
                 user.Id,
                 user.UserName,
@@ -30,7 +32,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<UserResponse> ToCollectionResponse(this IEnumerable<User> users)
         {
-            return users.Select(ToResponse) ?? new List<UserResponse>();
+            if (users is null || !users.Any()) return Enumerable.Empty<UserResponse>();
+            return users.Select(ToResponse) ?? Enumerable.Empty<UserResponse>();
         }
 
         public static User ToEntity(this UserRequest userRequest)

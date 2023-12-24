@@ -3,7 +3,7 @@ using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace QuizVistaApiBusinnesLayer.Models.Responses;
+namespace QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
 
 
 public class QuizResponse
@@ -47,11 +47,11 @@ public class QuizResponse
         int id,
         string name,
         string? description,
-        DateTime creationDate, 
+        DateTime creationDate,
         DateTime? editionDate,
-        int? categoryId, 
+        int? categoryId,
         string? cmsTitleStyle,
-        int? authorId, 
+        int? authorId,
         bool isActive,
         int attemptCount,
         bool? publicAccess,
@@ -79,5 +79,5 @@ public class QuizResponse
         Users = users;
     }
 
-    
+
 }
