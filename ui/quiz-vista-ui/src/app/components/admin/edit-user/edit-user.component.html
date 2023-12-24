@@ -1,0 +1,32 @@
+<div class="d-flex flex-row">
+  <app-admin-side-nav></app-admin-side-nav>
+  <div class="flex-grow-1">
+    <div *ngIf="user">
+      <h2>Edit User</h2>
+      <div *ngIf="updateSuccess" class="alert alert-success" role="alert">
+        Update successful!
+      </div>
+
+      <form>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" [(ngModel)]="user.userName">
+        </div>
+        <div class="mb-3">
+          <label for="firstName" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="user.firstName">
+        </div>
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email">
+        </div>
+        <button type="button" class="btn btn-primary" (click)="updateUser()">Update</button>
+      </form>
+    </div>
+    <p *ngIf="!user">Loading user data...</p>
+  </div>
+</div>

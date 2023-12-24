@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -49,10 +50,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 user.Roles = roles; 
             }
 
-
-
-
             return ResultWithModel<IEnumerable<UserResponse>>.Ok(users.ToCollectionResponse().ToList());
+        }
+
+        public async Task<ResultWithModel<UserResponse>> GetUser(int userId)
+        {
+            var user = await _userRepository.GetAsync(userId);
+
+            if (user is null)
+                throw new ArgumentNullException($"User #{userId} not found");
+
+
+            return ResultWithModel<UserResponse>.Ok(user.ToResponse());
         }
 
         public async Task<Result> RegisterUser(UserRequest request)
@@ -129,7 +138,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             //return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
         }
 
-        public async Task<Result> UpdateUser(UserRequest userRequest)
+        public async Task<Result> UpdateUser(UserUpdateRequest userRequest)
         {
             var user = await _userRepository.GetAll().Where(u=>u.UserName==userRequest.UserName).FirstOrDefaultAsync();
 

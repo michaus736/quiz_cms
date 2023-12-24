@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { AdminPanelComponent } from './components/admin/admin-panel/admin-panel.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { TopMenuComponent } from './components/top-menu/top-menu.component';
 import { BaseComponent } from './components/base/base.component';
@@ -14,9 +14,10 @@ import { GuestComponent } from './components/guest/guest.component';
 import { QuizezComponent } from './components/quizez/quizez.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
-import { AdminSideNavComponent } from './components/admin-side-nav/admin-side-nav.component';
-import { UsersComponent } from './components/users/users.component';
-import { UsersRolesComponent } from './components/users-roles/users-roles.component';
+import { AdminSideNavComponent } from './components/admin/admin-side-nav/admin-side-nav.component';
+import { UsersComponent } from './components/admin/users/users.component';
+import { UsersRolesComponent } from './components/admin/users-roles/users-roles.component';
+import { EditUserComponent } from './components/admin/edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { UsersRolesComponent } from './components/users-roles/users-roles.compon
     AdminSideNavComponent,
     UsersComponent,
     UsersRolesComponent,
+    EditUserComponent,
   ],
   imports: [
     BrowserModule,

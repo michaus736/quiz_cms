@@ -15,10 +15,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<Result> RegisterUser(UserRequest request);
         Task<ResultWithModel<LoginResponse>> LoginUser(UserRequest request);
         Task<Result> ChangePassword(ChangePasswordRequest changePasswordRequest);
-        Task<Result> UpdateUser(UserRequest userRequest);
+        Task<Result> UpdateUser(UserUpdateRequest userRequest);
         Task<Result> ResetPasswordInit(ResetPasswordInitialRequest resetPasswordInitialRequest);
         Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest);
         Task<Result> ToggleRole(ToggleRoleRequest toggleRoleRequest);
+        Task<ResultWithModel<UserResponse>> GetUser(int userId);
         Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers();
     }
 }
