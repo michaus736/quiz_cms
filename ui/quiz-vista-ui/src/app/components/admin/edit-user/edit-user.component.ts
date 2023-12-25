@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { UserHttpService } from 'src/app/services/http/user-http-service';
 
@@ -10,13 +11,17 @@ import { UserHttpService } from 'src/app/services/http/user-http-service';
 })
 export class EditUserComponent implements OnInit {
   user!: User;
-  userId: string = '1';
+  userId: string = '';
   updateSuccess = false;
   errors: string[] = [];
 
-  constructor(private userHttpService: UserHttpService) {}
+  constructor(private userHttpService: UserHttpService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.userId = params['id'];
+      this.getUserData();
+    });
     this.getUserData();
   }
 

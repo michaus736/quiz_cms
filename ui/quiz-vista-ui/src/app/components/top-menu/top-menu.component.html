@@ -9,8 +9,8 @@
         <li class="nav-item" *ngIf="IsUserLogged()" >
             <a class="nav-link" href="#" (click)="Logout()">Logout</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Moderator Panel</a>
+        <li class="nav-item" *ngIf="IsUserLogged()" routerLink="moderator" routerLinkActive="active">
+            <a class="nav-link">Moderator Panel</a>
         </li>
         <li class="nav-item" *ngIf="IsUserLogged()" routerLink="admin" routerLinkActive="active">
             <a class="nav-link">Admin Panel</a>

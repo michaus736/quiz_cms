@@ -28,6 +28,13 @@ namespace QuizVistaApi.Controllers
             return await _categoryService.GetCategories();
         }
 
+        [HttpGet("{categoryId}")]
+        [Authorize(Roles = "Moderator")]
+        public async Task<ResultWithModel<CategoryResponse>> GetCategory(int categoryId)
+        {
+            return await _categoryService.GetCategory(categoryId);
+        }
+
         [HttpPost("create")]
         [Authorize(Roles = "Moderator")]
         public async Task<Result> CreateCategory([FromBody] CategoryRequest categoryRequest)
@@ -42,11 +49,11 @@ namespace QuizVistaApi.Controllers
             return await _categoryService.UpdateCategory(categoryRequest);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> DeleteCategory([FromBody] CategoryRequest categoryRequest)
+        public async Task<Result> DeleteCategory(int id)
         {
-            return await _categoryService.DeleteCategory(categoryRequest.Id);
+            return await _categoryService.DeleteCategory(id);
         }
 
 

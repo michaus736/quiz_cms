@@ -19,6 +19,12 @@ import { UsersComponent } from './components/admin/users/users.component';
 import { UsersRolesComponent } from './components/admin/users-roles/users-roles.component';
 import { EditUserComponent } from './components/admin/edit-user/edit-user.component';
 import { ErrorComponent } from './components/error/error.component';
+import { ModeratorSideNavComponent } from './components/moderator/moderator-side-nav/moderator-side-nav.component';
+import { CategoryComponent } from './components/moderator/category/category.component';
+import { ModeratorComponent } from './components/moderator/moderator/moderator.component';
+import { TagsComponent } from './components/moderator/tags/tags.component';
+import { EditCategoryComponent } from './components/moderator/edit-category/edit-category.component';
+import { AddCategoryComponent } from './components/moderator/add-category/add-category.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +42,12 @@ import { ErrorComponent } from './components/error/error.component';
     UsersRolesComponent,
     EditUserComponent,
     ErrorComponent,
+    ModeratorSideNavComponent,
+    CategoryComponent,
+    ModeratorComponent,
+    TagsComponent,
+    EditCategoryComponent,
+    AddCategoryComponent,
   ],
   imports: [
     BrowserModule,

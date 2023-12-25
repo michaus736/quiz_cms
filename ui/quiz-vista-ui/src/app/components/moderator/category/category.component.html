@@ -1,0 +1,32 @@
+<div class="d-flex flex-row">
+    <app-moderator-side-nav></app-moderator-side-nav>
+    <div class="flex-grow-1">
+      <div class="user-list-container">
+        <h2 class="text-center">Zarządzanie kategoriami</h2>
+        <div class="col-md-6">
+          <div class="d-flex mb-3">
+            <button type="button" class="btn btn-primary me-3" [routerLink]="['/moderator/add-category']">Dodaj</button>
+            <input type="text" class="form-control" placeholder="Wyszukaj kategorie" [(ngModel)]="searchTerm" (ngModelChange)="filterCategories()">
+          </div>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nazwa</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let category of filteredCategories; index as i">
+                    <td>{{i+1}}</td>
+                    <td>
+                      <a [routerLink]="['/moderator/edit-category', category.id]">{{category.name}}</a>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+  
