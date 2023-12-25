@@ -2,35 +2,35 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiConfig } from 'src/app/config/api-config';
-import { Category } from 'src/app/models/category';
+import { Tag } from 'src/app/models/tag';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TagHttpService {
 
-  url: string =  `${ApiConfig.url}/Category`;
+  url: string =  `${ApiConfig.url}/Tag`;
 
   constructor(private http: HttpClient) { }
 
-  showCategories():Observable<any>{
+  showTags():Observable<any>{
     return this.http.get(`${this.url}`)
   }
 
-  showCategory(categoryId: string): Observable<any>{
-    return this.http.get(`${this.url}/${categoryId}`);
+  showTag(tagId: string): Observable<any>{
+    return this.http.get(`${this.url}/${tagId}`);
   }
 
-  create(category: Category): Observable<any> {
-    return this.http.post(`${this.url}/create`, category);
+  create(tag: Tag): Observable<any> {
+    return this.http.post(`${this.url}/create`, tag);
   }
 
 
-  update(category: Category): Observable<any> {
-    return this.http.put(`${this.url}/edit`, category);
+  update(tag: Tag): Observable<any> {
+    return this.http.put(`${this.url}/edit`, tag);
   }
 
-  delete(categoryId: string): Observable<any>{
-    return this.http.delete(`${this.url}/delete/${categoryId}`)
+  delete(tagId: string): Observable<any>{
+    return this.http.delete(`${this.url}/delete/${tagId}`)
   }
 }

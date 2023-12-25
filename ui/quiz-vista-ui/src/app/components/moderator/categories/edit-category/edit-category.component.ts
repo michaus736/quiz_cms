@@ -65,8 +65,7 @@ export class EditCategoryComponent {
     this.categoryHttpService.delete(categoryId).subscribe(
       response => {
         console.log('Category deleted successfully', response);
-        // Przekierowanie po pomyślnym usunięciu
-        this.router.navigate(['/moderator/category']);
+        this.router.navigate(['/moderator/categories']);
       },
       error => {
         if (error.error && error.error.errors) {

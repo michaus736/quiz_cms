@@ -18,7 +18,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let user of filteredUsers; index as i">
-                    <td>{{i+1}}</td>
+                    <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                     <td>
                       <a [routerLink]="['/admin/edit-user', user.id]">{{ user.userName }}</a>
                     </td>
@@ -28,6 +28,12 @@
                 </tr>
             </tbody>
             </table>
+
+            <div class="pagination-container">
+              <button class="btn btn-secondary" (click)="changePage(-1)" [disabled]="currentPage === 1">Poprzednia</button>
+              <span>Strona {{currentPage}}</span>
+              <button class="btn btn-secondary" (click)="changePage(1)" [disabled]="currentPage * itemsPerPage >= users.length">Następna</button>
+            </div>
       </div>
     </div>
   </div>

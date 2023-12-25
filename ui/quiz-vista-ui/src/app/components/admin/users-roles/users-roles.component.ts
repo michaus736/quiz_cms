@@ -12,6 +12,9 @@ export class UsersRolesComponent {
   filteredUsers: any[] = [];
   searchTerm: string = '';
   updateSuccess = false;
+  currentPage: number = 1;
+  itemsPerPage: number = 10; 
+
   constructor(private authService:AuthService, private userHttpService:UserHttpService){};
 
   ngOnInit(): void {
@@ -32,13 +35,8 @@ export class UsersRolesComponent {
   }
 
   filterUsers(): void {
-    if (!this.searchTerm) {
-      this.filteredUsers = this.users;
-    } else {
-      this.filteredUsers = this.users.filter(user =>
-        user.userName.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-    }
+    this.currentPage=1;
+    this.applyUserFilterAndPagination();
   }
 
 
@@ -74,5 +72,26 @@ private refreshUsers(): void {
       console.error('Error refreshing users', error);
     }
   );
+}
+
+private applyUserFilterAndPagination(): void {
+  const filtered = this.searchTerm ? this.users.filter(user => 
+    user.userName.toLowerCase().includes(this.searchTerm.toLowerCase())) : this.users;
+
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.filteredUsers = filtered.slice(startIndex, endIndex);
+}
+
+changePage(step: number): void {
+  const newPage = this.currentPage + step;
+  const filteredLength = this.searchTerm ? this.users.filter(user => 
+    user.userName.toLowerCase().includes(this.searchTerm.toLowerCase())).length : this.users.length;
+  const totalPages = Math.ceil(filteredLength / this.itemsPerPage);
+
+  if (newPage > 0 && newPage <= totalPages) {
+    this.currentPage = newPage;
+    this.applyUserFilterAndPagination();
+  }
 }
 }

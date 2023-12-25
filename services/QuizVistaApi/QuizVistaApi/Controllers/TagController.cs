@@ -26,11 +26,11 @@ namespace QuizVistaApi.Controllers
             return await _tagService.GetTags();
         }
 
-        [HttpGet("tag/{id}")]
+        [HttpGet("{id}")]
         [Authorize(Roles = "User")]
-        public async Task<ResultWithModel<TagResponse>> GetTag(int tagId)
+        public async Task<ResultWithModel<TagResponse>> GetTag(int id)
         {
-            return await _tagService.GetTag(tagId);
+            return await _tagService.GetTag(id);
         }
 
         [HttpPost("create")]
@@ -47,11 +47,11 @@ namespace QuizVistaApi.Controllers
             return await _tagService.UpdateTag(tagRequest);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> DeleteTag([FromBody] TagRequest tagRequest)
+        public async Task<Result> DeleteTag(int id)
         {
-            return await _tagService.DeleteTag(tagRequest.Id);
+            return await _tagService.DeleteTag(id);
         }
 
     }

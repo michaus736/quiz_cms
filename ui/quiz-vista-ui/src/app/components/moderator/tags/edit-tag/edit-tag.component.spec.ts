@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CategoryComponent } from './category.component';
+import { EditTagComponent } from './edit-tag.component';
 
-describe('CategoryComponent', () => {
-  let component: CategoryComponent;
-  let fixture: ComponentFixture<CategoryComponent>;
+describe('EditTagComponent', () => {
+  let component: EditTagComponent;
+  let fixture: ComponentFixture<EditTagComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CategoryComponent]
+      declarations: [EditTagComponent]
     });
-    fixture = TestBed.createComponent(CategoryComponent);
+    fixture = TestBed.createComponent(EditTagComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

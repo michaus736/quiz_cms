@@ -19,7 +19,7 @@ export class AddCategoryComponent {
     this.categoryHttpService.create(this.category).subscribe(
       response => {
         console.log('Category created successfully', response);
-        this.router.navigate(['/moderator/category']);
+        this.router.navigate(['/moderator/categories']);
       },
       error => {
         this.createSuccess = false;
