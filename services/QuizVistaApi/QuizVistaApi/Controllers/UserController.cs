@@ -34,13 +34,14 @@ namespace QuizVistaApi.Controllers
             return await _userService.LoginUser(userRequest);
         }
 
-        [HttpGet("showusers"), Authorize(Roles = "User")]
+        [HttpGet("showusers"), Authorize(Roles = "Admin")]
         public async Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers()
         {
             return await _userService.GetUsers();
         }
 
         [HttpGet("showuser/{userId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ResultWithModel<UserResponse>> GetUser(int userId)
         {
             return await _userService.GetUser(userId);
@@ -53,7 +54,7 @@ namespace QuizVistaApi.Controllers
             return await _userService.UpdateUser(userRequest);
         }
 
-        [HttpPost("changepassword"), Authorize(Roles = "User")]
+        [HttpPost("changepassword"), Authorize(Roles = "Admin")]
         public async Task<Result> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
         {
             changePasswordRequest.ValidateUserName = User.FindFirst(ClaimTypes.Name)?.Value;

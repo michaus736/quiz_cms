@@ -18,6 +18,15 @@ import { AdminSideNavComponent } from './components/admin/admin-side-nav/admin-s
 import { UsersComponent } from './components/admin/users/users.component';
 import { UsersRolesComponent } from './components/admin/users-roles/users-roles.component';
 import { EditUserComponent } from './components/admin/edit-user/edit-user.component';
+import { ErrorComponent } from './components/error/error.component';
+import { ModeratorSideNavComponent } from './components/moderator/moderator-side-nav/moderator-side-nav.component';
+import { CategoriesComponent } from './components/moderator/categories/categories/categories.component';
+import { ModeratorComponent } from './components/moderator/moderator/moderator.component';
+import { TagsComponent } from './components/moderator/tags/tags/tags.component';
+import { EditCategoryComponent } from './components/moderator/categories/edit-category/edit-category.component';
+import { AddCategoryComponent } from './components/moderator/categories/add-category/add-category.component';
+import { AddTagComponent } from './components/moderator/tags/add-tag/add-tag.component';
+import { EditTagComponent } from './components/moderator/tags/edit-tag/edit-tag.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +43,15 @@ import { EditUserComponent } from './components/admin/edit-user/edit-user.compon
     UsersComponent,
     UsersRolesComponent,
     EditUserComponent,
+    ErrorComponent,
+    ModeratorSideNavComponent,
+    CategoriesComponent,
+    ModeratorComponent,
+    TagsComponent,
+    EditCategoryComponent,
+    AddCategoryComponent,
+    AddTagComponent,
+    EditTagComponent,
   ],
   imports: [
     BrowserModule,
