@@ -8,6 +8,7 @@ import { QuizezComponent } from './components/quizez/quizez.component';
 import { UsersComponent } from './components/admin/users/users.component';
 import { UsersRolesComponent } from './components/admin/users-roles/users-roles.component';
 import { EditUserComponent } from './components/admin/edit-user/edit-user.component';
+import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-details.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
@@ -15,9 +16,10 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'admin', component: AdminPanelComponent},
   { path: 'quizez', component: QuizezComponent},
+  { path: 'quiz-details/:quizName', component: QuizDetailsComponent},
   { path: 'users', component: UsersComponent},
   { path: 'users-roles', component: UsersRolesComponent},
-  { path: 'edit-user/:id', component:EditUserComponent},
+  { path: 'edit-user/:id', component: EditUserComponent},
 
 
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Domyślna ścieżka

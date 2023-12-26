@@ -18,6 +18,7 @@ import { AdminSideNavComponent } from './components/admin/admin-side-nav/admin-s
 import { UsersComponent } from './components/admin/users/users.component';
 import { UsersRolesComponent } from './components/admin/users-roles/users-roles.component';
 import { EditUserComponent } from './components/admin/edit-user/edit-user.component';
+import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-details.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { EditUserComponent } from './components/admin/edit-user/edit-user.compon
     UsersComponent,
     UsersRolesComponent,
     EditUserComponent,
+    QuizDetailsComponent,
   ],
   imports: [
     BrowserModule,

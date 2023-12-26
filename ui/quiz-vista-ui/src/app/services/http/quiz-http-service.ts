@@ -17,6 +17,10 @@ export class QuizHttpService {
   
   getQuiz(): Observable<any> {
     return this.http.get(`${this.url}/User`);
-    
   }
+
+getQuizDetails(quizName: string): Observable<any> {
+  return this.http.get(`${this.url}/details?quizName=${quizName}`)
+}
+
 }

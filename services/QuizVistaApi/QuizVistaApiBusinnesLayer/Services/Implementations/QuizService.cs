@@ -23,12 +23,17 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         private readonly IRepository<Quiz> _quizRepository;
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Tag> _tagRepository;
+        private readonly IRepository<Attempt> _attemptRepository;
 
-        public QuizService(IRepository<Quiz> quizRepository, IRepository<User> userRepository, IRepository<Tag> tagRepository)
+        public QuizService(IRepository<Quiz> quizRepository,
+            IRepository<User> userRepository,
+            IRepository<Tag> tagRepository,
+            IRepository<Attempt> attemptRepository)
         {
             _quizRepository = quizRepository;
             _userRepository = userRepository;
             _tagRepository = tagRepository;
+            _attemptRepository = attemptRepository;
         }
 
         public async Task<Result> CreateQuizAsync(string userId, QuizRequest quizToCreate)
@@ -247,6 +252,51 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             }).ToList();
 
             return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+        }
+
+        public async Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetailsForUser(string quizName, string userName)
+        {
+            //getting quiz props
+            Quiz? quiz = await _quizRepository.GetAll()
+                .Include(x => x.Author)
+                .Include(x => x.Category)
+                .Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Name == quizName);
+
+            if (quiz is null) throw new ArgumentException($"quiz {quizName} does not exist");
+
+            //getting user attempts count
+            User? user = await _userRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentException($"user does not exist");
+
+            IList<Attempt> userAttempts = await _attemptRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.Answers)
+                .Where(x => x.UserId == user.Id)
+                .ToListAsync();
+
+            QuizDetailsForUser quizDetails = new QuizDetailsForUser
+            {
+                Name = quiz.Name,
+                Description = quiz.Description,
+                AuthorName = $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                CategoryName = quiz.Category.Name,
+                AttemptsLimit = quiz.AttemptCount,
+                Tags = quiz.Tags.Select(x => new TagResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList(),
+                UserAttempts = userAttempts.Count
+            };
+
+
+
+            return ResultWithModel<QuizDetailsForUser>.Ok(quizDetails);
+
         }
     }
 }
