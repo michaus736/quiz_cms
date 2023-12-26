@@ -24,6 +24,13 @@ const routes: Routes = [
   { path: 'home', component: GuestComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
+  { path: 'admin', component: AdminPanelComponent},
+  { path: 'quizez', component: QuizezComponent},
+  { path: 'quiz-details/:quizName', component: QuizDetailsComponent},
+  { path: 'users', component: UsersComponent},
+  { path: 'users-roles', component: UsersRolesComponent},
+  { path: 'edit-user/:id', component: EditUserComponent},
+
   { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'quizez', component: QuizezComponent, canActivate:[UserGuard]},
   { path: 'admin/users', component: UsersComponent , canActivate: [AdminGuard]},

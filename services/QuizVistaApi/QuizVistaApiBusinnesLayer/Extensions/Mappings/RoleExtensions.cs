@@ -14,6 +14,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static RoleResponse ToResponse(this Role role)
         {
+            if (role is null) return null;
+
             return new RoleResponse(
                 role.Id,
                 role.Name,
@@ -23,7 +25,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<RoleResponse> ToCollectionResponse(this IEnumerable<Role> roles)
         {
-            return roles.Select(ToResponse) ?? new List<RoleResponse>();
+            if (roles is null || !roles.Any()) return Enumerable.Empty<RoleResponse>();
+            return roles.Select(ToResponse) ?? Enumerable.Empty<RoleResponse>();
         }
 
         public static Role ToEntity(this RoleRequest roleRequest)

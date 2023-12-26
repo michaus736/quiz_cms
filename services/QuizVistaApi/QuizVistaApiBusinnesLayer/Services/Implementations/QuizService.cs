@@ -5,11 +5,13 @@ using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +22,21 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
     {
         private readonly IRepository<Quiz> _quizRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Tag> _tagRepository;
+        private readonly IRepository<Attempt> _attemptRepository;
 
-        public QuizService(IRepository<Quiz> quizRepository, IRepository<User> userRepository)
+        public QuizService(IRepository<Quiz> quizRepository,
+            IRepository<User> userRepository,
+            IRepository<Tag> tagRepository,
+            IRepository<Attempt> attemptRepository)
         {
             _quizRepository = quizRepository;
             _userRepository = userRepository;
+            _tagRepository = tagRepository;
+            _attemptRepository = attemptRepository;
         }
 
-        public async Task<Result> CreateQuizAsync(string userId,QuizRequest quizToCreate)
+        public async Task<Result> CreateQuizAsync(string userId, QuizRequest quizToCreate)
         {
             var entity = quizToCreate.ToEntity();
 
@@ -42,6 +51,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             entity.CreationDate = DateTime.Now;
             entity.EditionDate = DateTime.Now;
+
+            entity.Tags = new List<Tag>();
+
+            var existingTags = await _tagRepository.GetAll()
+                .Where(tag => quizToCreate.TagIds.Contains(tag.Id))
+                .ToListAsync();
+
+            foreach (var tag in existingTags)
+            {
+                entity.Tags.Add(tag);
+            }
+
 
 
             await _quizRepository.InsertAsync(entity);
@@ -109,7 +130,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
         }
 
-        public async Task<Result> UpdateQuizAsync(string userId,QuizRequest quizToUpdate)
+        public async Task<Result> UpdateQuizAsync(string userId, QuizRequest quizToUpdate)
         {
             var existingQuiz = await _quizRepository.GetAll().FirstOrDefaultAsync(q => q.Id == quizToUpdate.Id);
 
@@ -196,6 +217,86 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             await _quizRepository.UpdateAsync(quiz);
 
             return Result.Ok();
+        }
+
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForUser(string userName)
+        {
+            User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (loggedUser is null) throw new Exception($"user {userName} cannot find");
+
+            List<Quiz> quizes = await _quizRepository.GetAll()
+                .Include(x=>x.Users)
+                .Include(x=>x.Category)
+                .Include(x=>x.Tags)
+                .ToListAsync();
+
+            //add public quizes
+            IEnumerable<Quiz> quizesAssignedToUser = quizes
+                .Where(x => (x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id))
+                .Where(x => x.IsActive)
+                .ToList();
+
+            IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse
+            {
+                Name = x.Name,
+                Description = x.Description ?? "",
+                AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
+                CategoryName = x.Category.Name,
+                Tags = x.Tags.Select(y=>new TagResponse
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList()
+            }).ToList();
+
+            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+        }
+
+        public async Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetailsForUser(string quizName, string userName)
+        {
+            //getting quiz props
+            Quiz? quiz = await _quizRepository.GetAll()
+                .Include(x => x.Author)
+                .Include(x => x.Category)
+                .Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Name == quizName);
+
+            if (quiz is null) throw new ArgumentException($"quiz {quizName} does not exist");
+
+            //getting user attempts count
+            User? user = await _userRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentException($"user does not exist");
+
+            IList<Attempt> userAttempts = await _attemptRepository.GetAll()
+                .Include(x => x.User)
+                .Include(x => x.Answers)
+                .Where(x => x.UserId == user.Id)
+                .ToListAsync();
+
+            QuizDetailsForUser quizDetails = new QuizDetailsForUser
+            {
+                Name = quiz.Name,
+                Description = quiz.Description,
+                AuthorName = $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                CategoryName = quiz.Category.Name,
+                AttemptsLimit = quiz.AttemptCount,
+                Tags = quiz.Tags.Select(x => new TagResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList(),
+                UserAttempts = userAttempts.Count
+            };
+
+
+
+            return ResultWithModel<QuizDetailsForUser>.Ok(quizDetails);
+
         }
     }
 }

@@ -15,6 +15,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static TagResponse ToResponse(this Tag tag)
         {
+            if (tag is null) return null;
+
             return new TagResponse(
                 tag.Id,
                 tag.Name,
@@ -24,7 +26,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<TagResponse> ToCollectionResponse(this IEnumerable<Tag> tags)
         {
-            return tags.Select(ToResponse) ?? new List<TagResponse>();
+            if(tags is null || !tags.Any()) return Enumerable.Empty<TagResponse>();
+            return tags.Select(ToResponse) ?? Enumerable.Empty<TagResponse>();
         }
 
         public static Tag ToEntity(this TagRequest tagRequest)

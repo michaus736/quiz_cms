@@ -7,7 +7,7 @@ import { ApiConfig } from '../../config/api-config';
   providedIn: 'root'
 })
 
-export class QuizService {
+export class QuizHttpService {
 
   url: string =  `${ApiConfig.url}/Quiz`;
 
@@ -16,7 +16,11 @@ export class QuizService {
 
   
   getQuiz(): Observable<any> {
-    return this.http.get(`${this.url}`);
-    
+    return this.http.get(`${this.url}/User`);
   }
+
+getQuizDetails(quizName: string): Observable<any> {
+  return this.http.get(`${this.url}/details?quizName=${quizName}`)
+}
+
 }

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System.Text;
 using System.Threading.Tasks;
-using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
 
 namespace QuizVistaApiBusinnesLayer.Services.Interfaces
 {
@@ -24,6 +24,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
 
         #endregion
         Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id);
+
+        Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForUser(string userName);
+
+        Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetailsForUser(string quizName, string userName);
 
     }
 }

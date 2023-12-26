@@ -14,6 +14,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static AnswerResponse ToResponse(this Answer answer)
         {
+            if (answer is null) return null;
+
             return new AnswerResponse
             (
                 answer.Id,
@@ -27,7 +29,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<AnswerResponse> ToCollectionResponse(this IEnumerable<Answer> answers)
         {
-            return answers.Select(ToResponse) ?? new List<AnswerResponse>();
+            if (answers is null || !answers.Any()) return Enumerable.Empty<AnswerResponse>();
+            return answers.Select(ToResponse) ?? Enumerable.Empty<AnswerResponse>();
         }
 
         public static Answer ToEntity(this AnswerRequest answerRequest)

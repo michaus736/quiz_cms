@@ -26,7 +26,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> CreateCategory(CategoryRequest category)
         {
-            await _categoryRepository.InsertAsync(category.ToEntity());
+            Category entity = category.ToEntity();
+            entity.Id = default;
+
+            await _categoryRepository.InsertAsync(entity);
 
             return Result.Ok();
         }

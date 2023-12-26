@@ -14,6 +14,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static AttemptResponse ToResponse(this Attempt attempt)
         {
+            if (attempt is null) return null;
+
             return new AttemptResponse
             (
                 attempt.Id,
@@ -27,7 +29,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<AttemptResponse> ToCollectionResponse(this IEnumerable<Attempt> attempts)
         {
-            return attempts.Select(ToResponse) ?? new List<AttemptResponse>();
+            if(attempts is null || !attempts.Any()) return Enumerable.Empty<AttemptResponse>();
+            return attempts.Select(ToResponse) ?? Enumerable.Empty<AttemptResponse>();
         }
 
         public static Attempt ToEntity(this AttemptRequest request)

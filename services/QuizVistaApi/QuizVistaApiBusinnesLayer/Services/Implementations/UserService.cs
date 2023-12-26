@@ -66,7 +66,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> RegisterUser(UserRequest request)
         {
-            var users = _userRepository.GetAll();
+            List<User> users = await _userRepository.GetAll().ToListAsync();
             bool emailCheck = users.Any(x => x.Email.ToLower() == request.Email.ToLower());
             bool userNameCheck = users.Any(x=>x.UserName.ToLower() == request.UserName.ToLower());
             if (emailCheck)

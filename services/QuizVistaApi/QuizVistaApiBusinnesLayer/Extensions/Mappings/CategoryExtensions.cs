@@ -15,6 +15,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static CategoryResponse ToResponse(this Category category)
         {
+            if (category is null) return null;
+
             return new CategoryResponse(
                 category.Id,
                 category.Name,
@@ -25,7 +27,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<CategoryResponse> ToCollectionResponse(this IEnumerable<Category> categories)
         {
-            return categories.Select(ToResponse) ?? new List<CategoryResponse>();
+            if(categories is null || !categories.Any()) return Enumerable.Empty<CategoryResponse>();
+            return categories.Select(ToResponse) ?? Enumerable.Empty<CategoryResponse>();
         }
 
         public static Category ToEntity(this CategoryRequest categoryRequest)

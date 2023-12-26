@@ -1,6 +1,6 @@
 ﻿using Azure.Core;
 using QuizVistaApiBusinnesLayer.Models.Requests;
-using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,8 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static QuizResponse ToResponse(this Quiz quiz)
         {
+            if (quiz is null) return null;
+
             return new QuizResponse(
                 quiz.Id,
                 quiz.Name,
@@ -37,6 +39,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
 
         public static IEnumerable<QuizResponse> ToCollectionResponse(this IEnumerable<Quiz> quizes)
         {
+            if (quizes is null || !quizes.Any()) return Enumerable.Empty<QuizResponse>(); 
             return quizes.Select(ToResponse) ?? Enumerable.Empty<QuizResponse>();
         }
 
