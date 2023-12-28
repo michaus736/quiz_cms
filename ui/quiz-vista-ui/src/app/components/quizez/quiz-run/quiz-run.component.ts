@@ -60,8 +60,23 @@ export class QuizRunComponent {
     console.log("changed answers: ", this.selectedAnswers)
 
     for(const key in this.selectedAnswers){
+      console.log(key)
       if(key.includes('-')){
         const[questionId, answerId] = key.split('-')
+        const answersToQuestion = Object.keys(this.selectedAnswers)
+          .filter((k) => k.startsWith(`${questionId}-`));
+
+        console.log("answer multi", answersToQuestion)
+
+        let multiCheck = answersToQuestion.some((k) => this.selectedAnswers[k]);
+
+        console.log("multicheck"+ questionId, multiCheck)
+
+        if (!multiCheck) {
+          this.isFormInvalid = true;
+          return;
+        }
+  
 
       }
       else{
@@ -74,7 +89,7 @@ export class QuizRunComponent {
     }
 
     console.log(this.isFormInvalid)
-    this.isFormInvalid = true;
+    this.isFormInvalid = false;
   }
 
 
