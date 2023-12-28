@@ -1,0 +1,38 @@
+<!-- quiz.component.html -->
+<form (ngSubmit)="onSubmit()" #quizForm="ngForm">
+  <div *ngFor="let question of quizData.model.questions">
+    <p>{{ question.text }}</p>
+    <div *ngIf="question.type === '1'; else multiSelect">
+      <div *ngFor="let answer of question.answers">
+        <label>
+          <input
+            type="radio"
+            [value]="answer.id"
+            [name]="'question-' + question.id"
+            [(ngModel)]="selectedAnswers[question.id]"
+            (ngModelChange)="checkFormValidity()"
+            required
+          
+            />
+          {{ answer.text }}
+        </label>
+      </div>
+    </div>
+    <ng-template #multiSelect>
+      <div *ngFor="let answer of question.answers">
+        <label>
+          <input
+            type="checkbox"
+            [value]="answer.id"
+            [name]="'question-' + question.id"
+            [(ngModel)]="selectedAnswers[question.id + '-' + answer.id]"
+            (ngModelChange)="checkFormValidity()"
+            />
+          {{ answer.text }}
+        </label>
+      </div>
+    </ng-template>
+    <hr />
+  </div>
+  <button type="submit" [disabled]="quizForm.invalid || isFormInvalid">Submit</button>
+</form>

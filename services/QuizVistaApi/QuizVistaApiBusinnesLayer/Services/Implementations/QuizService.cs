@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
@@ -24,16 +25,19 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         private readonly IRepository<User> _userRepository;
         private readonly IRepository<Tag> _tagRepository;
         private readonly IRepository<Attempt> _attemptRepository;
+        private readonly IRepository<Answer> _answerRepository;
 
         public QuizService(IRepository<Quiz> quizRepository,
             IRepository<User> userRepository,
             IRepository<Tag> tagRepository,
-            IRepository<Attempt> attemptRepository)
+            IRepository<Attempt> attemptRepository,
+            IRepository<Answer> answerRepository)
         {
             _quizRepository = quizRepository;
             _userRepository = userRepository;
             _tagRepository = tagRepository;
             _attemptRepository = attemptRepository;
+            _answerRepository = answerRepository;
         }
 
         public async Task<Result> CreateQuizAsync(string userId, QuizRequest quizToCreate)
@@ -118,16 +122,52 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         }
 
-        public async Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id)
+        public async Task<ResultWithModel<QuizRun>> GetQuizWithQuestionsAsync(string quizName)
         {
             var quiz = await _quizRepository.GetAll()
+                .Include(x => x.Author)
                 .Include(x => x.Questions)
-                .FirstOrDefaultAsync( x=> x.Id == id);
+                .FirstOrDefaultAsync( x=> x.Name == quizName);
 
             if (quiz is null)
-                throw new ArgumentNullException($"quiz #{id} not found");
+                throw new ArgumentNullException($"quiz {quizName} not found");
 
-            return ResultWithModel<QuizResponse>.Ok(quiz.ToResponse());
+            foreach(var question in quiz.Questions)
+            {
+                List<Answer> answers = await _answerRepository.GetAll()
+                    .Where(x=>x.QuestionId == question.Id)
+                    .ToListAsync();
+
+                question.Answers = answers;
+            }
+
+
+            QuizRun res = new QuizRun
+            {
+                AuthorName = quiz.Author is null ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                Name = quizName,
+                UserAttemptCount = 0, //todo
+                Questions = quiz.Questions.Select(x=>new QuizRun.QuestionRun
+                {
+                    Id = x.Id,
+                    Text = x.Text,
+                    AdditionalValue = x.AdditionalValue,
+                    SubstractionalValue = x.SubstractionalValue,
+                    CmsTitleValue = x.CmsTitleStyle,
+                    CmsQuestionsValue = x.CmsQuestionsStyle,
+                    Type = (x.Type == "2")? "1" : (x.Type=="1")? "1" : "2",
+                    Answers = x.Answers.Select(y=>new QuizRun.QuestionRun.AnswerRun
+                    {
+                        Id = y.Id,
+                        Text = y.AnswerText
+                    }).ToList()
+                    
+                    
+                }).ToList()
+            };
+
+
+            return ResultWithModel<QuizRun>.Ok(res);
         }
 
         public async Task<Result> UpdateQuizAsync(string userId, QuizRequest quizToUpdate)

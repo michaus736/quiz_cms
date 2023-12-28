@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +28,7 @@ import { AddCategoryComponent } from './components/moderator/categories/add-cate
 import { AddTagComponent } from './components/moderator/tags/add-tag/add-tag.component';
 import { EditTagComponent } from './components/moderator/tags/edit-tag/edit-tag.component';
 import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-details.component';
+import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.component';
 
 @NgModule({
   declarations: [
@@ -54,12 +55,14 @@ import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-deta
     AddTagComponent,
     EditTagComponent,
     QuizDetailsComponent,
+    QuizRunComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi:true}

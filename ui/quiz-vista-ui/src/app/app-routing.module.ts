@@ -20,18 +20,21 @@ import { AddCategoryComponent } from './components/moderator/categories/add-cate
 import { AddTagComponent } from './components/moderator/tags/add-tag/add-tag.component';
 import { EditTagComponent } from './components/moderator/tags/edit-tag/edit-tag.component';
 import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-details.component';
+import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'admin', component: AdminPanelComponent},
+
   { path: 'quizez', component: QuizezComponent},
   { path: 'quiz-details/:quizName', component: QuizDetailsComponent},
+  { path: 'quiz-run/:quizName', component: QuizRunComponent},
   { path: 'users', component: UsersComponent},
   { path: 'users-roles', component: UsersRolesComponent},
   { path: 'edit-user/:id', component: EditUserComponent},
-
+  
+  { path: 'admin', component: AdminPanelComponent},
   { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'quizez', component: QuizezComponent, canActivate:[UserGuard]},
   { path: 'admin/users', component: UsersComponent , canActivate: [AdminGuard]},

@@ -44,6 +44,13 @@ namespace QuizVistaApi.Controllers
             return await _quizService.GetQuizDetailsForUser(quizName, userName);
         }
 
+        [HttpGet("quiz-run")]
+        [Authorize(Roles = "User")]
+        public async Task<ResultWithModel<QuizRun>> GetUserQuizRun(string quizName)
+        {
+            return await _quizService.GetQuizWithQuestionsAsync(quizName);
+        }
+
 
         [HttpPost("create"), Authorize(Roles = "Moderator")]
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)

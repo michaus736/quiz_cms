@@ -23,7 +23,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         //Task<Result> AssignUser(QuizRequest quizToUpdate);
 
         #endregion
-        Task<ResultWithModel<QuizResponse>> GetQuizWithQuestionsAsync(int id);
+        Task<ResultWithModel<QuizRun>> GetQuizWithQuestionsAsync(string quizName);
 
         Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForUser(string userName);
 
