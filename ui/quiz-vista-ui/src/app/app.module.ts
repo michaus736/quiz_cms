@@ -29,6 +29,8 @@ import { AddTagComponent } from './components/moderator/tags/add-tag/add-tag.com
 import { EditTagComponent } from './components/moderator/tags/edit-tag/edit-tag.component';
 import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-details.component';
 import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.component';
+import { AddQuizComponent } from './components/moderator/quiz/add-quiz/add-quiz.component';
+import { QuizzezComponent } from './components/moderator/quiz/quizzez/quizzez.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.componen
     EditTagComponent,
     QuizDetailsComponent,
     QuizRunComponent,
+    AddQuizComponent,
+    QuizzezComponent,
   ],
   imports: [
     BrowserModule,

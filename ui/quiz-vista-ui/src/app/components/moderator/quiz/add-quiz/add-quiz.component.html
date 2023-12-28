@@ -1,0 +1,42 @@
+<div class="d-flex flex-row">
+    <app-moderator-side-nav></app-moderator-side-nav>
+    <div class="flex-grow-1">
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Add New Quiz</h2>
+  <form (ngSubmit)="addQuiz()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" [(ngModel)]="newQuiz.name" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control" id="description" [(ngModel)]="newQuiz.description" name="description"></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <select class="form-control" id="category" [(ngModel)]="newQuiz.categoryId" name="categoryId" required>
+        <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="tags" class="form-label">Tags</label>
+      <select multiple class="form-control" id="tags" [(ngModel)]="newQuiz.tagIds" name="tags">
+        <option *ngFor="let tag of tags" [value]="tag.id">{{ tag.name }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+        <label for="attemptCount" class="form-label">Attempt Count</label>
+        <input type="text" class="form-control" id="attemptCount" [(ngModel)]="newQuiz.attemptCount" name="attemptCount" required>
+      </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="isActive" [(ngModel)]="newQuiz.isActive" name="isActive">
+      <label class="form-check-label" for="isActive">Active</label>
+    </div>
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="isPublic" [(ngModel)]="newQuiz.publicAccess" name="isPublic">
+      <label class="form-check-label" for="isPublic">Public</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+</div></div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiConfig } from '../../config/api-config';
+import { Quiz } from 'src/app/models/quiz';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ export class QuizHttpService {
   }
   getQuizRunQusetions(quizName: string):Observable<any> {
     return this.http.get(`${this.url}/quiz-run?quizName=${quizName}`)
+  }
+
+  createQuiz(quiz: Quiz): Observable<any>{
+    return this.http.post(`${this.url}/create`,quiz);
   }
 
 }
