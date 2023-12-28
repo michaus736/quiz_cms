@@ -14,17 +14,17 @@
               <p class="card-text">Created by: {{ quiz.authorName }}</p>
               <div class="tags">
                 <span *ngFor="let tag of quiz.tags">
-                  <a [routerLink]="['/tag', tag.id]" class="badge bg-secondary tag-link" (mouseenter)="tag.hover = true" (mouseleave)="tag.hover = false" *ngIf="!tag.hover">
+                  <a [routerLink]="['/tag', tag.name]" class="badge bg-secondary tag-link">
                     {{ tag.name }}
                   </a>
                 </span>
               </div>
               <p class="card-text">
-                <a [routerLink]="['/category', quiz.categoryId]" class="badge bg-primary category-link" (mouseenter)="quiz.hover = true" (mouseleave)="quiz.hover = false" *ngIf="!quiz.hover">
+                <a [routerLink]="['/category', quiz.categoryName]" class="badge bg-primary category-link">
                   Category: {{ quiz.categoryName }}
                 </a>
               </p>
-              <a [routerLink]="['/quiz-details', quiz.name]" class="stretched-link"></a>
+              <a [routerLink]="['/quiz-details', quiz.name]" class="stretched-link">Show details</a>
             </div>
           </div>
         </div>

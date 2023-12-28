@@ -31,9 +31,6 @@ export class QuizDetailsComponent implements OnInit {
     })
   }
 
-  startQuiz(){
-
-  }
 
 
 

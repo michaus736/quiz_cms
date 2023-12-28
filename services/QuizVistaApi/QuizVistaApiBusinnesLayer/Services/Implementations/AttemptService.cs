@@ -2,7 +2,7 @@
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
-using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.AttemptRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -18,10 +18,14 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
     public class AttemptService : IAttemptService
     {
         private readonly IRepository<Attempt> _attemptRepository;
+        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Answer> _answerRepository;
 
-        public AttemptService(IRepository<Attempt> attemptRepository)
+        public AttemptService(IRepository<Attempt> attemptRepository, IRepository<User> userRepository, IRepository<Answer> answerRepository)
         {
             _attemptRepository = attemptRepository;
+            _userRepository = userRepository;
+            _answerRepository = answerRepository;
         }
 
         public async Task<ResultWithModel<AttemptResponse>> GetAttempt(int id)
@@ -59,9 +63,33 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<AttemptResponse>.Ok(attempt.ToResponse());
         }
 
-        public async Task<Result> SaveAttempt(AttemptRequest attempt)
+        public async Task<Result> SaveAttempt(SaveAttemptRequest attempt, string userName)
         {
-            await _attemptRepository.InsertAsync(attempt.ToEntity());
+            User? user = await _userRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentNullException($"user {userName} not found");
+
+            var answers = await _answerRepository.GetAll()
+                .Where(x => attempt.AnswerIds.Contains(x.Id))
+                .ToListAsync();
+
+            if (answers is null) throw new ArgumentNullException($"answers not found");
+
+
+            Attempt entity = new Attempt
+            {
+                CreateDate = DateTime.Now,
+                EditionDate = DateTime.Now,
+                Answers = answers,
+                User = user,
+                UserId = user.Id
+            };
+
+
+            await _attemptRepository.InsertAsync(entity);
+
+
             
             return Result.Ok();
         }

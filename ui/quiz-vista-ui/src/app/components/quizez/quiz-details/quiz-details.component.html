@@ -18,7 +18,7 @@
         </article>
       </div>
       <footer class="card-footer">
-        <button *ngIf="quizDetails.userAttempts < quizDetails.attemptsLimit" class="btn btn-primary" (click)="startQuiz()">Start Quiz</button>
+        <a *ngIf="quizDetails.userAttempts < quizDetails.attemptsLimit" [routerLink]="['/quiz-run', quizDetails.name]"  class="btn btn-primary">Start Quiz</a>
         <p *ngIf="quizDetails.userAttempts >= quizDetails.attemptsLimit" class="text-danger">You've reached the attempts limit for this quiz.</p>
       </footer>
     </section>
