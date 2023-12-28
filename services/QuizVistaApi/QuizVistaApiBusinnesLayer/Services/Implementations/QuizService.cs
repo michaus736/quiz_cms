@@ -26,18 +26,20 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         private readonly IRepository<Tag> _tagRepository;
         private readonly IRepository<Attempt> _attemptRepository;
         private readonly IRepository<Answer> _answerRepository;
-
+        private readonly IRepository<AttemptCount> _attemptCountRepository;
         public QuizService(IRepository<Quiz> quizRepository,
             IRepository<User> userRepository,
             IRepository<Tag> tagRepository,
             IRepository<Attempt> attemptRepository,
-            IRepository<Answer> answerRepository)
+            IRepository<Answer> answerRepository,
+            IRepository<AttemptCount> attemptCountRepository)
         {
             _quizRepository = quizRepository;
             _userRepository = userRepository;
             _tagRepository = tagRepository;
             _attemptRepository = attemptRepository;
             _answerRepository = answerRepository;
+            _attemptCountRepository = attemptCountRepository;
         }
 
         public async Task<Result> CreateQuizAsync(string userId, QuizRequest quizToCreate)
@@ -122,7 +124,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         }
 
-        public async Task<ResultWithModel<QuizRun>> GetQuizWithQuestionsAsync(string quizName)
+        public async Task<ResultWithModel<QuizRun>> GetQuizWithQuestionsAsync(string quizName, string userName)
         {
             var quiz = await _quizRepository.GetAll()
                 .Include(x => x.Author)
@@ -141,6 +143,13 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 question.Answers = answers;
             }
 
+            User? user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentNullException($"user {userName} does not exist");
+
+            var attemptCount = await _attemptCountRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id && x.QuizId == quiz.Id);
+
+
 
             QuizRun res = new QuizRun
             {
@@ -155,7 +164,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                     SubstractionalValue = x.SubstractionalValue,
                     CmsTitleValue = x.CmsTitleStyle,
                     CmsQuestionsValue = x.CmsQuestionsStyle,
-                    Type = (x.Type == "2")? "1" : (x.Type=="1")? "1" : "2",
+                    Type = x.Type,
                     Answers = x.Answers.Select(y=>new QuizRun.QuestionRun.AnswerRun
                     {
                         Id = y.Id,
@@ -268,6 +277,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             List<Quiz> quizes = await _quizRepository.GetAll()
                 .Include(x=>x.Users)
                 .Include(x=>x.Category)
+                .Include(x=>x.Author)
                 .Include(x=>x.Tags)
                 .ToListAsync();
 
@@ -305,24 +315,22 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             if (quiz is null) throw new ArgumentException($"quiz {quizName} does not exist");
 
+
             //getting user attempts count
             User? user = await _userRepository.GetAll()
                 .FirstOrDefaultAsync(x => x.UserName == userName);
 
             if (user is null) throw new ArgumentException($"user does not exist");
+            
+            var attemptCount = await _attemptCountRepository.GetAll().FirstOrDefaultAsync(x=>x.UserId == user.Id && x.QuizId == quiz.Id);
 
-            IList<Attempt> userAttempts = await _attemptRepository.GetAll()
-                .Include(x => x.User)
-                .Include(x => x.Answers)
-                .Where(x => x.UserId == user.Id)
-                .ToListAsync();
 
             QuizDetailsForUser quizDetails = new QuizDetailsForUser
             {
                 Name = quiz.Name,
-                Description = quiz.Description,
-                AuthorName = $"{quiz.Author.FirstName} {quiz.Author.LastName}",
-                CategoryName = quiz.Category.Name,
+                Description = quiz.Description ?? "",
+                AuthorName = (quiz.Author is null) ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                CategoryName = quiz.Category?.Name ?? "",
                 AttemptsLimit = quiz.AttemptCount,
                 Tags = quiz.Tags.Select(x => new TagResponse
                 {
@@ -330,7 +338,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                     Name = x.Name,
                     Quizzes = new List<QuizResponse>()
                 }).ToList(),
-                UserAttempts = userAttempts.Count
+                UserAttempts = attemptCount?.AttemptCountNumber ?? 0,
             };
 
 

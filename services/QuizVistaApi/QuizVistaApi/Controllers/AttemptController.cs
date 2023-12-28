@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
-using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.AttemptRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
+using System.Security.Claims;
 
 namespace QuizVistaApi.Controllers
 {
@@ -35,18 +36,21 @@ namespace QuizVistaApi.Controllers
 
         [HttpPost("create")]
         [Authorize(Roles = "User")]
-        public async Task<Result> CreateAttempt([FromBody] AttemptRequest attemptRequest)
+        public async Task<Result> CreateAttempt([FromBody] SaveAttemptRequest attemptRequest)
         {
-            return await _attemptService.SaveAttempt(attemptRequest);
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+
+            return await _attemptService.SaveAttempt(attemptRequest, userName);
         }
 
+        /*
         [HttpPut("edit")]
         [Authorize(Roles = "User")]
         public async Task<Result> EditAttempt([FromBody] AttemptRequest attemptRequest)
         {
             return await _attemptService.SaveAttempt(attemptRequest);
         }
-
+        */
         [HttpDelete("delete")]
         [Authorize(Roles = "Moderator")]
         public async Task<Result> DeleteAttempt([FromBody] AttemptRequest attemptRequest)

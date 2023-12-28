@@ -40,6 +40,18 @@ public partial class QuizVistaDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AttemptCount>(entity =>
+        {
+            entity.ToView("V_ATTEMPT_COUNT").HasNoKey();
+
+            entity.Property(x => x.UserId).HasColumnName("USER_ID");
+            entity.Property(x => x.QuizId).HasColumnName("QUIZ_ID");
+            entity.Property(x => x.AttemptCountNumber).HasColumnName("ATTEMPT_COUNT");
+
+            
+
+        });
+
         modelBuilder.Entity<Answer>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("ANSWER_PK");

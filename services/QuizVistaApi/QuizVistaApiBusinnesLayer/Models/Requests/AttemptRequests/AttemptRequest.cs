@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Models.Requests
+namespace QuizVistaApiBusinnesLayer.Models.Requests.AttemptRequests
 {
     public class AttemptRequest
     {

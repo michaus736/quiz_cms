@@ -48,7 +48,9 @@ namespace QuizVistaApi.Controllers
         [Authorize(Roles = "User")]
         public async Task<ResultWithModel<QuizRun>> GetUserQuizRun(string quizName)
         {
-            return await _quizService.GetQuizWithQuestionsAsync(quizName);
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+
+            return await _quizService.GetQuizWithQuestionsAsync(quizName, userName);
         }
 
 

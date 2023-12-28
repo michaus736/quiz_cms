@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { QuizRun } from 'src/app/models/quiz-run/quiz-run';
 import { QuizHttpService } from 'src/app/services/http/quiz-http-service';
 import { QuestionRun } from '../../../models/quiz-run/question-run';
 import { AnswerRun } from 'src/app/models/quiz-run/answer-run';
+import { AttemptHttpService } from '../../../services/http/attempt-http.service';
 
 @Component({
   selector: 'app-quiz-run',
@@ -20,7 +21,10 @@ export class QuizRunComponent {
   isFormInvalid: boolean = true;
 
 
-  constructor(private route: ActivatedRoute, private quizHttpService: QuizHttpService, private formBuilder: FormBuilder
+  constructor(private route: ActivatedRoute, 
+    private quizHttpService: QuizHttpService, 
+    private attemptHttpService: AttemptHttpService,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
@@ -35,7 +39,6 @@ export class QuizRunComponent {
         this.quizData = response;
         console.log(this.quizData);
         this.initializeSelectedQuestions()
-
       },
       error => {
         console.error('Error fetching quiz questions:', error);
@@ -44,10 +47,10 @@ export class QuizRunComponent {
   }
   initializeSelectedQuestions() {
     this.quizData.model.questions.forEach((question:QuestionRun) => {
-      if(question.type === '1'){
+      if(question.type === '1' || question.type === '2'){
         this.selectedAnswers[question.id] = null;
       }
-      else if(question.type === '2'){
+      else if(question.type === '3'){
         question.answers.forEach((answer: AnswerRun) => {
           this.selectedAnswers[question.id + '-' + answer.id] = false
         })
@@ -98,22 +101,32 @@ export class QuizRunComponent {
 
     this.isFormInvalid = true;
 
-
-    const userAnswers = [];
+    const userAnswers: Array<number> = [];
     for (const key in this.selectedAnswers) {
       if (this.selectedAnswers.hasOwnProperty(key)) {
         if (this.selectedAnswers[key]) {
           if(key.includes('-')){
             const [questionId, answerId] = key.split('-')
-            userAnswers.push(answerId)
+            userAnswers.push(+answerId)
           }
-          else userAnswers.push(key);
+          else userAnswers.push(+this.selectedAnswers[key]);
         }
       }
     }
 
     // userAnswers zawiera teraz informacje o wybranych odpowiedziach przez użytkownika
     console.log('Wybrane odpowiedzi przez użytkownika:', userAnswers);
+    
+    this.attemptHttpService.saveAttempt(userAnswers).subscribe(
+      response => {
+        console.log("próba zapisana")
+        this.router.navigate(['quizez'])
+      },
+      error => {
+        console.warn(error)
+      }
+    )
+      
   }
 
 
