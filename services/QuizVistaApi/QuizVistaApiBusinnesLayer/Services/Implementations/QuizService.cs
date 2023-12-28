@@ -155,7 +155,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             {
                 AuthorName = quiz.Author is null ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
                 Name = quizName,
-                UserAttemptCount = 0, //todo
+                UserAttemptCount = attemptCount?.AttemptCountNumber ?? 0,
                 Questions = quiz.Questions.Select(x=>new QuizRun.QuestionRun
                 {
                     Id = x.Id,
