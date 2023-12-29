@@ -31,4 +31,7 @@ export class QuizHttpService {
     return this.http.post(`${this.url}/create`,quiz);
   }
 
+  getQuizModQuestions(quizName: string):Observable<any>{
+    return this.http.get(`${this.url}/get-questions-mod?quizName=${quizName}`)
+  }
 }

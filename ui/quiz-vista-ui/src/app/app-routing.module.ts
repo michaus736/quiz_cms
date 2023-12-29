@@ -23,6 +23,7 @@ import { QuizDetailsComponent } from './components/quizez/quiz-details/quiz-deta
 import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.component';
 import { AddQuizComponent } from './components/moderator/quiz/add-quiz/add-quiz.component';
 import { QuizzezComponent } from './components/moderator/quiz/quizzez/quizzez.component';
+import { AddQuestionsComponent } from './components/moderator/quiz/add-questions/add-questions.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
@@ -50,6 +51,9 @@ const routes: Routes = [
   { path: 'moderator/add-tag', component:AddTagComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/edit-tag/:id', component:EditTagComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/add-quiz', component:AddQuizComponent, canActivate: [ModeratorGuard] },
+  { path: 'moderator/add-questions/:quizName', component:AddQuestionsComponent, canActivate: [ModeratorGuard] },
+
+  
   { path: 'moderator/quizzez', component:QuizzezComponent, canActivate: [ModeratorGuard] },
 
   { path: 'error/:code', component: ErrorComponent },

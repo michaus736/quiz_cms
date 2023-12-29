@@ -47,11 +47,13 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
         {
             return new Quiz
             {
+                Id = quizRequest.Id,
                 Name = quizRequest.Name,
                 Description = quizRequest.Description,
                 CategoryId = quizRequest.CategoryId,
                 CmsTitleStyle = quizRequest.CmsTitleStyle,
                 IsActive = quizRequest.IsActive,
+                AttemptCount = quizRequest.AttemptCount,
                 PublicAccess= quizRequest.PublicAccess,
                 //AuthorId = quizRequest.AuthorId,
                 Tags = quizRequest.TagIds.Select(id => new Tag { Id = id }).ToList()

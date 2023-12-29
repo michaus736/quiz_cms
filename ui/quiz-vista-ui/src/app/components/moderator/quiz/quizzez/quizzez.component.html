@@ -16,19 +16,12 @@
                 <h3 class="card-title">{{ quiz.name }}</h3>
                 <p class="card-text">Description: {{ quiz.description || 'No description provided.' }}</p>
                 <p class="card-text">Created by: {{ quiz.authorName }}</p>
-                <div class="tags">
-                  <span *ngFor="let tag of quiz.tags">
-                    <a [routerLink]="['/tag', tag.name]" class="badge bg-secondary tag-link">
-                      {{ tag.name }}
-                    </a>
-                  </span>
-                </div>
                 <p class="card-text">
-                  <a [routerLink]="['/category', quiz.categoryName]" class="badge bg-primary category-link">
+                  <a class="badge bg-primary category-link">
                     Category: {{ quiz.categoryName }}
                   </a>
                 </p>
-                <a [routerLink]="['/quiz-details', quiz.name]" class="stretched-link">Show details</a>
+                <a [routerLink]="['/moderator/add-questions', quiz.name]" class="btn btn-success">Edit Questions</a>
               </div>
             </div>
           </div>

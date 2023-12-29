@@ -179,6 +179,62 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<QuizRun>.Ok(res);
         }
 
+        public async Task<ResultWithModel<QuizWithQuestionsModResponse>> GetQuestionsForQuizMod(string quizName, string userName)
+        {
+            var quiz = await _quizRepository.GetAll()
+                .Include(x => x.Author)
+                .Include(x => x.Questions)
+                .FirstOrDefaultAsync(x => x.Name == quizName);
+
+            if (quiz is null)
+                throw new ArgumentNullException($"quiz {quizName} not found");
+
+            foreach (var question in quiz.Questions)
+            {
+                List<Answer> answers = await _answerRepository.GetAll()
+                    .Where(x => x.QuestionId == question.Id)
+                    .ToListAsync();
+
+                question.Answers = answers;
+            }
+
+            User? user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentNullException($"user {userName} does not exist");
+
+            var attemptCount = await _attemptCountRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id && x.QuizId == quiz.Id);
+
+
+
+            QuizWithQuestionsModResponse res = new QuizWithQuestionsModResponse
+            {
+                AuthorName = quiz.Author is null ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                Name = quizName,
+                UserAttemptCount = attemptCount?.AttemptCountNumber ?? 0,
+                Questions = quiz.Questions.Select(x => new QuizWithQuestionsModResponse.QuestionMod
+                {
+                    Id = x.Id,
+                    Text = x.Text,
+                    AdditionalValue = x.AdditionalValue,
+                    SubstractionalValue = x.SubstractionalValue,
+                    CmsTitleValue = x.CmsTitleStyle,
+                    CmsQuestionsValue = x.CmsQuestionsStyle,
+                    Type = x.Type,
+                    Answers = x.Answers.Select(y => new QuizWithQuestionsModResponse.QuestionMod.AnswerMod
+                    {
+                        Id = y.Id,
+                        Text = y.AnswerText,
+                        IsCorrect = y.IsCorrect,
+                    }).ToList()
+
+
+                }).ToList()
+            };
+
+
+            return ResultWithModel<QuizWithQuestionsModResponse>.Ok(res);
+        }
+
         public async Task<Result> UpdateQuizAsync(string userId, QuizRequest quizToUpdate)
         {
             var existingQuiz = await _quizRepository.GetAll().FirstOrDefaultAsync(q => q.Id == quizToUpdate.Id);
@@ -289,6 +345,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description ?? "",
                 AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
@@ -327,6 +384,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             QuizDetailsForUser quizDetails = new QuizDetailsForUser
             {
+                Id = quiz.Id,
                 Name = quiz.Name,
                 Description = quiz.Description ?? "",
                 AuthorName = (quiz.Author is null) ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
