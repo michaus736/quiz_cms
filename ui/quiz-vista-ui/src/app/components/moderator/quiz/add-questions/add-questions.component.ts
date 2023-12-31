@@ -103,7 +103,6 @@ export class AddQuestionsComponent {
     this.questionHttpService.createQuestion(question).subscribe(
       response => {
         console.log('Pytanie dodane:', response);
-        // Aktualizuj ID pytania z odpowiedzią serwera, jeśli to konieczne
       },
       error => {
         console.error('Wystąpił błąd przy dodawaniu pytania:', error);
@@ -138,7 +137,6 @@ export class AddQuestionsComponent {
   
   getQuizDetails(quizName: string){
     this.quizHttpService.getQuizDetails(quizName).subscribe(res=>{
-     // console.log(res)
       this.quizDetails = res.model
     })
 }
@@ -167,16 +165,13 @@ deleteAnswer(question: Question, answerIndex: number) {
   const answer = question.answers[answerIndex];
 
   if (question.id === 0) {
-    // Dla nowo dodanego pytania, po prostu usuń odpowiedź lokalnie
     question.answers.splice(answerIndex, 1);
   } else if (answer.id === 0) {
-    // Dla nowo dodanej odpowiedzi w istniejącym pytaniu, usuń ją z listy newAnswers
     const newAnswerIndex = this.newAnswers.findIndex(a => a === answer);
     if (newAnswerIndex !== -1) {
       this.newAnswers.splice(newAnswerIndex, 1);
     }
   } else {
-    // Dla istniejącej odpowiedzi, dodaj jej ID do listy do usunięcia
     this.answersToDelete.push(answer.id.toString());
     question.answers.splice(answerIndex, 1);
   }
@@ -199,7 +194,6 @@ deleteAnswer(question: Question, answerIndex: number) {
 getQuestionsForQuiz(quizName: string) {
   this.quizHttpService.getQuizModQuestions(quizName).subscribe(res => {
     this.quizWithQuestions = res.model;
-    //console.log(this.quizWithQuestions);
 
     if (this.quizWithQuestions && this.quizWithQuestions.questions) {
       this.questions = this.quizWithQuestions.questions.map((question: any) => {
