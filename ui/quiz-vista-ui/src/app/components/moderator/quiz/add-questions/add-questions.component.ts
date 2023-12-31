@@ -49,42 +49,24 @@ export class AddQuestionsComponent {
       );
     });
 
+    this.questions.forEach(question => {
+      if (question.id === 0 && question.text.trim() !== '') {
+        question.quizId = this.quizDetails.id;
+        this.createQuestion(question);
+      } else if (question.id !== 0) {
+        question.quizId = this.quizDetails.id;
+        console.log(question);
+        this.editQuestion(question);
+      }
+    });
 
+    
     this.questionsToDelete.forEach(questionId => {
       this.questionHttpService.deleteQuestion(questionId).subscribe(
         response => console.log('Pytanie usunięte:', response),
         error => console.error('Błąd podczas usuwania pytania:', error)
       );
     });
-
-
-    this.newAnswers.forEach(answer => {
-      if (answer.answerText.trim() !== '') {
-        this.answerHttpService.createAnswer(answer).subscribe(
-          response => console.log('Odpowiedź dodana:', response),
-          error => console.error('Błąd podczas dodawania odpowiedzi:', error)
-        );
-      }
-    });
-
-    console.log(this.questions);
-    if (this.quizDetails) {
-      this.questions.forEach(question => {
-        if (question.id === 0 && question.text.trim() !== '') {
-          question.quizId = this.quizDetails.id; 
-  
-          this.questionHttpService.createQuestion(question).subscribe(
-            response => {
-              console.log('Pytanie dodane:', response);
-            },
-            error => {
-              console.error('Wystąpił błąd przy dodawaniu pytania:', error);
-            }
-          );
-        }
-      });
-    }
-
   }
 
 
@@ -117,6 +99,18 @@ export class AddQuestionsComponent {
     this.questions.push(newQuestion);
   }
 
+  createQuestion(question: Question) {
+    this.questionHttpService.createQuestion(question).subscribe(
+      response => {
+        console.log('Pytanie dodane:', response);
+        // Aktualizuj ID pytania z odpowiedzią serwera, jeśli to konieczne
+      },
+      error => {
+        console.error('Wystąpił błąd przy dodawaniu pytania:', error);
+      }
+    );
+  }
+
   editQuestion(question: Question) {
     if (question.id === 0) {
       console.log('Pytanie nie zostało jeszcze zapisane.');
@@ -133,40 +127,18 @@ export class AddQuestionsComponent {
       const question = this.questions[index];
   if (question.id !== 0) {
     this.questionsToDelete.push(question.id.toString());
-    this.questions.splice(index, 1); // Ukryj pytanie z interfejsu użytkownika
+    this.questions.splice(index, 1);
   } else {
-    this.questions.splice(index, 1); // Usuń nowe pytanie, które nie ma jeszcze ID
+    this.questions.splice(index, 1);
   }
   }
   
-
-  addAnswer(question: Question) {
-    const newAnswer: Answer = {
-      id: 0, 
-      questionId: question.id, 
-      answerText: '',
-      isCorrect: false,
-    };
-    if (question.id !== 0) {
-      this.newAnswers.push(newAnswer);
-    }
-    question.answers.push(newAnswer);
-  }
-
-  editAnswer(question: Question, answer: Answer) {
-    if (question.id !== 0 && answer.id !== 0) {
-      this.answerHttpService.editAnswer(answer).subscribe(
-        response => console.log('Odpowiedź zaktualizowana:', response),
-        error => console.error('Błąd podczas aktualizacji odpowiedzi:', error)
-      );
-    }
-  }
 
   
   
   getQuizDetails(quizName: string){
     this.quizHttpService.getQuizDetails(quizName).subscribe(res=>{
-      console.log(res)
+     // console.log(res)
       this.quizDetails = res.model
     })
 }
@@ -178,6 +150,17 @@ deleteQuiz(){
   error=>{
     console.error('Wystąpił bład podczas usuwania quizu', error);
   })
+}
+
+
+addAnswer(question: Question) {
+  const newAnswer: Answer = {
+    id: 0, 
+    questionId: question.id, 
+    answerText: '',
+    isCorrect: false,
+  };
+  question.answers.push(newAnswer);
 }
 
 deleteAnswer(question: Question, answerIndex: number) {
@@ -201,10 +184,22 @@ deleteAnswer(question: Question, answerIndex: number) {
 
 
 
+
+  editAnswer(question: Question, answer: Answer) {
+    if (question.id !== 0 && answer.id !== 0) {
+      this.answerHttpService.editAnswer(answer).subscribe(
+        response => console.log('Odpowiedź zaktualizowana:', response),
+        error => console.error('Błąd podczas aktualizacji odpowiedzi:', error)
+      );
+    }
+  }
+
+
+
 getQuestionsForQuiz(quizName: string) {
   this.quizHttpService.getQuizModQuestions(quizName).subscribe(res => {
     this.quizWithQuestions = res.model;
-    console.log(this.quizWithQuestions);
+    //console.log(this.quizWithQuestions);
 
     if (this.quizWithQuestions && this.quizWithQuestions.questions) {
       this.questions = this.quizWithQuestions.questions.map((question: any) => {

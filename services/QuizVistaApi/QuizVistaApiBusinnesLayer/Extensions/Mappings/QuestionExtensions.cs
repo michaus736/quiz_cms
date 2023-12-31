@@ -52,19 +52,6 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
             };
         }
 
-        public static Question ToEntity(this EditQuestionRequest request)
-        {
-            return new Question
-            {
-                Type = request.Type,
-                Text = request.Text,
-                AdditionalValue = request.AdditionalValue,
-                SubstractionalValue = request.SubstractionalValue,
-                QuizId = request.QuizId,
-                CmsTitleStyle = request.CmsTitleStyle,
-                CmsQuestionsStyle = request.CmsQuestionsStyle
-            };
-        }
 
     }
 }

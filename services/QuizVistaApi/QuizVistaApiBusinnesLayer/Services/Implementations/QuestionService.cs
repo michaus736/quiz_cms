@@ -84,9 +84,28 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         }
 
-        public async Task<Result> UpdateQuestionAsync(EditQuestionRequest editQuestionRequest)
+        public async Task<Result> UpdateQuestionAsync(QuestionRequest question)
         {
-            await _questionRepository.UpdateAsync(editQuestionRequest.ToEntity());
+            var existingQuestion = await _questionRepository.GetAll().FirstOrDefaultAsync(x=>x.Id==question.Id);
+
+            if (existingQuestion == null)
+            {
+                return Result.Failed("Pytanie nie istnieje.");
+            }
+
+            var updatedQuestion = question.ToEntity();
+
+            existingQuestion.Type = updatedQuestion.Type;
+            existingQuestion.Text = updatedQuestion.Text;
+            existingQuestion.AdditionalValue = updatedQuestion.AdditionalValue;
+            existingQuestion.SubstractionalValue = updatedQuestion.SubstractionalValue;
+            existingQuestion.CmsTitleStyle = updatedQuestion.CmsTitleStyle;
+            existingQuestion.CmsQuestionsStyle = updatedQuestion.CmsQuestionsStyle;
+            existingQuestion.Answers = updatedQuestion.Answers;
+
+
+
+            await _questionRepository.UpdateAsync(existingQuestion);
 
             return Result.Ok();
         }

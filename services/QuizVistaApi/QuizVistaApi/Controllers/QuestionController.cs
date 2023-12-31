@@ -35,9 +35,9 @@ namespace QuizVistaApi.Controllers
         
         [HttpPut("edit")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> EditQuestion([FromBody] EditQuestionRequest editQuestionRequest)
+        public async Task<Result> EditQuestion([FromBody] QuestionRequest QuestionRequest)
         {
-            return await _questionService.UpdateQuestionAsync(editQuestionRequest);
+            return await _questionService.UpdateQuestionAsync(QuestionRequest);
         }
       
         [HttpDelete("delete/{id}")]

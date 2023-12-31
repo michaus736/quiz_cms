@@ -20,7 +20,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<QuestionResponse>> GetQuestionWithAnswers(int questionId);
         Task<Result> CreateQuestionAsync(QuestionRequest question);
         Task<Result> DeleteQuestionAsync(int questionId);
-        Task<Result> UpdateQuestionAsync(EditQuestionRequest EditQuestionRequest);
+        Task<Result> UpdateQuestionAsync(QuestionRequest QuestionRequest);
         
         
 
