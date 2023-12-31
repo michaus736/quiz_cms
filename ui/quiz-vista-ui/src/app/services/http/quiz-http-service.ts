@@ -20,6 +20,11 @@ export class QuizHttpService {
     return this.http.get(`${this.url}/User`);
   }
 
+  getQuizezForMod(): Observable<any> {
+    return this.http.get(`${this.url}/Moderator`);
+  }
+
+
   getQuizDetails(quizName: string): Observable<any> {
     return this.http.get(`${this.url}/details?quizName=${quizName}`)
   }
@@ -33,5 +38,9 @@ export class QuizHttpService {
 
   getQuizModQuestions(quizName: string):Observable<any>{
     return this.http.get(`${this.url}/get-questions-mod?quizName=${quizName}`)
+  }
+
+  deleteQuiz(quizId:string):Observable<any>{
+    return this.http.delete(`${this.url}/delete/${quizId}`)
   }
 }

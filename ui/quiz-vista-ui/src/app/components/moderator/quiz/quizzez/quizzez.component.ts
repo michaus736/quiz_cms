@@ -13,7 +13,7 @@ export class QuizzezComponent {
   constructor(private quizService: QuizHttpService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.quizService.getQuiz().subscribe(
+    this.quizService.getQuizezForMod().subscribe(
       data=>{
         this.quizzes=data.model;
         console.log(data);

@@ -1,5 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
-using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
@@ -20,7 +20,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<QuestionResponse>> GetQuestionWithAnswers(int questionId);
         Task<Result> CreateQuestionAsync(QuestionRequest question);
         Task<Result> DeleteQuestionAsync(int questionId);
-        Task<Result> UpdateQuestionAsync(QuestionRequest question);
+        Task<Result> UpdateQuestionAsync(EditQuestionRequest EditQuestionRequest);
         
         
 

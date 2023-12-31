@@ -19,5 +19,12 @@ export class QuestionHttpService {
     return this.http.post(`${this.url}/create`,question);
   }
 
+  editQuestion(question:Question):Observable<any>{
+    return this.http.put(`${this.url}/edit`,question);
+  }
+
+  deleteQuestion(questionId: string):Observable<any>{
+    return this.http.delete(`${this.url}/delete/${questionId}`)
+  }
 
 }

@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <section class="card" *ngIf="quizDetails">
       <header class="card-header">
-        <h1>{{ quizDetails.name }}</h1>
+        <h1>{{ quizDetails.name }}</h1>  <button class="btn btn-danger me-2 mb-4" (click)="deleteQuiz()">Usuń quiz</button>
         <p>{{ quizDetails.description }}</p>
       </header>
       <div class="card-body">
@@ -13,6 +13,7 @@
       <div class="mb-3">
         <label for="questionText-{{i}}" class="form-label fw-bold">Question Text</label>
         <input type="text" class="form-control" id="questionText-{{i}}" [(ngModel)]="question.text" name="questionText-{{i}}" required>
+        <button class="btn btn-outline-danger" (click)="deleteQuestion(i); $event.preventDefault()">Usuń pytanie</button>
       </div>
       <div class="row mb-3">
         <div class="col">
@@ -25,7 +26,7 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="questionType-{{i}}" class="form-label">Question Type</label>
+        <label for="questionType-{{i}}" class="form-label" (change)="editQuestion(question)">Question Type</label>
         <select class="form-control" id="questionType-{{i}}" [(ngModel)]="question.type" name="questionType-{{i}}" (change)="onQuestionTypeChange(question, i)" required>
           <option value="" disabled selected>Select question type</option>
           <option value="1">Jedna odpowiedź dobra</option>
@@ -34,11 +35,11 @@
         </select>
       </div>
       <div *ngFor="let answer of question.answers; let j = index" class="mb-2">
-        <label for="answerText-{{i}}-{{j}}" class="form-label">Answer {{j + 1}}</label>
-        <input type="text" class="form-control" id="answerText-{{i}}-{{j}}" [(ngModel)]="answer.answerText" name="answerText-{{i}}-{{j}}" required>
+        <label for="answerText-{{i}}-{{j}}" class="form-label">Answer {{j + 1}}</label><button (click)="deleteAnswer(question, j)">Usuń odpowiedź</button>
+        <input type="text" class="form-control" id="answerText-{{i}}-{{j}}" [(ngModel)]="answer.answerText" (change)="editAnswer(question, answer)" name="answerText-{{i}}-{{j}}" required>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="isCorrect-{{i}}-{{j}}" [(ngModel)]="answer.isCorrect" name="isCorrect-{{i}}-{{j}}">
-          <label class="form-check-label" for="isCorrect-{{i}}-{{j}}">Correct Answer</label>
+          <label class="form-check-label" for="isCorrect-{{i}}-{{j}}">Prawidłowa odpowiedź</label>
         </div>
       </div>
       <button class="btn btn-outline-secondary mb-4" (click)="addAnswer(question); $event.preventDefault()">Add Answer</button>

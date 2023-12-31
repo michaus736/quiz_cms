@@ -1,4 +1,4 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
@@ -49,6 +49,20 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 CmsTitleStyle = request.CmsTitleStyle,
                 CmsQuestionsStyle = request.CmsQuestionsStyle,
                 Answers = request.Answers.ConvertCollection().ToList()
+            };
+        }
+
+        public static Question ToEntity(this EditQuestionRequest request)
+        {
+            return new Question
+            {
+                Type = request.Type,
+                Text = request.Text,
+                AdditionalValue = request.AdditionalValue,
+                SubstractionalValue = request.SubstractionalValue,
+                QuizId = request.QuizId,
+                CmsTitleStyle = request.CmsTitleStyle,
+                CmsQuestionsStyle = request.CmsQuestionsStyle
             };
         }
 

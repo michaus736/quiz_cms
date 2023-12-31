@@ -2,7 +2,7 @@
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
-using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
@@ -84,9 +84,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         }
 
-        public async Task<Result> UpdateQuestionAsync(QuestionRequest question)
+        public async Task<Result> UpdateQuestionAsync(EditQuestionRequest editQuestionRequest)
         {
-            await _questionRepository.UpdateAsync(question.ToEntity());
+            await _questionRepository.UpdateAsync(editQuestionRequest.ToEntity());
 
             return Result.Ok();
         }

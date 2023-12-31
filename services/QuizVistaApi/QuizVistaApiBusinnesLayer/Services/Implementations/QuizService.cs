@@ -76,11 +76,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<Result> DeleteQuizAsync(string userId, int idToDelete)
+        public async Task<Result> DeleteQuizAsync(string userName, int idToDelete)
         {
             var quiz = await _quizRepository.GetAsync(idToDelete);
 
-            var user = await _userRepository.GetAll().Where(x => x.UserName == userId).FirstOrDefaultAsync();
+            var user = await _userRepository.GetAll().Where(x => x.UserName == userName).FirstOrDefaultAsync();
 
             if (user == null)
             {
@@ -91,6 +91,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             {
                 return Result.Failed("Unauthorized user.");
             }
+
 
             await _quizRepository.DeleteAsync(idToDelete);
 
@@ -351,6 +352,39 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
                 CategoryName = x.Category.Name,
                 Tags = x.Tags.Select(y=>new TagResponse
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList()
+            }).ToList();
+
+            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+        }
+
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForModerator(string userName)
+        {
+            User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (loggedUser is null) throw new Exception($"user {userName} cannot find");
+
+            List<Quiz> quizes = await _quizRepository.GetAll()
+                .Include(x => x.Users)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
+                .Include(x => x.Tags)
+                .Where(x=>x.AuthorId==loggedUser.Id)
+                .ToListAsync();
+
+
+            IList<QuizListForUserResponse> quizesResponse = quizes.Select(x => new QuizListForUserResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description ?? "",
+                AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
+                CategoryName = x.Category.Name,
+                Tags = x.Tags.Select(y => new TagResponse
                 {
                     Id = y.Id,
                     Name = y.Name,

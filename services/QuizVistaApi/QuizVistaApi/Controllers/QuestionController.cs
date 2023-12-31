@@ -3,8 +3,8 @@ using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Services.Implementations;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
-using QuizVistaApiBusinnesLayer.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
+using QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests;
 
 namespace QuizVistaApi.Controllers
 {
@@ -35,16 +35,16 @@ namespace QuizVistaApi.Controllers
         
         [HttpPut("edit")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> EditQuestion([FromBody] QuestionRequest questionRequest)
+        public async Task<Result> EditQuestion([FromBody] EditQuestionRequest editQuestionRequest)
         {
-            return await _questionService.UpdateQuestionAsync(questionRequest);
+            return await _questionService.UpdateQuestionAsync(editQuestionRequest);
         }
       
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> DeleteQuestion([FromBody] QuestionRequest questionRequest)
+        public async Task<Result> DeleteQuestion(int id)
         {
-            return await _questionService.DeleteQuestionAsync(questionRequest.Id);
+            return await _questionService.DeleteQuestionAsync(id);
         }
     }
 }
