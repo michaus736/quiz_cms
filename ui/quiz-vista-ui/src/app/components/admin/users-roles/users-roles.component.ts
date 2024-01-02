@@ -67,6 +67,7 @@ private refreshUsers(): void {
   this.userHttpService.showUsers().subscribe(
     (data) => {
       this.users = data.model;
+      this.applyUserFilterAndPagination();
     },
     (error) => {
       console.error('Error refreshing users', error);

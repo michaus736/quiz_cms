@@ -87,23 +87,22 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return Result.Ok();
         }
 
-        public async Task<ResultWithModel<LoginResponse>> LoginUser(UserRequest request)
+        public async Task<ResultWithModel<LoginResponse>> LoginUser(UserLoginRequest request)
         {
             request.Password = HashPassword(request.Password);
 
             var user = await _userRepository.GetAll().Include(x=>x.Roles).Where(x=>x.UserName.ToLower() == request.UserName.ToLower()).FirstOrDefaultAsync();
 
             if (user is null)
-                throw new ArgumentNullException($"User with this username is not registered");
+                throw new ArgumentException($"Nazwa użytkownika lub hasło jest nieprawidłowe");
 
 
             if (user.PasswordHash != request.Password)
-                throw new ArgumentException("Invalid password");
+                throw new ArgumentException("Nazwa użytkownika lub hasło jest nieprawidłowe");
 
            string token = CreateToken(user);
 
             LoginResponse loginResponse = new LoginResponse(token);
-            //return Result.Ok(new { token });
             return ResultWithModel<LoginResponse>.Ok(loginResponse);
         }
 

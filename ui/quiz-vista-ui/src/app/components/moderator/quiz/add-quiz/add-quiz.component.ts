@@ -4,6 +4,7 @@ import { Quiz } from 'src/app/models/quiz';
 import { CategoryHttpService } from 'src/app/services/http/category-http-service';
 import { TagHttpService } from 'src/app/services/http/tag-http-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 
 @Component({
   selector: 'app-add-quiz',
@@ -25,20 +26,33 @@ export class AddQuizComponent {
 
   categories: any[] =[];
   tags: any[] =[];
+  //backendErrorMessage: string | null = null;
+  backendErrorMessages: any[]=[];
+  err:any[]=[];
 
   ngOnInit() {
     this.loadCategories();
     this.loadTags();
   }
 
-  constructor(private quizService: QuizHttpService, private categoryService:CategoryHttpService, private tagService: TagHttpService, private router: Router) { }
+  constructor(private quizService: QuizHttpService, private categoryService:CategoryHttpService, private tagService: TagHttpService, private router: Router, private errorHandlerService:ErrorHandlerService) { }
 
   addQuiz() {
     const { id, ...quizData } = this.newQuiz; 
     this.quizService.createQuiz(quizData).subscribe(response => {
-      this.router.navigate(['/moderator/add-questions/', quizData.name])
-    }, error => {
       
+      if(response.isValid===true){
+        this.router.navigate(['/moderator/add-questions/', quizData.name])
+      }
+      else{
+        console.log(response)
+        console.log(response.errorMessage)
+        this.backendErrorMessages=[response.errorMessage]
+      }
+
+    }, error => {
+      console.log(error);
+      this.backendErrorMessages = this.errorHandlerService.handleError(error);
     });
   }
 
@@ -65,5 +79,7 @@ export class AddQuizComponent {
       }
     );
   }
+
+  
 
 }

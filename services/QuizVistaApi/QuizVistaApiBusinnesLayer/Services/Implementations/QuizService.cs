@@ -53,6 +53,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 return Result.Failed("User ID is missing.");
             }
 
+            /*List<User> users = await _userRepository.GetAll().ToListAsync();
+            bool emailCheck = users.Any(x => x.Email.ToLower() == request.Email.ToLower());*/
+
+            var quiz_exist = await _quizRepository.GetAll().FirstOrDefaultAsync(x => x.Name == quizToCreate.Name);
+
+            if (quiz_exist != null)
+            {
+                return Result.Failed("Nazwa quizu jest zajęta");
+            }
+
+            
+
             entity.AuthorId = user.Id;
 
             entity.CreationDate = DateTime.Now;
@@ -69,8 +81,6 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 entity.Tags.Add(tag);
             }
 
-
-
             await _quizRepository.InsertAsync(entity);
 
             return Result.Ok();
@@ -78,9 +88,17 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> DeleteQuizAsync(string userName, int idToDelete)
         {
-            var quiz = await _quizRepository.GetAsync(idToDelete);
+            var quiz = await _quizRepository.GetAll()
+                .Include(q => q.Tags) 
+                .Where(x => x.Id == idToDelete)
+                .FirstOrDefaultAsync();
 
             var user = await _userRepository.GetAll().Where(x => x.UserName == userName).FirstOrDefaultAsync();
+
+            if (quiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
 
             if (user == null)
             {
@@ -91,6 +109,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             {
                 return Result.Failed("Unauthorized user.");
             }
+
+            quiz.Questions.Clear();
+            quiz.Tags.Clear();
+
+            await _quizRepository.SaveChangesAsync();
 
 
             await _quizRepository.DeleteAsync(idToDelete);
