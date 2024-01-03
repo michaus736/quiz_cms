@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizVistaApiBusinnesLayer.Models.Requests
+namespace QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests
 {
-    public class QuestionRequest
+    public class EditQuestionRequest
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Question type is required.")]
@@ -21,11 +21,10 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
         public int QuizId { get; set; }
         public string? CmsTitleStyle { get; set; }
         public string? CmsQuestionsStyle { get; set; }
-        public List<AnswerRequest>? Answers { get; set; } = new List<AnswerRequest>();
 
-        public QuestionRequest() { }
+        public EditQuestionRequest() { }
 
-        public QuestionRequest(int id, string type, string text, int additionalValue, int? substractionalValue, int quizId, string? cmsTitleStyle, string? cmsQuestionsStyle, List<AnswerRequest>? answers)
+        public EditQuestionRequest(int id, string type, string text, int additionalValue, int? substractionalValue, int quizId, string? cmsTitleStyle, string? cmsQuestionsStyle)
         {
             Id = id;
             Type = type;
@@ -35,7 +34,6 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
             QuizId = quizId;
             CmsTitleStyle = cmsTitleStyle;
             CmsQuestionsStyle = cmsQuestionsStyle;
-            Answers = answers;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using QuizVistaApiBusinnesLayer.Models.Requests;
+﻿using QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
@@ -51,6 +51,7 @@ namespace QuizVistaApiBusinnesLayer.Extensions.Mappings
                 Answers = request.Answers.ConvertCollection().ToList()
             };
         }
+
 
     }
 }

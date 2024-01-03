@@ -14,6 +14,14 @@ export class TopMenuComponent {
     return this.authService.isUserLoggedIn();
   }
 
+  IsAdmin(): boolean{
+    return this.authService.isAdmin();
+  }
+
+  IsModerator(): boolean{
+    return this.authService.isModerator();
+  }
+
   Logout(): void{
     this.authService.logout();
   }

@@ -36,6 +36,14 @@ namespace QuizVistaApi.Controllers
             return await _quizService.GetQuizListForUser(userName);
         }
 
+        [HttpGet("moderator")]
+        [Authorize(Roles = "Moderator")]
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesForModerator()
+        {
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.GetQuizListForModerator(userName);
+        }
+
         [HttpGet("details")]
         [Authorize(Roles = "User")]
         public async Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetails(string quizName)
@@ -51,6 +59,15 @@ namespace QuizVistaApi.Controllers
             var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
 
             return await _quizService.GetQuizWithQuestionsAsync(quizName, userName);
+        }
+
+        [HttpGet("get-questions-mod")]
+        [Authorize(Roles = "User")]
+        public async Task<ResultWithModel<QuizWithQuestionsModResponse>> GetQuestionsForQuizMod(string quizName)
+        {
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+
+            return await _quizService.GetQuestionsForQuizMod(quizName, userName);
         }
 
 
@@ -72,13 +89,14 @@ namespace QuizVistaApi.Controllers
             return await _quizService.UpdateQuizAsync(userId,quizRequest);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> DeleteQuiz([FromBody] QuizRequest quizRequest)
+        public async Task<Result> DeleteQuiz(int id)
         {
-            var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
-            return await _quizService.DeleteQuizAsync(userId,quizRequest.Id);
+            var username = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.DeleteQuizAsync(username, id);
         }
+
 
         [HttpPost("assignuser")]
         [Authorize(Roles="Moderator")]

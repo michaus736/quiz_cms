@@ -53,6 +53,18 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 return Result.Failed("User ID is missing.");
             }
 
+            /*List<User> users = await _userRepository.GetAll().ToListAsync();
+            bool emailCheck = users.Any(x => x.Email.ToLower() == request.Email.ToLower());*/
+
+            var quiz_exist = await _quizRepository.GetAll().FirstOrDefaultAsync(x => x.Name == quizToCreate.Name);
+
+            if (quiz_exist != null)
+            {
+                return Result.Failed("Nazwa quizu jest zajęta");
+            }
+
+            
+
             entity.AuthorId = user.Id;
 
             entity.CreationDate = DateTime.Now;
@@ -69,18 +81,24 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 entity.Tags.Add(tag);
             }
 
-
-
             await _quizRepository.InsertAsync(entity);
 
             return Result.Ok();
         }
 
-        public async Task<Result> DeleteQuizAsync(string userId, int idToDelete)
+        public async Task<Result> DeleteQuizAsync(string userName, int idToDelete)
         {
-            var quiz = await _quizRepository.GetAsync(idToDelete);
+            var quiz = await _quizRepository.GetAll()
+                .Include(q => q.Tags) 
+                .Where(x => x.Id == idToDelete)
+                .FirstOrDefaultAsync();
 
-            var user = await _userRepository.GetAll().Where(x => x.UserName == userId).FirstOrDefaultAsync();
+            var user = await _userRepository.GetAll().Where(x => x.UserName == userName).FirstOrDefaultAsync();
+
+            if (quiz == null)
+            {
+                return Result.Failed("Quiz not found.");
+            }
 
             if (user == null)
             {
@@ -91,6 +109,12 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             {
                 return Result.Failed("Unauthorized user.");
             }
+
+            quiz.Questions.Clear();
+            quiz.Tags.Clear();
+
+            await _quizRepository.SaveChangesAsync();
+
 
             await _quizRepository.DeleteAsync(idToDelete);
 
@@ -177,6 +201,62 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
 
             return ResultWithModel<QuizRun>.Ok(res);
+        }
+
+        public async Task<ResultWithModel<QuizWithQuestionsModResponse>> GetQuestionsForQuizMod(string quizName, string userName)
+        {
+            var quiz = await _quizRepository.GetAll()
+                .Include(x => x.Author)
+                .Include(x => x.Questions)
+                .FirstOrDefaultAsync(x => x.Name == quizName);
+
+            if (quiz is null)
+                throw new ArgumentNullException($"quiz {quizName} not found");
+
+            foreach (var question in quiz.Questions)
+            {
+                List<Answer> answers = await _answerRepository.GetAll()
+                    .Where(x => x.QuestionId == question.Id)
+                    .ToListAsync();
+
+                question.Answers = answers;
+            }
+
+            User? user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentNullException($"user {userName} does not exist");
+
+            var attemptCount = await _attemptCountRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id && x.QuizId == quiz.Id);
+
+
+
+            QuizWithQuestionsModResponse res = new QuizWithQuestionsModResponse
+            {
+                AuthorName = quiz.Author is null ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                Name = quizName,
+                UserAttemptCount = attemptCount?.AttemptCountNumber ?? 0,
+                Questions = quiz.Questions.Select(x => new QuizWithQuestionsModResponse.QuestionMod
+                {
+                    Id = x.Id,
+                    Text = x.Text,
+                    AdditionalValue = x.AdditionalValue,
+                    SubstractionalValue = x.SubstractionalValue,
+                    CmsTitleValue = x.CmsTitleStyle,
+                    CmsQuestionsValue = x.CmsQuestionsStyle,
+                    Type = x.Type,
+                    Answers = x.Answers.Select(y => new QuizWithQuestionsModResponse.QuestionMod.AnswerMod
+                    {
+                        Id = y.Id,
+                        Text = y.AnswerText,
+                        IsCorrect = y.IsCorrect,
+                    }).ToList()
+
+
+                }).ToList()
+            };
+
+
+            return ResultWithModel<QuizWithQuestionsModResponse>.Ok(res);
         }
 
         public async Task<Result> UpdateQuizAsync(string userId, QuizRequest quizToUpdate)
@@ -289,11 +369,45 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse
             {
+                Id = x.Id,
                 Name = x.Name,
                 Description = x.Description ?? "",
                 AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
                 CategoryName = x.Category.Name,
                 Tags = x.Tags.Select(y=>new TagResponse
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList()
+            }).ToList();
+
+            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+        }
+
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForModerator(string userName)
+        {
+            User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (loggedUser is null) throw new Exception($"user {userName} cannot find");
+
+            List<Quiz> quizes = await _quizRepository.GetAll()
+                .Include(x => x.Users)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
+                .Include(x => x.Tags)
+                .Where(x=>x.AuthorId==loggedUser.Id)
+                .ToListAsync();
+
+
+            IList<QuizListForUserResponse> quizesResponse = quizes.Select(x => new QuizListForUserResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description ?? "",
+                AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
+                CategoryName = x.Category.Name,
+                Tags = x.Tags.Select(y => new TagResponse
                 {
                     Id = y.Id,
                     Name = y.Name,
@@ -327,6 +441,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             QuizDetailsForUser quizDetails = new QuizDetailsForUser
             {
+                Id = quiz.Id,
                 Name = quiz.Name,
                 Description = quiz.Description ?? "",
                 AuthorName = (quiz.Author is null) ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",

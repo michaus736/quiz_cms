@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
+using QuizVistaApiBusinnesLayer.Models.Requests.QuestionRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using System.Collections.Generic;
@@ -55,11 +56,11 @@ namespace QuizVistaApi.Controllers
             return await _answerService.UpdateAnswerAsync(answerRequest);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Moderator")]
-        public async Task<Result> DeleteAnswer([FromBody] AnswerRequest answerRequest)
+        public async Task<Result> DeleteAnswer(int id)
         {
-            return await _answerService.DeleteAnswerAsync(answerRequest.Id);
+            return await _answerService.DeleteAnswerAsync(id);
         }
 
     }
