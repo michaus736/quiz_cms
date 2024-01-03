@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests.AttemptRequests;
-using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.AttemptResponses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System.Security.Claims;
@@ -33,16 +33,16 @@ namespace QuizVistaApi.Controllers
         {
             return await _attemptService.GetAttemptsOfUser(attemptRequest.UserId);
         }
-        /*
+        
         [HttpGet("userResults")]
         [Authorize(Roles = "User")]
-        public async Task<ResultWithModel<int>> GetUserResults()
+        public async Task<ResultWithModel<UserResultBriefResponse>> GetUserResults()
         {
             var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
 
-            return _attemptService.GetUserResults(userName);
+            return await _attemptService.GetUserResults(userName);
         }
-        */
+        
         [HttpPost("create")]
         [Authorize(Roles = "User")]
         public async Task<Result> CreateAttempt([FromBody] SaveAttemptRequest attemptRequest)

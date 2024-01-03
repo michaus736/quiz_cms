@@ -1,4 +1,5 @@
-﻿using QuizVistaApiInfrastructureLayer.Attributes;
+﻿using QuizVistaApiBusinnesLayer.Models.Responses.AttemptResponses;
+using QuizVistaApiInfrastructureLayer.Attributes;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
