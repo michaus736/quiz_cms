@@ -19,6 +19,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
         public int CategoryId { get; set; }
         public string? CmsTitleStyle { get; set; }
         public bool IsActive { get; set; }
+        public int AttemptCount { get; set; }
         public bool? PublicAccess { get; set; }
         //public int AuthorId { get; set; }
         public List<int> TagIds { get; set; } = new List<int>();
@@ -28,7 +29,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
 
         public QuizRequest() { }
 
-        public QuizRequest(int id, string name, string? description, int categoryId, string? cmsTitleStyle, bool isActive, bool? publicAccess,List<int> tagIds)
+        public QuizRequest(int id, string name, string? description, int categoryId, string? cmsTitleStyle, bool isActive, int attemptCount, bool? publicAccess,List<int> tagIds)
         {
             Id = id;
             Name = name;
@@ -37,6 +38,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests
             CmsTitleStyle = cmsTitleStyle;
             //AuthorId = authorId;
             IsActive = isActive;
+            AttemptCount = attemptCount;
             PublicAccess = publicAccess;
             TagIds = tagIds;
         }

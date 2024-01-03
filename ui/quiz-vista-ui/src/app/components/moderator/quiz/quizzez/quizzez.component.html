@@ -1,0 +1,36 @@
+<div class="d-flex flex-row">
+    <app-moderator-side-nav *ngIf="IsUserLogged()"></app-moderator-side-nav>
+  
+    <div class="flex-grow-1">
+  
+      <div *ngIf="quizzes && quizzes.length; else noDataTemplate">
+        <h2>Available Quizzes</h2>
+        <div class="d-flex mb-3">
+          <button type="button" class="btn btn-primary me-3" [routerLink]="['/moderator/add-quiz']">Dodaj</button>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+          <div class="col" *ngFor="let quiz of quizzes">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3 class="card-title">{{ quiz.name }}</h3>
+                <p class="card-text">Description: {{ quiz.description || 'No description provided.' }}</p>
+                <p class="card-text">Created by: {{ quiz.authorName }}</p>
+                <p class="card-text">
+                  <a class="badge bg-primary category-link">
+                    Category: {{ quiz.categoryName }}
+                  </a>
+                </p>
+                <a [routerLink]="['/moderator/add-questions', quiz.name]" class="btn btn-success">Edit Questions</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noDataTemplate>
+        <p>No quizzes available at the moment.</p>
+      </ng-template>
+  
+    </div>
+  </div>
+  
