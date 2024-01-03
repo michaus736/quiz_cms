@@ -33,7 +33,16 @@ namespace QuizVistaApi.Controllers
         {
             return await _attemptService.GetAttemptsOfUser(attemptRequest.UserId);
         }
+        /*
+        [HttpGet("userResults")]
+        [Authorize(Roles = "User")]
+        public async Task<ResultWithModel<int>> GetUserResults()
+        {
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
 
+            return _attemptService.GetUserResults(userName);
+        }
+        */
         [HttpPost("create")]
         [Authorize(Roles = "User")]
         public async Task<Result> CreateAttempt([FromBody] SaveAttemptRequest attemptRequest)

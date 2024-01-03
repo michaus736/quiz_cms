@@ -63,6 +63,14 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<AttemptResponse>.Ok(attempt.ToResponse());
         }
 
+        public ResultWithModel<object> GetUserResults(string userName)
+        {
+
+            object ob = new object();
+
+            return ResultWithModel<object>.Ok(ob);
+        }
+
         public async Task<Result> SaveAttempt(SaveAttemptRequest attempt, string userName)
         {
             User? user = await _userRepository.GetAll()
@@ -107,5 +115,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             
             return Result.Ok();
         }
+
+        
     }
 }
