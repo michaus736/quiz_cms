@@ -24,6 +24,7 @@ import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.componen
 import { AddQuizComponent } from './components/moderator/quiz/add-quiz/add-quiz.component';
 import { QuizzezComponent } from './components/moderator/quiz/quizzez/quizzez.component';
 import { AddQuestionsComponent } from './components/moderator/quiz/add-questions/add-questions.component';
+import { BriefComponent } from './components/user-results/brief/brief.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
@@ -40,6 +41,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminPanelComponent},
   { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'quizez', component: QuizezComponent, canActivate:[UserGuard]},
+  { path: 'results', component: BriefComponent, canActivate:[UserGuard]},
+  
   { path: 'admin/users', component: UsersComponent , canActivate: [AdminGuard]},
   { path: 'admin/users-roles', component: UsersRolesComponent, canActivate: [AdminGuard] },
   { path: 'admin/edit-user/:id', component:EditUserComponent, canActivate: [AdminGuard] },

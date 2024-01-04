@@ -3,7 +3,7 @@ using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace QuizVistaApiBusinnesLayer.Models.Responses;
+namespace QuizVistaApiBusinnesLayer.Models.Responses.AttemptResponses;
 
 
 
@@ -25,7 +25,7 @@ public class AttemptResponse
     public AttemptResponse(int id,
         DateTime createDate,
         DateTime? editionDate,
-        int userId, 
+        int userId,
         List<AnswerResponse>? answers,
         UserResponse? user)
     {

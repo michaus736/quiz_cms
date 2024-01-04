@@ -1,0 +1,23 @@
+<div class="container mt-4">
+    <h1>User Results: {{ userResults.userName }}</h1>
+    
+    <div *ngFor="let quiz of userResults.quizzes" class="card mt-3 bg-light">
+      <div class="card-header bg-primary text-white">
+        <h5>Quiz: {{ quiz.quizName }}</h5>
+      </div>
+      <div class="card-body">
+        <p>Total Attempts: {{ quiz.attempts.length }}</p>
+        <div *ngFor="let attempt of quiz.attempts" class="attempt-card mb-3 p-3 bg-white">
+          <p class="text-muted">Attempt Date: {{ attempt.attempt_date | dateTransform }}</p>
+          <p>Points Scored: {{ attempt.pointsScored }} / {{ attempt.pointsTotal }}</p>
+          <p>Percentage: {{ attempt.percentageString }}</p>
+          <p>
+            Correct Answers: <span class="answers-correct">{{ attempt.answersCorrect }}</span> |
+            Wrong Answers: <span class="answers-wrong">{{ attempt.answersWrong }}</span> |
+            Mixed Answers: <span class="answers-mixed">{{ attempt.answersMixed }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

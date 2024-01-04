@@ -18,4 +18,9 @@ export class AttemptHttpService {
       "answerIds": answers
     })
   }
+
+  getUserResults():Observable<any>{
+    return this.http.get(`${this.url}/userResults`)
+  }
+
 }
