@@ -1,6 +1,6 @@
 ﻿using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests.AttemptRequests;
-using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.AttemptResponses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -15,9 +15,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<AttemptResponse>> GetAttempt(int id);
         Task<ResultWithModel<AttemptResponse>> GetAttemptWithAnswers(int id);
         Task<ResultWithModel<IEnumerable<AttemptResponse>>> GetAttemptsOfUser(int userId);
+        Task<ResultWithModel<UserResultBriefResponse>> GetUserResults(string userName);
         Task<Result> SaveAttempt(SaveAttemptRequest attempt, string userName);
         Task<Result> DeleteAttempt(int id);
         Task<Result> UpdateAttempt(AttemptRequest attempt);
-
     }
 }

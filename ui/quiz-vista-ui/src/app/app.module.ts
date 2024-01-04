@@ -36,6 +36,8 @@ import { EditQuizComponent } from './components/moderator/quiz/edit-quiz/edit-qu
 import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
 import { UserSideNavComponent } from './components/user/user-side-nav/user-side-nav.component';
 import { UserDetailsComponent } from './components/user/user-details/user-details.component';
+import { BriefComponent } from './components/user-results/brief/brief.component';
+import { DateTransform } from './pipes/date-transform';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { UserDetailsComponent } from './components/user/user-details/user-detail
     ChangePasswordComponent,
     UserSideNavComponent,
     UserDetailsComponent,
+    BriefComponent,
+    DateTransform
   ],
   imports: [
     BrowserModule,

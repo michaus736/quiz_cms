@@ -40,6 +40,25 @@ public partial class QuizVistaDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<UserResults>(entity =>
+        {
+            entity.ToView("V_USER_RESULTS").HasNoKey();
+
+            entity.Property(x => x.UserId).HasColumnName("USER_ID");
+            entity.Property(x => x.QuizName).HasColumnName("QUIZ_NAME");
+            entity.Property(x => x.QuizId).HasColumnName("QUIZ_ID");
+            entity.Property(x => x.AttemptId).HasColumnName("ATTEMPT_ID");
+            entity.Property(x => x.QuestionId).HasColumnName("QUESTION_ID");
+            entity.Property(x => x.RegDate).HasColumnName("REGDATE");
+            entity.Property(x => x.Type).HasColumnName("TYPE");
+            entity.Property(x => x.AdditionalValue).HasColumnName("ADDITIONAL_VALUE");
+            entity.Property(x => x.SubstractionalValue).HasColumnName("SUBSTRACTIONA_VALUE");
+            entity.Property(x => x.UserCorrectAnswers).HasColumnName("USER_CORRECT_ANSWERS");
+            entity.Property(x => x.UserWrongAnswers).HasColumnName("USER_WRONG_ANSWERS");
+            entity.Property(x => x.MaxCorrectAnswers).HasColumnName("MAX_CORRECT_ANSWERS");
+            entity.Property(x => x.MaxWrongAnswers).HasColumnName("MAX_WRONG_ANSWERS");
+        });
+
         modelBuilder.Entity<AttemptCount>(entity =>
         {
             entity.ToView("V_ATTEMPT_COUNT").HasNoKey();
