@@ -52,6 +52,14 @@ namespace QuizVistaApi.Controllers
             return await _quizService.GetQuizDetailsForUser(quizName, userName);
         }
 
+        [HttpGet("details-mod")]
+        [Authorize(Roles = "Moderator")]
+        public async Task<ResultWithModel<QuizDetailsForModResponse>> GetQuizDetailsForMod(string quizName)
+        {
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.GetQuizDetailsForMod(quizName, userName);
+        }
+
         [HttpGet("quiz-run")]
         [Authorize(Roles = "User")]
         public async Task<ResultWithModel<QuizRun>> GetUserQuizRun(string quizName)
@@ -75,8 +83,6 @@ namespace QuizVistaApi.Controllers
         public async Task<Result> CreateQuiz([FromBody] QuizRequest quizRequest)
         {
             var userId = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
-            //quizRequest.userID = User.FindFirst(ClaimTypes.Name)?.Value;
-
 
             return await _quizService.CreateQuizAsync(userId, quizRequest);
         }

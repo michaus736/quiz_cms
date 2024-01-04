@@ -8,6 +8,7 @@ using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Requests.UserRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.UserResponses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
@@ -62,6 +63,25 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
 
             return ResultWithModel<UserResponse>.Ok(user.ToResponse());
+        }
+
+        public async Task<ResultWithModel<UserDetailsResponse>> GetUserDetails(string userName)
+        {
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+
+            if (user is null)
+                throw new ArgumentNullException($"User not found");
+
+            var userDetailsResponse = new UserDetailsResponse
+            {
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+            };
+
+            return ResultWithModel<UserDetailsResponse>.Ok(userDetailsResponse);
         }
 
         public async Task<Result> RegisterUser(UserRequest request)
@@ -122,7 +142,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             user.PasswordResetExpire = DateTime.Now;
             await _userRepository.UpdateAsync(user);
 
-            var resetLink = $"[ResetPasswordLink]/?token={resetToken}"; //link do resetu hasła
+            var resetLink = $"http://localhost:4200/?token={resetToken}"; //link do resetu hasła
 
             var mailRequest = new MailRequest
             {
@@ -192,16 +212,15 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 throw new ArgumentException("The new password and confirm password does not match.");
             }
 
-            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName.ToLower() == changePasswordRequest.UserName.ToLower());
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName.ToLower() == changePasswordRequest.ValidateUserName.ToLower());
 
             if (user is null)
                 throw new ArgumentNullException($"Error");
 
-            if (user.UserName != changePasswordRequest.ValidateUserName) throw new ArgumentException("Forbidden.");
-
             if (user.PasswordHash != changePasswordRequest.CurrentPassword)
             {
-                throw new ArgumentException("Invalid password");
+                //throw new ArgumentException("Invalid password");
+                return Result.Failed("Nieprawidłowe hasło");
             }
 
             user.PasswordHash = changePasswordRequest.NewPassword;

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuizVistaApiBusinnesLayer.Models.Responses;
+namespace QuizVistaApiBusinnesLayer.Models.Responses.UserResponses;
 
 public class UserResponse
 {
@@ -34,15 +34,15 @@ public class UserResponse
     private UserResponse() { }
 
     public UserResponse(
-        int id, 
+        int id,
         string userName,
         //string passwordHash,
-        string firstName, 
-        string lastName, 
+        string firstName,
+        string lastName,
         string email,
         string resetPasswordToken,
-        List<AttemptResponse?> attempts, 
-        List<QuizResponse> quizzesNavigation, 
+        List<AttemptResponse?> attempts,
+        List<QuizResponse> quizzesNavigation,
         List<QuizResponse> quizzes,
         List<RoleResponse> roles)
     {
@@ -59,5 +59,5 @@ public class UserResponse
         Roles = roles;
     }
 
-    
+
 }

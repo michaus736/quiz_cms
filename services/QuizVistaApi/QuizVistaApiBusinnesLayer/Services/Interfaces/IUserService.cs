@@ -2,6 +2,7 @@
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Requests.UserRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.UserResponses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest);
         Task<Result> ToggleRole(ToggleRoleRequest toggleRoleRequest);
         Task<ResultWithModel<UserResponse>> GetUser(int userId);
+        Task<ResultWithModel<UserDetailsResponse>> GetUserDetails(string userName);
         Task<ResultWithModel<IEnumerable<UserResponse>>> GetUsers();
     }
 }

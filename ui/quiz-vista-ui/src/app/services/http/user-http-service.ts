@@ -46,4 +46,18 @@ export class UserHttpService {
     return this.http.get(`${this.url}/showuser/${userId}`);
   }
 
+  changePassword(currentPassword: string, newPassword: string, ConfirmNewPassword: string): Observable<any>{
+    return this.http.post(`${this.url}/changepassword`,{
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      ConfirmNewPassword: ConfirmNewPassword
+  })
+  }
+
+  showUserDetails():Observable<any>{
+    return this.http.get(`${this.url}/details`);
+  }
+
+
+
 }

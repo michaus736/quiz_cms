@@ -7,6 +7,7 @@ using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
 using QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses;
+using QuizVistaApiBusinnesLayer.Models.Responses.UserResponses;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using QuizVistaApiInfrastructureLayer.Entities;
 using QuizVistaApiInfrastructureLayer.Repositories;
@@ -282,14 +283,27 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             var updatedEntity = quizToUpdate.ToEntity();
 
+
             existingQuiz.Name = updatedEntity.Name;
             existingQuiz.Description = updatedEntity.Description;
             existingQuiz.CategoryId = updatedEntity.CategoryId;
             existingQuiz.CmsTitleStyle = updatedEntity.CmsTitleStyle;
             existingQuiz.IsActive = updatedEntity.IsActive;
-            existingQuiz.PublicAccess= updatedEntity.PublicAccess;
-            existingQuiz.Tags = updatedEntity.Tags;
+            existingQuiz.PublicAccess = updatedEntity.PublicAccess;
             existingQuiz.EditionDate = DateTime.Now;
+
+            existingQuiz.Tags.Clear();
+            await _quizRepository.SaveChangesAsync();
+
+            var existingTags = await _tagRepository.GetAll()
+                .Where(tag => quizToUpdate.TagIds.Contains(tag.Id))
+                .ToListAsync();
+
+
+            foreach (var tag in existingTags)
+            {
+                existingQuiz.Tags.Add(tag);
+            }
 
             await _quizRepository.UpdateAsync(existingQuiz);
 
@@ -298,7 +312,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> AssignUser(AssignUserRequest assignUserRequest)
         {
-            var quiz = await _quizRepository.GetAll().Include(x=>x.Users).Where(x=>x.Id==assignUserRequest.QuizId).FirstOrDefaultAsync();
+            var quiz = await _quizRepository.GetAll().Include(x=>x.Users).Where(x=>x.Name==assignUserRequest.QuizName).FirstOrDefaultAsync();
             if (quiz == null)
             {
                 return Result.Failed("Quiz not found.");
@@ -326,7 +340,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> UnAssignUser(AssignUserRequest assignUserRequest)
         {
-            var quiz = await _quizRepository.GetAll().Include(x => x.Users).Where(x => x.Id == assignUserRequest.QuizId).FirstOrDefaultAsync();
+            var quiz = await _quizRepository.GetAll().Include(x => x.Users).Where(x => x.Name == assignUserRequest.QuizName).FirstOrDefaultAsync();
             if (quiz == null)
             {
                 return Result.Failed("Quiz not found.");
@@ -459,6 +473,61 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
 
             return ResultWithModel<QuizDetailsForUser>.Ok(quizDetails);
+
+        }
+
+
+        public async Task<ResultWithModel<QuizDetailsForModResponse>> GetQuizDetailsForMod(string quizName, string userName)
+        {
+            //getting quiz props
+            Quiz? quiz = await _quizRepository.GetAll()
+                .Include(x => x.Author)
+                .Include(x => x.Users)
+                .Include(x => x.Category)
+                .Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.Name == quizName);
+
+            if (quiz is null) throw new ArgumentException($"quiz {quizName} does not exist");
+
+
+            //getting user attempts count
+            User? user = await _userRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user is null) throw new ArgumentException($"user does not exist");
+
+            var attemptCount = await _attemptCountRepository.GetAll().FirstOrDefaultAsync(x => x.UserId == user.Id && x.QuizId == quiz.Id);
+
+
+            QuizDetailsForModResponse quizDetails = new QuizDetailsForModResponse
+            {
+                Id = quiz.Id,
+                Name = quiz.Name,
+                Description = quiz.Description ?? "",
+                AuthorName = (quiz.Author is null) ? "" : $"{quiz.Author.FirstName} {quiz.Author.LastName}",
+                CategoryId = quiz.Category.Id,
+                AttemptCount = quiz.AttemptCount,
+                PublicAccess = quiz.PublicAccess ?? false,
+                IsActive = quiz.IsActive,
+                Tags = quiz.Tags.Select(x => new TagResponse
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList(),
+                Users = quiz.Users.Select(x => new UserDetailsResponse
+                {
+                    UserName = x.UserName,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                }).ToList(),
+                UserAttempts = attemptCount?.AttemptCountNumber ?? 0,
+            };
+
+
+
+            return ResultWithModel<QuizDetailsForModResponse>.Ok(quizDetails);
 
         }
     }
