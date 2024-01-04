@@ -31,6 +31,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetailsForUser(string quizName, string userName);
         Task<ResultWithModel<QuizDetailsForModResponse>> GetQuizDetailsForMod(string quizName, string userName);
         Task<ResultWithModel<QuizWithQuestionsModResponse>> GetQuestionsForQuizMod(string quizName, string userName);
-        
+        Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesByCategory(string userName, string categoryName);
+        Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesByTag(string userName, string tagName);
     }
 }
