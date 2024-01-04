@@ -38,6 +38,8 @@ import { UserSideNavComponent } from './components/user/user-side-nav/user-side-
 import { UserDetailsComponent } from './components/user/user-details/user-details.component';
 import { BriefComponent } from './components/user-results/brief/brief.component';
 import { DateTransform } from './pipes/date-transform';
+import { ResetPasswordInitComponent } from './components/user/reset-password-init/reset-password-init.component';
+import { ResetPasswordComponent } from './components/user/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { DateTransform } from './pipes/date-transform';
     UserSideNavComponent,
     UserDetailsComponent,
     BriefComponent,
-    DateTransform
+    DateTransform,
+    ResetPasswordInitComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -58,6 +58,19 @@ export class UserHttpService {
     return this.http.get(`${this.url}/details`);
   }
 
+  resetPasswordInit(email:string):Observable<any>{
+    return this.http.post(`${this.url}/reset-password-init`,{
+      email:email
+    })
+  }
+
+  resetPassword(token: string, password: string, ConfirmNewPassword: string): Observable<any>{
+    return this.http.post(`${this.url}/reset-password`,{
+      token: token,
+      Password: password,
+      ConfirmPassword: ConfirmNewPassword
+  })
+  }
 
 
 }

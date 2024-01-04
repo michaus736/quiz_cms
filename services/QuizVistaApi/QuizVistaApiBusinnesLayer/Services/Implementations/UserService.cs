@@ -127,34 +127,32 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         }
 
         public async Task<Result> ResetPasswordInit(ResetPasswordInitialRequest request)
-        //public async Task<ResultWithModel<IEnumerable<UserResponse>>> ResetPasswordInit(ResetPasswordInitialRequest request)
         {
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (user == null)
             {
-                throw new ArgumentException("User not found.");
+                return Result.Failed("Nieprawidłowy adres email");
             }
 
-            var resetToken = GenerateResetToken();
+            var resetCode = GenerateResetCode();
+            var hashedToken = HashPassword(resetCode);
 
-            user.ResetPasswordToken = resetToken;
+            user.ResetPasswordToken = hashedToken;
             user.PasswordResetExpire = DateTime.Now;
             await _userRepository.UpdateAsync(user);
 
-            var resetLink = $"http://localhost:4200/?token={resetToken}"; //link do resetu hasła
 
             var mailRequest = new MailRequest
             {
                 ToEmail = user.Email,
-                Subject = "Reset Password",
-                Body = $"Please click on the link to reset your password: {resetLink}"
+                Subject = "Resetowanie hasła",
+                Body = $"Twój kod do resetu hasła to: {resetCode}"
             };
 
             await _mailService.SendEmailAsync(mailRequest);
             
             return Result.Ok();
-            //return ResultWithModel<IEnumerable<UserResponse>>.Ok(new List<UserResponse> { user.ToResponse() });
         }
 
         public async Task<Result> UpdateUser(UserUpdateRequest userRequest)
@@ -177,19 +175,21 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> ResetPassword(ResetPasswordRequest resetPasswordRequest)
         {
+            resetPasswordRequest.Token = HashPassword(resetPasswordRequest.Token);
             resetPasswordRequest.Password = HashPassword(resetPasswordRequest.Password);
             resetPasswordRequest.ConfirmPassword = HashPassword(resetPasswordRequest.ConfirmPassword);
 
             if (string.Compare(resetPasswordRequest.Password, resetPasswordRequest.ConfirmPassword) != 0)
             {
-                throw new ArgumentException("The new password and confirm password does not match.");
+                return Result.Failed("The new password and confirm password does not match.");
             }
 
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.ResetPasswordToken == resetPasswordRequest.Token);
 
+
             if (user == null || user.PasswordResetExpire < DateTime.Now.AddDays(-1))
             {
-                throw new ArgumentException("Invalid or expired reset token.");
+                return Result.Failed("Invalid or expired reset token.");
             }
 
 
@@ -297,12 +297,10 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
-        private string GenerateResetToken()
+        private string GenerateResetCode()
         {
-            using var rng = new RNGCryptoServiceProvider();
-            var tokenData = new byte[32];
-            rng.GetBytes(tokenData);
-            return Convert.ToBase64String(tokenData);
+            var random = new Random();
+            return random.Next(0, 999999).ToString("D6");
         }
     }
 }

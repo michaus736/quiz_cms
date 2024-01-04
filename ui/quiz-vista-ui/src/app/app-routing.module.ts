@@ -28,11 +28,15 @@ import { BriefComponent } from './components/user-results/brief/brief.component'
 import { EditQuizComponent } from './components/moderator/quiz/edit-quiz/edit-quiz.component';
 import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
 import { UserDetailsComponent } from './components/user/user-details/user-details.component';
+import { ResetPasswordInitComponent } from './components/user/reset-password-init/reset-password-init.component';
+import { ResetPasswordComponent } from './components/user/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
+  { path: 'forgot-password', component: ResetPasswordInitComponent},
+  { path: 'reset-password', component: ResetPasswordComponent},
 
   { path: 'quizez', component: QuizezComponent},
   { path: 'quiz-details/:quizName', component: QuizDetailsComponent},
