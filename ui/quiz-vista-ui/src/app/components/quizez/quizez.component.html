@@ -1,8 +1,15 @@
 <div class="d-flex flex-row">
-  <app-side-nav *ngIf="IsUserLogged()"></app-side-nav>
+  <!-- <app-side-nav *ngIf="IsUserLogged()"></app-side-nav> -->
 
   <div class="flex-grow-1">
-
+    <div *ngIf="categoryName || tagName" class="my-4">
+      <div class="card">
+        <div class="card-body">
+          <p *ngIf="categoryName" class="card-text">Kategoria: {{ categoryName }}</p>
+          <p *ngIf="tagName" class="card-text">Tag: {{ tagName }}</p>
+        </div>
+      </div>
+    </div>
     <div *ngIf="quizzes && quizzes.length; else noDataTemplate">
       <h2>Available Quizzes</h2>
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
@@ -14,13 +21,13 @@
               <p class="card-text">Created by: {{ quiz.authorName }}</p>
               <div class="tags">
                 <span *ngFor="let tag of quiz.tags">
-                  <a [routerLink]="['/tag', tag.name]" class="badge bg-secondary tag-link">
+                  <a [routerLink]="['/quizez/tag', tag.name]" class="badge bg-secondary tag-link">
                     {{ tag.name }}
                   </a>
                 </span>
               </div>
               <p class="card-text">
-                <a [routerLink]="['/category', quiz.categoryName]" class="badge bg-primary category-link">
+                <a [routerLink]="['/quizez/category', quiz.categoryName]" class="badge bg-primary category-link">
                   Category: {{ quiz.categoryName }}
                 </a>
               </p>
