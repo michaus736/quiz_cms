@@ -20,6 +20,16 @@ export class QuizHttpService {
     return this.http.get(`${this.url}/User`);
   }
 
+  getQuizByTag(tagName: string): Observable<any> {
+    return this.http.get(`${this.url}/tag?tagName=${tagName}`);
+  }
+
+  getQuizByCategory(categoryName: string): Observable<any> {
+    return this.http.get(`${this.url}/category?categoryName=${categoryName}`);
+  }
+
+
+
   getQuizezForMod(): Observable<any> {
     return this.http.get(`${this.url}/Moderator`);
   }
