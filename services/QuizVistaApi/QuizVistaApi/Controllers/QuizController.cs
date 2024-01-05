@@ -36,6 +36,24 @@ namespace QuizVistaApi.Controllers
             return await _quizService.GetQuizListForUser(userName);
         }
 
+        [HttpGet("category")]
+        [Authorize(Roles = "User")]
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesByCategory(string categoryName)
+        {
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.GetQuizesByCategory(userName, categoryName);
+        }
+
+        [HttpGet("tag")]
+        [Authorize(Roles = "User")]
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesByTag(string tagName)
+        {
+            var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
+            return await _quizService.GetQuizesByTag(userName, tagName);
+        }
+
+
+
         [HttpGet("moderator")]
         [Authorize(Roles = "Moderator")]
         public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesForModerator()

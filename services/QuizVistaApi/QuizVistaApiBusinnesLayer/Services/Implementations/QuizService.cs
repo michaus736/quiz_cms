@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using QuizVistaApiBusinnesLayer.Extensions;
 using QuizVistaApiBusinnesLayer.Extensions.Mappings;
 using QuizVistaApiBusinnesLayer.Models;
@@ -389,6 +390,81 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
                 CategoryName = x.Category.Name,
                 Tags = x.Tags.Select(y=>new TagResponse
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList()
+            }).ToList();
+
+            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+        }
+
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesByCategory(string userName, string categoryName)
+        {
+            User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (loggedUser is null) throw new Exception($"user {userName} cannot find");
+
+            List<Quiz> quizes = await _quizRepository.GetAll()
+                .Include(x => x.Users)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
+                .Include(x => x.Tags)
+                .Where(x=>x.Category.Name.ToLower() == categoryName.ToLower())
+                .ToListAsync();
+
+            //add public quizes
+            IEnumerable<Quiz> quizesAssignedToUser = quizes
+                .Where(x => (x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id))
+                .Where(x => x.IsActive)
+                .ToList();
+
+            IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description ?? "",
+                AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
+                CategoryName = x.Category.Name,
+                Tags = x.Tags.Select(y => new TagResponse
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                    Quizzes = new List<QuizResponse>()
+                }).ToList()
+            }).ToList();
+
+            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+        }
+        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesByTag(string userName, string tagName)
+        {
+            User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (loggedUser is null) throw new Exception($"user {userName} cannot find");
+
+            List<Quiz> quizes = await _quizRepository.GetAll()
+                .Include(x => x.Users)
+                .Include(x => x.Category)
+                .Include(x => x.Author)
+                .Include(x => x.Tags)
+                .Where(x => x.Tags.Any(y => y.Name.ToLower() == tagName.ToLower()))
+                .ToListAsync();
+
+            //add public quizes
+            IEnumerable<Quiz> quizesAssignedToUser = quizes
+                .Where(x => (x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id))
+                .Where(x => x.IsActive)
+                .ToList();
+
+            IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description ?? "",
+                AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
+                CategoryName = x.Category.Name,
+                Tags = x.Tags.Select(y => new TagResponse
                 {
                     Id = y.Id,
                     Name = y.Name,

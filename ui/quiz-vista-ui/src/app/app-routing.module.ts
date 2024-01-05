@@ -39,6 +39,8 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent},
 
   { path: 'quizez', component: QuizezComponent},
+  { path: 'quizez/category/:categoryName', component: QuizezComponent },
+  { path: 'quizez/tag/:tagName', component: QuizezComponent },
   { path: 'quiz-details/:quizName', component: QuizDetailsComponent},
   { path: 'quiz-run/:quizName', component: QuizRunComponent},
   { path: 'users', component: UsersComponent},
