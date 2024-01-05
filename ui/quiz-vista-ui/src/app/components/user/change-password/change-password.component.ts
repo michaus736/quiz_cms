@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { UserHttpService } from 'src/app/services/http/user-http-service';
 
@@ -21,7 +20,7 @@ export class ChangePasswordComponent {
   backendErrorMessages: any[]=[];
 
 
-  constructor(private userHttpService:UserHttpService, private errorHandlerService:ErrorHandlerService, private router:Router){}
+  constructor(private userHttpService:UserHttpService, private errorHandlerService:ErrorHandlerService){}
 
 
   onSubmit(changePasswordForm: NgForm): void {
@@ -37,9 +36,6 @@ export class ChangePasswordComponent {
         console.log("Działa")
         this.updateSuccess=true;
         setTimeout(() => this.updateSuccess = false, 5000);
-        setTimeout(() => {
-          this.router.navigate(['login']);
-      }, 5000); 
         }
         else if(response.isValid===false){
           this.backendErrorMessages=[response.errorMessage]
