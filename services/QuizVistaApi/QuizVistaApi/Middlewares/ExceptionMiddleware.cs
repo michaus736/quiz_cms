@@ -21,16 +21,28 @@ namespace QuizVistaApi.Middlewares
         private static async Task GenerateErrorResponse(HttpContext context, Exception? ex)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = 401;
+
+            int statusCode = 500;
             var errorMessage = new StringBuilder();
 
             while (ex != null)
             {
                 errorMessage.Append(ex.Message + "\n");
                 ex = ex.InnerException;
+
+                if (ex is UnauthorizedAccessException)
+                {
+                    statusCode = 401; // Unauthorized
+                }
+                else if (ex is ArgumentException)
+                {
+                    statusCode = 400; // Bad Request
+                }
             }
 
+            context.Response.StatusCode = statusCode;
             await context.Response.WriteAsync(JsonConvert.SerializeObject(Result.Failed(errorMessage.ToString())));
         }
+
     }
 }

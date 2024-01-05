@@ -15,18 +15,42 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nazwa Użytkownika</th>
-                <th scope="col">User</th>
+                <th scope="col">Użytkownik</th>
                 <th scope="col">Moderator</th>
-                <th scope="col">Admin</th>
+                <th scope="col">Administrator</th>
               </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let user of filteredUsers; index as i">
                     <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
                     <td>{{user.userName}}</td>
-                    <td (click)="toggleRole(user.userName, 'User')">{{hasRole(user.roles, 'User')}}</td>
-                    <td (click)="toggleRole(user.userName, 'Moderator')">{{hasRole(user.roles, 'Moderator')}}</td>
-                    <td (click)="toggleRole(user.userName, 'Admin')">{{hasRole(user.roles, 'Admin')}}</td>
+                    <td (click)="toggleRole(user.userName, 'User')">
+                      <ng-container *ngIf="hasRole(user.roles, 'User'); else noRoleImage">
+                          <img src="assets\icons\yes.png" alt="Yes">
+                      </ng-container>
+                      <ng-template #noRoleImage>
+                          <img src="assets\icons\no.png" alt="No">
+                      </ng-template>
+                  </td>
+                    <td (click)="toggleRole(user.userName, 'Moderator')">
+                      <ng-container *ngIf="hasRole(user.roles, 'Moderator'); else noRoleImage">
+                          <img src="assets\icons\yes.png" alt="Yes">
+                      </ng-container>
+                      <ng-template #noRoleImage>
+                          <img src="assets\icons\no.png" alt="No">
+                      </ng-template>
+                  </td>
+
+                    <td (click)="toggleRole(user.userName, 'Admin')">
+                      <ng-container *ngIf="hasRole(user.roles, 'Admin'); else noRoleImage">
+                          <img src="assets\icons\yes.png" alt="Yes">
+                      </ng-container>
+                      <ng-template #noRoleImage>
+                          <img src="assets\icons\no.png" alt="No">
+                      </ng-template>
+                  </td>
+                  
+                  
 
                 </tr>
             </tbody>
