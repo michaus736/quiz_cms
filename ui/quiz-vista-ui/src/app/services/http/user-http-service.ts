@@ -46,4 +46,31 @@ export class UserHttpService {
     return this.http.get(`${this.url}/showuser/${userId}`);
   }
 
+  changePassword(currentPassword: string, newPassword: string, ConfirmNewPassword: string): Observable<any>{
+    return this.http.post(`${this.url}/changepassword`,{
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+      ConfirmNewPassword: ConfirmNewPassword
+  })
+  }
+
+  showUserDetails():Observable<any>{
+    return this.http.get(`${this.url}/details`);
+  }
+
+  resetPasswordInit(email:string):Observable<any>{
+    return this.http.post(`${this.url}/reset-password-init`,{
+      email:email
+    })
+  }
+
+  resetPassword(token: string, password: string, ConfirmNewPassword: string): Observable<any>{
+    return this.http.post(`${this.url}/reset-password`,{
+      token: token,
+      Password: password,
+      ConfirmPassword: ConfirmNewPassword
+  })
+  }
+
+
 }

@@ -32,8 +32,14 @@ import { QuizRunComponent } from './components/quizez/quiz-run/quiz-run.componen
 import { AddQuizComponent } from './components/moderator/quiz/add-quiz/add-quiz.component';
 import { QuizzezComponent } from './components/moderator/quiz/quizzez/quizzez.component';
 import { AddQuestionsComponent } from './components/moderator/quiz/add-questions/add-questions.component';
+import { EditQuizComponent } from './components/moderator/quiz/edit-quiz/edit-quiz.component';
+import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
+import { UserSideNavComponent } from './components/user/user-side-nav/user-side-nav.component';
+import { UserDetailsComponent } from './components/user/user-details/user-details.component';
 import { BriefComponent } from './components/user-results/brief/brief.component';
 import { DateTransform } from './pipes/date-transform';
+import { ResetPasswordInitComponent } from './components/user/reset-password-init/reset-password-init.component';
+import { ResetPasswordComponent } from './components/user/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -64,8 +70,14 @@ import { DateTransform } from './pipes/date-transform';
     AddQuizComponent,
     QuizzezComponent,
     AddQuestionsComponent,
+    EditQuizComponent,
+    ChangePasswordComponent,
+    UserSideNavComponent,
+    UserDetailsComponent,
     BriefComponent,
-    DateTransform
+    DateTransform,
+    ResetPasswordInitComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

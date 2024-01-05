@@ -5,6 +5,7 @@ using QuizVistaApiBusinnesLayer.Models;
 using QuizVistaApiBusinnesLayer.Models.Requests;
 using QuizVistaApiBusinnesLayer.Models.Requests.UserRequests;
 using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.UserResponses;
 using QuizVistaApiBusinnesLayer.Services.Implementations;
 using QuizVistaApiBusinnesLayer.Services.Interfaces;
 using System.Security.Claims;
@@ -47,6 +48,14 @@ namespace QuizVistaApi.Controllers
             return await _userService.GetUser(userId);
         }
 
+        [HttpGet("details")]
+        [Authorize(Roles = "User")]
+        public async Task<ResultWithModel<UserDetailsResponse>> Details()
+        {
+            string userName = User.FindFirst(ClaimTypes.Name)?.Value;
+            return await _userService.GetUserDetails(userName);
+        }
+
         [HttpPut("edit")]
         [Authorize(Roles="Admin")]
         public async Task<Result> Edit([FromBody] UserUpdateRequest userRequest)
@@ -54,7 +63,7 @@ namespace QuizVistaApi.Controllers
             return await _userService.UpdateUser(userRequest);
         }
 
-        [HttpPost("changepassword"), Authorize(Roles = "Admin")]
+        [HttpPost("changepassword"), Authorize(Roles = "User")]
         public async Task<Result> ChangePassword([FromBody] ChangePasswordRequest changePasswordRequest)
         {
             changePasswordRequest.ValidateUserName = User.FindFirst(ClaimTypes.Name)?.Value;

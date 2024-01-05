@@ -25,11 +25,18 @@ import { AddQuizComponent } from './components/moderator/quiz/add-quiz/add-quiz.
 import { QuizzezComponent } from './components/moderator/quiz/quizzez/quizzez.component';
 import { AddQuestionsComponent } from './components/moderator/quiz/add-questions/add-questions.component';
 import { BriefComponent } from './components/user-results/brief/brief.component';
+import { EditQuizComponent } from './components/moderator/quiz/edit-quiz/edit-quiz.component';
+import { ChangePasswordComponent } from './components/user/change-password/change-password.component';
+import { UserDetailsComponent } from './components/user/user-details/user-details.component';
+import { ResetPasswordInitComponent } from './components/user/reset-password-init/reset-password-init.component';
+import { ResetPasswordComponent } from './components/user/reset-password/reset-password.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
+  { path: 'forgot-password', component: ResetPasswordInitComponent},
+  { path: 'reset-password', component: ResetPasswordComponent},
 
   { path: 'quizez', component: QuizezComponent},
   { path: 'quizez/category/:categoryName', component: QuizezComponent },
@@ -43,6 +50,8 @@ const routes: Routes = [
   { path: 'admin', component: AdminPanelComponent},
   { path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard] },
   { path: 'quizez', component: QuizezComponent, canActivate:[UserGuard]},
+  { path: 'user-details', component: UserDetailsComponent, canActivate:[UserGuard]},
+  { path: 'change-password', component: ChangePasswordComponent, canActivate:[UserGuard]},
   { path: 'results', component: BriefComponent, canActivate:[UserGuard]},
   
   { path: 'admin/users', component: UsersComponent , canActivate: [AdminGuard]},
@@ -56,6 +65,7 @@ const routes: Routes = [
   { path: 'moderator/add-tag', component:AddTagComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/edit-tag/:id', component:EditTagComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/add-quiz', component:AddQuizComponent, canActivate: [ModeratorGuard] },
+  { path: 'moderator/edit-quiz/:quizName', component:EditQuizComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/add-questions/:quizName', component:AddQuestionsComponent, canActivate: [ModeratorGuard] },
 
   
