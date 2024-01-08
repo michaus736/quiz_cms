@@ -1,0 +1,16 @@
+<aside class="sidebar">
+  <div class="category-list" #categoryList>
+    <h3>Kategorie:</h3>
+    <ul>
+      <li *ngFor="let category of categories">
+        <a [routerLink]="['/quizez/category', category]">{{ category }}</a>
+      </li>
+    </ul>
+  </div>
+  <div class="tag-list">
+    <h3>Tagi:</h3>
+    <div *ngFor="let tag of tags" [ngStyle]="{ 'font-size': calculateTagFontSize(tag) + 'px' }">
+      <a [routerLink]="['/quizez/tag', tag]">{{ tag }}</a>
+    </div>
+  </div>
+</aside>
