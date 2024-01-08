@@ -26,7 +26,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<QuizRun>> GetQuizWithQuestionsAsync(string quizName, string userName);
 
         Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForUser(string userName);
-        Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForModerator(string userName);
+        Task<ResultWithModel<IEnumerable<QuizListForModResponse>>> GetQuizListForModerator(string userName);
 
         Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetailsForUser(string quizName, string userName);
         Task<ResultWithModel<QuizDetailsForModResponse>> GetQuizDetailsForMod(string quizName, string userName);

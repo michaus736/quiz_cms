@@ -56,7 +56,7 @@ namespace QuizVistaApi.Controllers
 
         [HttpGet("moderator")]
         [Authorize(Roles = "Moderator")]
-        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizesForModerator()
+        public async Task<ResultWithModel<IEnumerable<QuizListForModResponse>>> GetQuizesForModerator()
         {
             var userName = User.FindFirst(ClaimTypes.Name)?.Value ?? "";
             return await _quizService.GetQuizListForModerator(userName);

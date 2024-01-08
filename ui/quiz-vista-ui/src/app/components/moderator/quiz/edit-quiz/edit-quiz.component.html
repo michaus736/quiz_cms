@@ -1,6 +1,12 @@
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Edytuj Quiz</h2>
-  
+  <h1 class="text-center mb-4">Edytuj Quiz</h1>
+  <section class="card" *ngIf="quizDetails">
+    <header class="card-header">
+      <h1>{{ quizDetails.name }}</h1>  
+      <button *ngIf="!quizDetails.hasAttempts" [routerLink]="['/moderator/add-questions', quizDetails.name]" class="btn btn-warning">Edytuj pytania</button>
+      <button class="btn btn-danger" (click)="deleteQuiz()">Usuń quiz</button>
+    </header>
+  </section>  
     <div class="alert alert-danger" *ngIf="backendErrorMessages.length">
         <li *ngFor="let message of backendErrorMessages">{{ message }}</li>
     </div>

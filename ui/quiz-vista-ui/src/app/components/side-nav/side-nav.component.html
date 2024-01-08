@@ -1,16 +1,25 @@
-<aside class="sidebar">
-  <div class="category-list" #categoryList>
+<aside class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+  <div class="mb-3">
     <h3>Kategorie:</h3>
-    <ul>
-      <li *ngFor="let category of categories">
-        <a [routerLink]="['/quizez/category', category]">{{ category }}</a>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item" *ngFor="let category of categories">
+        <a [routerLink]="['/quizez/category', category]" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <svg class="bi me-2" width="16" height="16"></svg>
+          {{ category }}
+        </a>
       </li>
     </ul>
   </div>
-  <div class="tag-list">
+  <hr>
+  <div class="mb-3">
     <h3>Tagi:</h3>
-    <div *ngFor="let tag of tags" [ngStyle]="{ 'font-size': calculateTagFontSize(tag) + 'px' }">
-      <a [routerLink]="['/quizez/tag', tag]">{{ tag }}</a>
-    </div>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <div *ngFor="let tag of tags" class="nav-item" [ngStyle]="{ 'font-size': calculateTagFontSize(tag) + 'px' }">
+        <a [routerLink]="['/quizez/tag', tag]" class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <svg class="bi me-2" width="16" height="16"></svg>
+          {{ tag }}
+        </a>
+      </div>
+    </ul>
   </div>
 </aside>

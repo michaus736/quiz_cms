@@ -18,6 +18,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Responses.QuizResponses
         public int AttemptCount { get; set; }
         public bool IsActive { get; set; }
         public bool PublicAccess { get; set; }
+        public bool HasAttempts { get; set; }
         public List<TagResponse> Tags { get; set; }
         public List<UserDetailsResponse> Users { get; set; }
     }
