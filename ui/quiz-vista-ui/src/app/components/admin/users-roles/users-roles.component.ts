@@ -45,7 +45,7 @@ IsUserLogged() {
   }
 hasRole(roles: any[], roleName: string): string {
     const role = roles.find(r => r.name === roleName);
-    return role ? 'Tak' : 'Nie';
+    return role;
 }
 
 toggleRole(userName: string, roleName: string): void {

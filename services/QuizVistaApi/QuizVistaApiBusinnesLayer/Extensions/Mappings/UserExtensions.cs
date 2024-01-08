@@ -1,5 +1,5 @@
 ﻿using QuizVistaApiBusinnesLayer.Models.Requests;
-using QuizVistaApiBusinnesLayer.Models.Responses;
+using QuizVistaApiBusinnesLayer.Models.Responses.UserResponses;
 using QuizVistaApiInfrastructureLayer.Entities;
 using System;
 using System.Collections.Generic;

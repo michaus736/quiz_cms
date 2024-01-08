@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from 'src/app/models/category';
+import { ErrorHandlerService } from 'src/app/services/error-handler.service';
 import { CategoryHttpService } from 'src/app/services/http/category-http-service';
 
 @Component({
@@ -13,9 +14,10 @@ export class EditCategoryComponent {
   categoryId: string = '';
   updateSuccess = false;
   errors: string[] = [];
+  backendErrorMessages:any[]=[];
 
 
-  constructor(private categoryHttpService: CategoryHttpService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private categoryHttpService: CategoryHttpService, private route: ActivatedRoute, private router: Router, private errorHandlerService:ErrorHandlerService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -32,7 +34,7 @@ export class EditCategoryComponent {
         this.category = Data.model;
       },
       (error) => {
-        console.error('Error fetching user:', error);
+        this.backendErrorMessages = this.errorHandlerService.handleError(error);
       }
     );
   }
@@ -40,18 +42,18 @@ export class EditCategoryComponent {
   updateCategory(): void {
     this.categoryHttpService.update(this.category).subscribe(
       response => {
-        console.log('Category updated successfully', response);
-        this.updateSuccess = true;
-        this.errors = [];
-        setTimeout(() => this.updateSuccess = false, 5000);
+        if(response.isValid===true){
+          this.updateSuccess = true;
+          this.errors = [];
+          setTimeout(() => this.updateSuccess = false, 5000)
+        }
+        else if(response.isValid===false){
+          this.backendErrorMessages=[response.errorMessage]
+        }
       },
       error => {
         this.updateSuccess = false;
-        if (error.error && error.error.errors) {
-          this.errors = Object.keys(error.error.errors).flatMap(k => error.error.errors[k]);
-        } else {
-          this.errors = ['Wystąpił błąd podczas aktualizacji danych kategorii.'];
-        }
+        this.backendErrorMessages = this.errorHandlerService.handleError(error);
       }
     );
   }
@@ -64,15 +66,17 @@ export class EditCategoryComponent {
 
     this.categoryHttpService.delete(categoryId).subscribe(
       response => {
-        console.log('Category deleted successfully', response);
-        this.router.navigate(['/moderator/categories']);
+        if(response.isValid===true){
+          this.updateSuccess=true;
+            this.router.navigate(['/moderator/categories']);
+        }
+        else if(response.isValid===false){
+          this.backendErrorMessages=[response.errorMessage]
+        }
       },
       error => {
-        if (error.error && error.error.errors) {
-          this.errors = Object.keys(error.error.errors).flatMap(k => error.error.errors[k]);
-        } else {
-          this.errors = ['Wystąpił błąd podczas usuwania kategorii.'];
-        }
+        console.log(error)
+        this.backendErrorMessages = this.errorHandlerService.handleError(error);
       }
     );
   }

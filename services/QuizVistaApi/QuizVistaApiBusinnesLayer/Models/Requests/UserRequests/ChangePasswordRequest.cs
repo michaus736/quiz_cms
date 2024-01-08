@@ -9,10 +9,7 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests.UserRequests
 {
     public class ChangePasswordRequest
     {
-        public string ValidateUserName { get; set; }
-        [Required]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "Username must be between 3 and 30 characters.")]
-        public string UserName { get; set; }
+        public string? ValidateUserName { get; set; }
         [Required]
         [StringLength(20, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters.")]
         public string CurrentPassword { get; set; }
@@ -25,9 +22,9 @@ namespace QuizVistaApiBusinnesLayer.Models.Requests.UserRequests
 
         public ChangePasswordRequest() { }
 
-        public ChangePasswordRequest(string userName, string currentPassword, string newPassword, string confirmNewPassword)
+        public ChangePasswordRequest(string validateUserName, string currentPassword, string newPassword, string confirmNewPassword)
         {
-            UserName = userName;
+            ValidateUserName = validateUserName;
             CurrentPassword = currentPassword;
             NewPassword = newPassword;
             ConfirmNewPassword = confirmNewPassword;

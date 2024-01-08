@@ -38,6 +38,10 @@ export class QuizHttpService {
   getQuizDetails(quizName: string): Observable<any> {
     return this.http.get(`${this.url}/details?quizName=${quizName}`)
   }
+
+  getQuizDetailsForMod(quizName: string): Observable<any> {
+    return this.http.get(`${this.url}/details-mod?quizName=${quizName}`)
+  }
   getQuizRunQusetions(quizName: string):Observable<any> {
     return this.http.get(`${this.url}/quiz-run?quizName=${quizName}`)
   }
@@ -46,11 +50,29 @@ export class QuizHttpService {
     return this.http.post(`${this.url}/create`,quiz);
   }
 
+  editQuiz(quiz: Quiz): Observable<any>{
+    return this.http.put(`${this.url}/edit`,quiz);
+  }
+
   getQuizModQuestions(quizName: string):Observable<any>{
     return this.http.get(`${this.url}/get-questions-mod?quizName=${quizName}`)
   }
 
   deleteQuiz(quizId:string):Observable<any>{
     return this.http.delete(`${this.url}/delete/${quizId}`)
+  }
+
+  AssignUser(quizName:string, userName:string):Observable<any>{
+    return this.http.post(`${this.url}/assignuser`,{
+      UserName: userName,
+      QuizName: quizName
+    })
+  }
+
+  unAssignUser(quizName:string, userName:string):Observable<any>{
+    return this.http.post(`${this.url}/unassignuser`,{
+      UserName: userName,
+      QuizName: quizName
+    })
   }
 }
