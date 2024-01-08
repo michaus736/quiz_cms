@@ -1,6 +1,7 @@
 <div class="d-flex flex-row">
   <app-side-nav *ngIf="IsUserLogged()"></app-side-nav>
 
+  
   <div class="flex-grow-1">
     <div *ngIf="categoryName || tagName" class="my-4">
       <div class="card">
@@ -11,14 +12,18 @@
       </div>
     </div>
     <div *ngIf="quizzes && quizzes.length; else noDataTemplate">
-      <h2>Available Quizzes</h2>
+      <h2>Dostępne quizy</h2>
+
+      <div *ngIf="message" class="alert alert-success">
+        {{ message }}
+      </div>
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
         <div class="col" *ngFor="let quiz of quizzes">
           <div class="card h-100">
             <div class="card-body">
               <h3 class="card-title">{{ quiz.name }}</h3>
-              <p class="card-text">Description: {{ quiz.description || 'No description provided.' }}</p>
-              <p class="card-text">Created by: {{ quiz.authorName }}</p>
+              <p class="card-text">Opis: {{ quiz.description || 'No description provided.' }}</p>
+              <p class="card-text">Utworzone przez: {{ quiz.authorName }}</p>
               <div class="tags">
                 <span *ngFor="let tag of quiz.tags">
                   <a [routerLink]="['/quizez/tag', tag.name]" class="badge bg-secondary tag-link">
@@ -28,10 +33,10 @@
               </div>
               <p class="card-text">
                 <a [routerLink]="['/quizez/category', quiz.categoryName]" class="badge bg-primary category-link">
-                  Category: {{ quiz.categoryName }}
+                  Kategoria: {{ quiz.categoryName }}
                 </a>
               </p>
-              <a [routerLink]="['/quiz-details', quiz.name]" class="stretched-link">Show details</a>
+              <a [routerLink]="['/quiz-details', quiz.name]" class="stretched-link">Pokaż</a>
             </div>
           </div>
         </div>

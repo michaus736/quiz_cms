@@ -42,12 +42,11 @@
           <label class="form-check-label" for="isCorrect-{{i}}-{{j}}">Prawidłowa odpowiedź</label>
         </div>
       </div>
-      <button class="btn btn-outline-success mb-4" (click)="addAnswer(question)">Add Answer</button>
+      <button class="btn btn-outline-success mb-4" (click)="addAnswer(question)">Dodaj odpowiedź</button>
       <hr />
     </div>
-
+    <button class="btn btn-outline-success me-2 mb-4" (click)="addQuestion(); $event.preventDefault()">Dodaj pytanie</button>
     <div class="d-flex justify-content-start">
-        <button class="btn btn-outline-success me-2 mb-4" (click)="addQuestion(); $event.preventDefault()">Add Question</button>
         <button type="button" class="btn btn-primary mb-4" [disabled]="quizForm.invalid" [disabled]="!isFormValid()" (click)="onSubmit()">Submit</button>
     </div>
     

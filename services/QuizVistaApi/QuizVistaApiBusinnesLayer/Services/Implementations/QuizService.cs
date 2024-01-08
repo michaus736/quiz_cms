@@ -475,7 +475,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
         }
 
-        public async Task<ResultWithModel<IEnumerable<QuizListForUserResponse>>> GetQuizListForModerator(string userName)
+        public async Task<ResultWithModel<IEnumerable<QuizListForModResponse>>> GetQuizListForModerator(string userName)
         {
             User? loggedUser = await _userRepository.GetAll().FirstOrDefaultAsync(x => x.UserName == userName);
 
@@ -486,17 +486,21 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 .Include(x => x.Category)
                 .Include(x => x.Author)
                 .Include(x => x.Tags)
+                .Include(x=>x.Questions)
+                .ThenInclude(x=>x.Answers)
+                .ThenInclude(x=>x.Attempts)
                 .Where(x=>x.AuthorId==loggedUser.Id)
                 .ToListAsync();
 
 
-            IList<QuizListForUserResponse> quizesResponse = quizes.Select(x => new QuizListForUserResponse
+            IList<QuizListForModResponse> quizesResponse = quizes.Select(x => new QuizListForModResponse
             {
                 Id = x.Id,
                 Name = x.Name,
                 Description = x.Description ?? "",
                 AuthorName = $"{x.Author.FirstName} {x.Author.LastName}",
                 CategoryName = x.Category.Name,
+                HasAttempts = x.Questions.Any(q => q.Answers.Any(a => a.Attempts.Any())),
                 Tags = x.Tags.Select(y => new TagResponse
                 {
                     Id = y.Id,
@@ -505,7 +509,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 }).ToList()
             }).ToList();
 
-            return ResultWithModel<IEnumerable<QuizListForUserResponse>>.Ok(quizesResponse);
+
+
+            return ResultWithModel<IEnumerable<QuizListForModResponse>>.Ok(quizesResponse);
         }
 
         public async Task<ResultWithModel<QuizDetailsForUser>> GetQuizDetailsForUser(string quizName, string userName)
@@ -561,6 +567,9 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 .Include(x => x.Users)
                 .Include(x => x.Category)
                 .Include(x => x.Tags)
+                .Include(x => x.Questions)
+                .ThenInclude(x => x.Answers)
+                .ThenInclude(x => x.Attempts)
                 .FirstOrDefaultAsync(x => x.Name == quizName);
 
             if (quiz is null) throw new ArgumentException($"quiz {quizName} does not exist");
@@ -585,6 +594,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 AttemptCount = quiz.AttemptCount,
                 PublicAccess = quiz.PublicAccess ?? false,
                 IsActive = quiz.IsActive,
+                HasAttempts = quiz.Questions.Any(q => q.Answers.Any(a => a.Attempts.Any())),
                 Tags = quiz.Tags.Select(x => new TagResponse
                 {
                     Id = x.Id,

@@ -31,7 +31,7 @@
       </select>
     </div>
     <div class="mb-3">
-        <label for="attemptCount" class="form-label">Liczba prób</label>
+        <label for="attemptCount" class="form-label">Maksymalna liczba prób</label>
         <input type="number" class="form-control" id="attemptCount" [(ngModel)]="newQuiz.attemptCount" name="attemptCount" required>
       </div>
     <div class="mb-3 form-check">
@@ -42,7 +42,7 @@
       <input type="checkbox" class="form-check-input" id="isPublic" [(ngModel)]="newQuiz.publicAccess" name="isPublic">
       <label class="form-check-label" for="isPublic">Dostępny dla wszystkich</label>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Utwórz quiz</button>
   </form>
 </div>
 </div></div>

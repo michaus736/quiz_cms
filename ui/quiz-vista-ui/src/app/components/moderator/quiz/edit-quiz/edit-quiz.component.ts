@@ -13,7 +13,7 @@ import { TagHttpService } from 'src/app/services/http/tag-http-service';
 })
 export class EditQuizComponent {
   quizName: string = ''
-  quizDetails!: Quiz;
+  quizDetails!: any;
   categories: any[]=[];
   tags: any[]=[];
   backendErrorMessages: any[]=[];
@@ -116,4 +116,19 @@ assignUser(quizName: string, userName: string): void {
     }
   );
 }
+
+deleteQuiz(){
+  if (this.quizDetails && this.quizDetails.id !== undefined) {
+    this.quizService.deleteQuiz(this.quizDetails.id.toString()).subscribe(res => {
+      this.router.navigate(['/moderator/quizzez']);
+    },
+    error => {
+      console.error('Wystąpił błąd podczas usuwania quizu', error);
+    });
+  } else {
+    console.error('Quiz details are undefined');
+  }
+}
+
+
 }

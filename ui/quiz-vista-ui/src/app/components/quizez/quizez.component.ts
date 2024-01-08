@@ -12,15 +12,15 @@ export class QuizezComponent implements OnInit{
   quizzes: any[] = [];
   categoryName: string | null = '';
   tagName: string | null = '';
+  message: string='';
 
   constructor(private quizService: QuizHttpService, private authService: AuthService, private route: ActivatedRoute){}
 
   ngOnInit(): void {
-
-    this.categoryName = this.route.snapshot.paramMap.get('categoryName');
+    this.route.paramMap.subscribe(params => {
+    this.categoryName = params.get('categoryName');
     
-    // Pobierz wartość parametru 'tagName' z URL
-    this.tagName = this.route.snapshot.paramMap.get('tagName');
+    this.tagName = params.get('tagName');
 
     if(this.tagName != null) {
       this.quizService.getQuizByTag(this.tagName).subscribe(
@@ -58,7 +58,7 @@ export class QuizezComponent implements OnInit{
     }
 
   }
-
+  )}
   IsUserLogged() {
     return this.authService.isUserLoggedIn(); 
   }
