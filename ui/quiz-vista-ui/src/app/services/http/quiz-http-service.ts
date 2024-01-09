@@ -14,8 +14,6 @@ export class QuizHttpService {
 
   constructor(private http: HttpClient) { }
 
-
-  
   getQuiz(): Observable<any> {
     return this.http.get(`${this.url}/User`);
   }
@@ -27,8 +25,6 @@ export class QuizHttpService {
   getQuizByCategory(categoryName: string): Observable<any> {
     return this.http.get(`${this.url}/category?categoryName=${categoryName}`);
   }
-
-
 
   getQuizezForMod(): Observable<any> {
     return this.http.get(`${this.url}/Moderator`);

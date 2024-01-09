@@ -2,12 +2,12 @@
     <app-moderator-side-nav *ngIf="IsUserLogged()"></app-moderator-side-nav>
   
     <div class="flex-grow-1">
-  
+      <h2>Lista twoich quizów</h2>
+      <div class="d-flex mb-3">
+        <button type="button" class="btn btn-primary me-3" [routerLink]="['/moderator/add-quiz']">Utwórz nowy quiz</button>
+      </div>
       <div *ngIf="quizzes && filteredQuizzes.length; else noDataTemplate">
-        <h2>Lista twoich quizów</h2>
-        <div class="d-flex mb-3">
-          <button type="button" class="btn btn-primary me-3" [routerLink]="['/moderator/add-quiz']">Utwórz nowy quiz</button>
-        </div>
+        
         <div class="col-md-6">
           <div class="d-flex mb-3">
             <input type="text" class="form-control" placeholder="Wyszukaj quiz" [(ngModel)]="searchTerm" (ngModelChange)="filterQuizzez()">

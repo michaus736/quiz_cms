@@ -18,7 +18,6 @@ export class UserDetailsComponent {
     this.userHttpService.showUserDetails().subscribe(
       (data) => {
         this.User = data.model;
-        console.log(this.User);
       },
       (error) => {
         console.error('Error fetching users', error);
