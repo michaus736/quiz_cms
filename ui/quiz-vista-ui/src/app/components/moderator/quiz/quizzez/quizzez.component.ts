@@ -22,7 +22,6 @@ export class QuizzezComponent {
       data=>{
         this.quizzes=data.model;
         this.filterQuizzez()
-        console.log(data);
       },
       error=>{
         console.error("Błąd!!",error);

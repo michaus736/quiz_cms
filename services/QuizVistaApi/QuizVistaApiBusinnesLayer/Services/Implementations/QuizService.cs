@@ -92,6 +92,8 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
         {
             var quiz = await _quizRepository.GetAll()
                 .Include(q => q.Tags) 
+                .Include(q=>q.Questions)
+                .Include(q=>q.Users)
                 .Where(x => x.Id == idToDelete)
                 .FirstOrDefaultAsync();
 
@@ -114,6 +116,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
             quiz.Questions.Clear();
             quiz.Tags.Clear();
+            quiz.Users.Clear();
 
             await _quizRepository.SaveChangesAsync();
 
@@ -263,7 +266,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
 
         public async Task<Result> UpdateQuizAsync(string userId, QuizRequest quizToUpdate)
         {
-            var existingQuiz = await _quizRepository.GetAll().FirstOrDefaultAsync(q => q.Id == quizToUpdate.Id);
+            var existingQuiz = await _quizRepository.GetAll().Include(q => q.Tags).FirstOrDefaultAsync(q => q.Id == quizToUpdate.Id);
 
             if (existingQuiz == null)
             {
@@ -291,10 +294,11 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             existingQuiz.CmsTitleStyle = updatedEntity.CmsTitleStyle;
             existingQuiz.IsActive = updatedEntity.IsActive;
             existingQuiz.PublicAccess = updatedEntity.PublicAccess;
+            existingQuiz.AttemptCount = updatedEntity.AttemptCount;
             existingQuiz.EditionDate = DateTime.Now;
 
             existingQuiz.Tags.Clear();
-            await _quizRepository.SaveChangesAsync();
+            //await _quizRepository.UpdateAsync(existingQuiz);
 
             var existingTags = await _tagRepository.GetAll()
                 .Where(tag => quizToUpdate.TagIds.Contains(tag.Id))
@@ -374,12 +378,14 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
                 .Include(x=>x.Category)
                 .Include(x=>x.Author)
                 .Include(x=>x.Tags)
+                .Include(x => x.Questions)
                 .ToListAsync();
 
             //add public quizes
             IEnumerable<Quiz> quizesAssignedToUser = quizes
                 .Where(x => (x.PublicAccess == true) || x.Users.Any(y => y.Id == loggedUser.Id))
                 .Where(x => x.IsActive)
+                .Where(x=>x.Questions.Any())
                 .ToList();
 
             IList<QuizListForUserResponse> quizesResponse = quizesAssignedToUser.Select(x => new QuizListForUserResponse

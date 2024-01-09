@@ -144,12 +144,19 @@ export class AddQuestionsComponent {
 }
 
 deleteQuiz(){
-  this.quizHttpService.deleteQuiz(this.quizDetails.id).subscribe(res=>{
-    this.router.navigate(['/moderator/quizzez']);
-  },
-  error=>{
-    console.error('Wystąpił bład podczas usuwania quizu', error);
-  })
+  if (this.quizDetails && this.quizDetails.id !== undefined) {
+    const isConfirmed = confirm('Czy jesteś pewny, że chcesz usunąć ten quiz?');
+    if (isConfirmed) {
+      this.quizHttpService.deleteQuiz(this.quizDetails.id.toString()).subscribe(res => {
+        this.router.navigate(['/moderator/quizzez']);
+      },
+      error => {
+        console.error('Wystąpił błąd podczas usuwania quizu', error);
+      });
+    }
+  } else {
+    console.error('Quiz details are undefined');
+  }
 }
 
 

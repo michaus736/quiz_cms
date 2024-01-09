@@ -9,9 +9,9 @@
   <form class="container mt-4" #quizForm="ngForm">
     <div *ngFor="let question of questions; let i = index" class="mb-4">
       <div class="mb-3">
+        <img class="float-right" src="assets\icons\clear.png" (click)="deleteQuestion(i); $event.preventDefault()">
         <label for="questionText-{{i}}" class="form-label fw-bold">Pytanie</label>
         <input type="text" class="form-control" id="questionText-{{i}}" [(ngModel)]="question.text" name="questionText-{{i}}" required>
-        <button class="btn btn-outline-danger" (click)="deleteQuestion(i); $event.preventDefault()">Usuń pytanie</button>
       </div>
       <div class="row mb-3">
         <div class="col">
@@ -19,7 +19,7 @@
           <input type="number" class="form-control" id="additionalValue-{{i}}" [(ngModel)]="question.additionalValue" name="additionalValue-{{i}}" value="1">
         </div>
         <div class="col">
-          <label for="substractionalValue-{{i}}" class="form-label">Punkty ujemna za nieprawidłową odpowiedź</label>
+          <label for="substractionalValue-{{i}}" class="form-label">Punkty ujemne za nieprawidłową odpowiedź</label>
           <input type="number" class="form-control" id="substractionalValue-{{i}}" [(ngModel)]="question.substractionalValue" name="substractionalValue-{{i}}">
         </div>
       </div>
@@ -33,7 +33,8 @@
         </select>
       </div>
       <div *ngFor="let answer of question.answers; let j = index" class="mb-2">
-        <label for="answerText-{{i}}-{{j}}" class="form-label">Answer {{j + 1}}</label><button class="btn btn-outline-danger" (click)="deleteAnswer(question,j)">Usuń odpowiedź</button>
+        <img class="float-right" src="assets\icons\clear.png" (click)="deleteAnswer(question,j)">
+        <label for="answerText-{{i}}-{{j}}" class="form-label">Odpowiedź {{j + 1}}</label>
         <input type="text" class="form-control" id="answerText-{{i}}-{{j}}" [(ngModel)]="answer.answerText" name="answerText-{{i}}-{{j}}" required>
         <div class="form-check">
           <input class="form-check-input" type="checkbox" id="isCorrect-{{i}}-{{j}}" [(ngModel)]="answer.isCorrect" name="isCorrect-{{i}}-{{j}}" (change)="onAnswerChange(question, j)">

@@ -19,6 +19,7 @@ export class EditQuizComponent {
   backendErrorMessages: any[]=[];
   users: any[]=[];
   newUserName: string =''
+  updateSuccess = false;
 
 
   constructor(private quizService: QuizHttpService, private categoryService:CategoryHttpService, private tagService: TagHttpService, private router: Router,private route: ActivatedRoute, private errorHandlerService:ErrorHandlerService){}
@@ -43,7 +44,9 @@ export class EditQuizComponent {
     const quizData = { ...this.quizDetails }; 
     quizData.id=this.quizDetails.id;
     this.quizService.editQuiz(quizData).subscribe(response => {
-      console.log("Dziala", response);
+      this.updateSuccess=true;
+      this.router.navigate(['/moderator/edit-quiz/', this.quizDetails.name])
+      setTimeout(() => this.updateSuccess = false, 5000);
     }, error => {
       console.log(error);
     });
@@ -53,9 +56,12 @@ export class EditQuizComponent {
   getQuizDetails():void{
     this.quizService.getQuizDetailsForMod(this.quizName).subscribe(
       (Data: any)=>{
-        console.log(Data);
+        console.log(Data)
         this.quizDetails=Data.model;
         this.users=Data.model.users
+        this.quizDetails.tagIds = this.quizDetails.tags.map((tag: { id: number }) => tag.id);
+
+        
       },
       (error)=>{
         console.error('Error fetching quiz details:', error);
@@ -67,7 +73,6 @@ export class EditQuizComponent {
   loadCategories() {
     this.categoryService.showCategories().subscribe(
       (data) => {
-        console.log(data);
         this.categories = data.model;
       },
       (error) => {
@@ -91,7 +96,6 @@ export class EditQuizComponent {
 unAssignUser(quizName: string, userName: string): void {
   this.quizService.unAssignUser(quizName, userName).subscribe(
     response => {
-      console.log("Użytkownik usunięty", response);
       this.getQuizDetails();
     },
     error => {
@@ -107,7 +111,6 @@ assignUser(quizName: string, userName: string): void {
   }
   this.quizService.AssignUser(quizName, userName).subscribe(
     response => {
-      console.log("Użytkownik przypisany", response);
       this.getQuizDetails();
       this.newUserName = '';
     },
@@ -119,16 +122,20 @@ assignUser(quizName: string, userName: string): void {
 
 deleteQuiz(){
   if (this.quizDetails && this.quizDetails.id !== undefined) {
-    this.quizService.deleteQuiz(this.quizDetails.id.toString()).subscribe(res => {
-      this.router.navigate(['/moderator/quizzez']);
-    },
-    error => {
-      console.error('Wystąpił błąd podczas usuwania quizu', error);
-    });
+    const isConfirmed = confirm('Czy jesteś pewny, że chcesz usunąć ten quiz?');
+    if (isConfirmed) {
+      this.quizService.deleteQuiz(this.quizDetails.id.toString()).subscribe(res => {
+        this.router.navigate(['/moderator/quizzez']);
+      },
+      error => {
+        console.error('Wystąpił błąd podczas usuwania quizu', error);
+      });
+    }
   } else {
     console.error('Quiz details are undefined');
   }
 }
+
 
 
 }
