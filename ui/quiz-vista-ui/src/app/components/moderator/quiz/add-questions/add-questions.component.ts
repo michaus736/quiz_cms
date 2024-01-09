@@ -67,6 +67,8 @@ export class AddQuestionsComponent {
         error => console.error('Błąd podczas usuwania pytania:', error)
       );
     });
+
+    this.router.navigate(['/moderator/quizzez']);
   }
 
 
@@ -242,6 +244,14 @@ isFormValid() {
     question.answers.every(answer => answer.answerText.trim() !== '') 
   );
 }
-
+onAnswerChange(question: Question, changedAnswerIndex: number) {
+  if (question.type === '1' || question.type === '2') {
+    question.answers.forEach((answer, index) => {
+      if (index !== changedAnswerIndex) {
+        answer.isCorrect = false; 
+      }
+    });
+  }
+}
 
 }
