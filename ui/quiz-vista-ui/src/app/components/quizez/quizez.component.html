@@ -28,7 +28,7 @@
           <div class="card h-30">
             <div class="card-body">
               <h3 class="card-title">{{ quiz.name }}</h3>
-              <p class="card-text">Opis: {{ quiz.description || 'No description provided.' }}</p>
+              <p class="card-text">Opis: {{ quiz.description || 'Brak opisu.' }}</p>
               <p class="card-text">Utworzone przez: {{ quiz.authorName }}</p>
               <div class="tags">
                 <span *ngFor="let tag of quiz.tags">
