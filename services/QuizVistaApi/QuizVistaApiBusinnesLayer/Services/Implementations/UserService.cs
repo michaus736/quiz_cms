@@ -142,12 +142,13 @@ namespace QuizVistaApiBusinnesLayer.Services.Implementations
             user.PasswordResetExpire = DateTime.Now;
             await _userRepository.UpdateAsync(user);
 
+            string reset_password_link = _configuration["AppSettings:Url"]+"/reset-password";
 
             var mailRequest = new MailRequest
             {
                 ToEmail = user.Email,
                 Subject = "Resetowanie hasła",
-                Body = $"Twój kod do resetu hasła to: {resetCode}"
+                Body = $"Twój kod do resetu hasła to: {resetCode}. Hasło zresetujesz na stronie {reset_password_link}"
             };
 
             await _mailService.SendEmailAsync(mailRequest);
