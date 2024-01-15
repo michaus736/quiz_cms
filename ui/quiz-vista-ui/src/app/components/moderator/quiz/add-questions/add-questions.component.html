@@ -33,7 +33,7 @@
         </select>
       </div>
       <div *ngFor="let answer of question.answers; let j = index" class="mb-2">
-        <img class="float-right" src="assets\icons\clear24.png" (click)="deleteAnswer(question,j)">
+        <img class="float-right" src="assets\icons\clear24.png" (click)="deleteAnswer(question,j)" *ngIf="questions[i].answers.length > 2">
         <label for="answerText-{{i}}-{{j}}" class="form-label">Odpowiedź {{j + 1}}</label>
         <input type="text" class="form-control" id="answerText-{{i}}-{{j}}" [(ngModel)]="answer.answerText" name="answerText-{{i}}-{{j}}" required>
         <div class="form-check">

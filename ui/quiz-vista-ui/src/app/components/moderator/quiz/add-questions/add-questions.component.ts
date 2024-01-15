@@ -173,13 +173,8 @@ addAnswer(question: Question) {
 deleteAnswer(question: Question, answerIndex: number) {
   const answer = question.answers[answerIndex];
 
-  if (question.id === 0) {
+  if (question.id === 0 || answer.id === 0) {
     question.answers.splice(answerIndex, 1);
-  } else if (answer.id === 0) {
-    const newAnswerIndex = this.newAnswers.findIndex(a => a === answer);
-    if (newAnswerIndex !== -1) {
-      this.newAnswers.splice(newAnswerIndex, 1);
-    }
   } else {
     this.answersToDelete.push(answer.id.toString());
     question.answers.splice(answerIndex, 1);

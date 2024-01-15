@@ -19,7 +19,6 @@ export class BriefComponent {
       res=>{
         this.userResults = res.model
 
-        console.log(this.userResults)
       },
       error=>{
         console.error(error)

@@ -27,7 +27,6 @@ export class QuizDetailsComponent implements OnInit {
   getQuizDetails(quizName: string){
     this.quizHttpService.getQuizDetails(quizName).subscribe(res=>{
       this.quizDetails = res.model
-      console.log(this.quizDetails)
     })
   }
 
