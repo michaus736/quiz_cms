@@ -37,7 +37,6 @@ export class QuizRunComponent {
     .subscribe(
       response => {
         this.quizData = response;
-        console.log(this.quizData);
         this.initializeSelectedQuestions()
       },
       error => {
@@ -56,7 +55,6 @@ export class QuizRunComponent {
         })
       }
     })
-    console.log("initialized answers: ", this.selectedAnswers)
   }
   
   checkFormValidity(): void {
@@ -69,11 +67,9 @@ export class QuizRunComponent {
         const answersToQuestion = Object.keys(this.selectedAnswers)
           .filter((k) => k.startsWith(`${questionId}-`));
 
-        console.log("answer multi", answersToQuestion)
 
         let multiCheck = answersToQuestion.some((k) => this.selectedAnswers[k]);
 
-        console.log("multicheck"+ questionId, multiCheck)
 
         if (!multiCheck) {
           this.isFormInvalid = true;
@@ -91,7 +87,6 @@ export class QuizRunComponent {
       }
     }
 
-    console.log(this.isFormInvalid)
     this.isFormInvalid = false;
   }
 
@@ -119,7 +114,6 @@ export class QuizRunComponent {
     
     this.attemptHttpService.saveAttempt(userAnswers).subscribe(
       response => {
-        console.log("próba zapisana")
         this.router.navigate(['quizez'])
       },
       error => {

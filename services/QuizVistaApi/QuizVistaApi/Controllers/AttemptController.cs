@@ -23,12 +23,14 @@ namespace QuizVistaApi.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Moderator")]
         public async Task<ResultWithModel<AttemptResponse>> GetAttempts([FromBody] AttemptRequest attemptRequest)
         {
             return await _attemptService.GetAttempt(attemptRequest.UserId);
         }
 
         [HttpGet("forUser")]
+        [Authorize(Roles = "Moderator")]
         public async Task<ResultWithModel<IEnumerable<AttemptResponse>>> GetAttemptsForUser([FromBody] AttemptRequest attemptRequest)
         {
             return await _attemptService.GetAttemptsOfUser(attemptRequest.UserId);
