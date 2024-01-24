@@ -30,6 +30,7 @@ import { ChangePasswordComponent } from './components/user/change-password/chang
 import { UserDetailsComponent } from './components/user/user-details/user-details.component';
 import { ResetPasswordInitComponent } from './components/user/reset-password-init/reset-password-init.component';
 import { ResetPasswordComponent } from './components/user/reset-password/reset-password.component';
+import { QuizResultsComponent } from './components/moderator/quiz/quiz-results/quiz-results.component';
 
 const routes: Routes = [
   { path: 'home', component: GuestComponent },
@@ -61,6 +62,7 @@ const routes: Routes = [
   { path: 'moderator/edit-tag/:id', component:EditTagComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/add-quiz', component:AddQuizComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/edit-quiz/:quizName', component:EditQuizComponent, canActivate: [ModeratorGuard] },
+  { path: 'moderator/quiz-results/:quizName', component:QuizResultsComponent, canActivate: [ModeratorGuard] },
   { path: 'moderator/add-questions/:quizName', component:AddQuestionsComponent, canActivate: [ModeratorGuard] },
 
   

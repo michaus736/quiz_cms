@@ -1,4 +1,6 @@
-<div class="container mt-4">
+<div class="d-flex flex-column flex-lg-row">
+  <app-moderator-side-nav></app-moderator-side-nav>
+  <div class="flex-grow-1">
   <h1 class="text-center mb-4">Edytuj Quiz</h1>
   <div *ngIf="updateSuccess" class="alert alert-success" role="alert">
     Quiz został zaktualizowany
@@ -77,7 +79,6 @@
         </tbody>
       </table>
     </div>
-    <div class="container mt-4">
       <div class="row justify-content-start">
         <div class="col-md-auto">
           <input type="text" class="form-control" placeholder="Nazwa Użytkownika" [(ngModel)]="newUserName" name="userName">
@@ -86,7 +87,6 @@
           <button class="btn btn-primary" (click)="assignUser(quizDetails.name, newUserName)">Przypisz Użytkownika</button>
         </div>
       </div>
-    </div>
     <div style="height: 80px;"></div>
   </div>
-  
+  </div>

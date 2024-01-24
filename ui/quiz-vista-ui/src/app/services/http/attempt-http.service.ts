@@ -23,4 +23,9 @@ export class AttemptHttpService {
     return this.http.get(`${this.url}/userResults`)
   }
 
+  getQuizResults(quizName: string): Observable<any> {
+    return this.http.get(`${this.url}/quizResults/${quizName}`);
+}
+
+
 }

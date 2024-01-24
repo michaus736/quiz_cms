@@ -27,6 +27,7 @@
                 </p>
                 <a [routerLink]="['/moderator/edit-quiz', quiz.name]" class="btn btn-primary">Edytuj quiz</a>
                 <a *ngIf="!quiz.hasAttempts" [routerLink]="['/moderator/add-questions', quiz.name]" class="btn btn-warning">Edytuj pytania</a>
+                <a *ngIf="quiz.hasAttempts" [routerLink]="['/moderator/quiz-results', quiz.name]" class="btn btn-warning">Pokaż wyniki</a>
               </div>
             </div>
           </div>
