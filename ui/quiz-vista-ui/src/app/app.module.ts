@@ -40,6 +40,7 @@ import { BriefComponent } from './components/user-results/brief/brief.component'
 import { DateTransform } from './pipes/date-transform';
 import { ResetPasswordInitComponent } from './components/user/reset-password-init/reset-password-init.component';
 import { ResetPasswordComponent } from './components/user/reset-password/reset-password.component';
+import { QuizResultsComponent } from './components/moderator/quiz/quiz-results/quiz-results.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ResetPasswordComponent } from './components/user/reset-password/reset-p
     BriefComponent,
     DateTransform,
     ResetPasswordInitComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    QuizResultsComponent
   ],
   imports: [
     BrowserModule,
