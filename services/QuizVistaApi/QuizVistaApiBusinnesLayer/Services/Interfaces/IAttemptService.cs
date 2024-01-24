@@ -16,6 +16,7 @@ namespace QuizVistaApiBusinnesLayer.Services.Interfaces
         Task<ResultWithModel<AttemptResponse>> GetAttemptWithAnswers(int id);
         Task<ResultWithModel<IEnumerable<AttemptResponse>>> GetAttemptsOfUser(int userId);
         Task<ResultWithModel<UserResultBriefResponse>> GetUserResults(string userName);
+        Task<ResultWithModel<QuizResultBriefResponse>> GetQuizResults(string quizName);
         Task<Result> SaveAttempt(SaveAttemptRequest attempt, string userName);
         Task<Result> DeleteAttempt(int id);
         Task<Result> UpdateAttempt(AttemptRequest attempt);
