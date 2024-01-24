@@ -44,7 +44,13 @@ namespace QuizVistaApi.Controllers
 
             return await _attemptService.GetUserResults(userName);
         }
-        
+
+        [HttpGet("quizResults/{quizName}")]
+        public async Task<ResultWithModel<QuizResultBriefResponse>> GetQuizResults(string quizName)
+        {
+            return await _attemptService.GetQuizResults(quizName);
+        }
+
         [HttpPost("create")]
         [Authorize(Roles = "User")]
         public async Task<Result> CreateAttempt([FromBody] SaveAttemptRequest attemptRequest)
